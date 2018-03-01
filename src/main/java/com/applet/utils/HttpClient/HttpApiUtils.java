@@ -6,6 +6,11 @@ public class HttpApiUtils {
 
     private static String recEncoding = "UTF-8";
 
+    private static final String OPEN_LOCK="http://139.196.194.172:8082/MidComPro/lock?action=OPENLOCK";
+
+    private static final String GET_BIKE_INFOS="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";
+
+
     public static String getRecEncoding() {
         return recEncoding;
     }
@@ -15,13 +20,11 @@ public class HttpApiUtils {
     }
 
     public static String getBikeInfos(Map params){
-        String url ="http://106.15.47.133:8084/LockApi/lock?action=GETBIKEINFOS";//测试环境
-        return HttpRequestProxy.doPost(url, params , getRecEncoding());
+        return HttpRequestProxy.doPost(GET_BIKE_INFOS, params , getRecEncoding());
     }
 
     public static String openLockByGprs(Map params){
-        String url = "http://106.15.47.133:8082/MidComPro/lock?action=OPENLOCK";
-        return HttpRequestProxy.doPost(url, params , getRecEncoding());
+        return HttpRequestProxy.doPost(OPEN_LOCK, params , getRecEncoding());
     }
 
     /**
