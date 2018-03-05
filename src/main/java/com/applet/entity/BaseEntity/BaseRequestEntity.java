@@ -1,8 +1,13 @@
 package com.applet.entity.BaseEntity;
 
 
-public abstract class BaseRequestEntity {
 
+import java.io.Serializable;
+
+public abstract class BaseRequestEntity implements  Serializable{
+
+
+    private static final long serialVersionUID = 8360101072462967795L;
     /**
      * 签名
      **/

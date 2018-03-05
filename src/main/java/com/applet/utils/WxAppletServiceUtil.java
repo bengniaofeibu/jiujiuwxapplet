@@ -35,9 +35,6 @@ public final class WxAppletServiceUtil {
     private static final String TRADE_TYPE="JSAPI";
 
 
-    @Value("${wxAppletRootUrl}")
-    private String wxAppletRootUrl;
-
 
 
     private static final Map<String, Object> BASE_PARAM = new HashMap<>();
@@ -138,26 +135,6 @@ public final class WxAppletServiceUtil {
     }
 
     /**
-     * 请求小程序支付
-     *
-     * @param map
-     * @return
-     */
-    public   String SendRequestToWcx(Map<String, Object> map) throws Exception {
-        map.put("nonce_str",BaseUtil.getRandomUUID());
-        map.put("trade_type",TRADE_TYPE);
-        map.put("notify_url",wxAppletRootUrl);
-        map.put("mch_id", MCH_ID);
-        map.putAll(BASE_PARAM);
-        map.put("sign", generateSign(map).toUpperCase());
-        String s = XmlOrMapUtils.mapToXml(map);
-        System.out.println(s);
-        String res = HttpApiUtils.sendRequest(s);
-        LOGGER.debug("返回结果 {}", res);
-        return res;
-    }
-
-    /**
      * 把放回值转成对应的实体bean
      *
      * @param result
@@ -170,14 +147,6 @@ public final class WxAppletServiceUtil {
     }
 
     public static void main(String[] args) throws Exception {
-       WxAppletServiceUtil wcxServiceUtil=new WxAppletServiceUtil();
-        Map<String,Object> params=new HashMap<>();
-        params.put("body","充值押金");
-        params.put("total_fee",1);
-        params.put("spbill_create_ip","192.168.0.236");
-        params.put("openid","otHzu0NhAYtS7gzAsZx3tUUxx0xs");
-        String result = wcxServiceUtil.SendRequestToWcx(params);
-        System.out.println(XmlOrMapUtils.xmlToMap(result));
 
     }
 }

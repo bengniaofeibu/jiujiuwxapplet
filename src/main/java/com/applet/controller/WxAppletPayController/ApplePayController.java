@@ -10,6 +10,7 @@ import com.applet.enums.WxCallBackResultEnums;
 import com.applet.mapper.AmountRecordMapper;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.model.AmountRecord;
+import com.applet.service.ConsumerService;
 import com.applet.service.WxAppleetPayService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
@@ -32,22 +33,20 @@ public class ApplePayController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplePayController.class);
 
+
     @Autowired
-    private WxAppleetPayService wxAppleetPlayService;
+    private ConsumerService consumerService;
+
 
 
     @SystemControllerLog(funcionExplain = "进入微信支付控制层")
     @GetMapping(value = "/wx_xcx_appletpay")
     public AppletResult appletPlay(WxAppletPayRequest wxAppletPayRequest, HttpServletRequest request, @RequestHeader("session") String session) {
-
         try {
 
-            Cat authInfo = getAuthInfo(session);
-            LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));
+            String remoteAddr = request.getRemoteAddr();
 
-            wxAppletPayRequest.setUserHost(request.getRemoteAddr());
-            wxAppletPayRequest.setOpenId(authInfo.getOpenId());
-            AppletResult appletResult = wxAppleetPlayService.appletPay(wxAppletPayRequest);
+            AppletResult appletResult=consumerService.appletPlay(wxAppletPayRequest,remoteAddr,session);
             return appletResult;
         } catch (Exception e) {
             LOGGER.error("ERROR {}", e.getMessage());

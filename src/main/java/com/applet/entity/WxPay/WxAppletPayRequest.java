@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 
 public class WxAppletPayRequest extends BaseRequestEntity {
 
+    private final long serialVersionUID = 8360101072462967795L;
+
     /**
      * 金额
      **/

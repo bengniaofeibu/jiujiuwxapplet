@@ -1,11 +1,14 @@
 server:
-  port: 8080
+  port: 3333
   ssl.key-store: classpath:214075900090332.pfx
   ssl.key-store-password: 214075900090332
   ssl.keyStoreType: PKCS12
-  server.ssl.keyAlias: tomcat
 
 spring:
+  freemarker:
+    prefer-file-system-access: false
+  application:
+       name: jjwxapplet
   profiles:
     active: dev
   http:
@@ -17,7 +20,14 @@ spring:
   aop:
       proxy-target-class: true
   jmx:
-    default-domain: wxapplet
+    default-domain: applet
+eureka:
+  client:
+    service-url:
+       defaultZone: http://139.196.194.172:8091/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -30,4 +40,5 @@ logging:
 wxApplet.appId: wxd1cfbb46ce504c75
 wxApplet.appSecret: b9ed8ecf76a6156455d9d0b6bcf46330
 wxApplet.sessionTime: 1800
+
 
