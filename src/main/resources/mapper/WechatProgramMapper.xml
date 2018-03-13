@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.WechatProgramMapper">
+    <resultMap id="bannerInforList" type="com.applet.entity.wechatprogram.BannerInfor">
+        <result column="id" property="id" />
+        <result column="city_name" property="cityName" />
+        <result column="type" property="type" />
+        <result column="display_words" property="displayWords" />
+        <result column="display_pic" property="displayPic" />
+        <result column="action_type" property="actionType" />
+        <result column="action_url" property="actionUrl" />
+        <result column="activity_id" property="activityId" />
+        <result column="description" property="description" />
+        <result column="add_time" property="addTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="state" property="state" />
+        <result column="os" property="os" />
+        <result column="del_flag" property="delFlag" />
+        <result column="display_time" property="displayTime" />
+        <result column="del_time" property="delTime" />
+        <result column="create_by" property="createBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_date" property="updateDate" />
+        <result column="remarks" property="remarks" />
+        <result column="version_limit" property="versionLimit" />
+        <result column="is_download" property="isDownload" />
+        <result column="download_type" property="downloadType" />
+        <result column="ios_versions" property="iosVersions" />
+        <result column="android_versions" property="androidVersions" />
+        <result column="sort" property="sort" />
+        <result column="show_type" property="showType" />
+        <result column="gif_countdown" property="gifCountdown" />
+        <result column="is_ad" property="isAd" />
+        <result column="download_way" property="downloadWay" />
+        <result column="download_id" property="downloadId" />
+        <result column="district_ids" property="districtIds" />
+        <result column="ios_version_ids" property="iosVersionIds" />
+        <result column="android_version_ids" property="androidVersionIds" />
+        <result column="ad_channel_id" property="adChannelId" />
+    </resultMap>
+
+    <resultMap id="activitiesInfoList" type="com.applet.entity.wechatprogram.ActivitiesInfo">
+        <result column="id" property="id" />
+        <result column="img_path" property="imgPath" />
+        <result column="activity_path" property="activityPath" />
+        <result column="is_self" property="isSelf" />
+        <result column="share_url" property="shareUrl" />
+        <result column="share_platform" property="sharePlatform" />
+        <result column="video_path" property="videoPath" />
+        <result column="share_title" property="shareTitle" />
+        <result column="share_content" property="shareContent" />
+        <result column="share_pic" property="sharePic" />
+        <result column="welfare_title" property="welfareTitle" />
+        <result column="welfare_sec_title" property="welfareSecTitle" />
+        <result column="type" property="type" />
+        <result column="img_path2" property="imgPath2" />
+        <result column="begin_time" property="beginTime" />
+        <result column="end_time" property="endTime" />
+    </resultMap>
+
+    <select id="getBanners"  resultMap="bannerInforList">
+        SELECT
+        *
+        FROM
+        t_app_display
+        WHERE
+        state = 0
+        AND type = 4
+        AND os = 3
+        AND city_name LIKE CONCAT(
+        '%',
+        #{cityName},
+        '%'
+        )
+        AND del_flag = 0
+        AND #{now} &gt; display_time
+        AND #{now} &lt; del_time
+    </select>
+
+
+    <select id="getBannerList"  resultMap="bannerInforList">
+        SELECT
+        *
+        FROM
+        t_app_display
+        WHERE
+        state = 1
+        AND type = 4
+        AND os = 3
+        AND del_flag = 0
+        AND #{now} &gt; display_time
+        AND #{now} &lt; del_time
+    </select>
+
+    <select id="getActivitiesInfos"  resultMap="activitiesInfoList">
+        SELECT
+        id,
+        img_path,
+        activity_path,
+        is_self,
+        share_url,
+        share_platform,
+        video_path,
+        share_title,
+        share_content,
+        share_pic,
+        welfare_title,
+        welfare_sec_title,
+        type,
+        img_path2,
+        begin_time,
+        end_time
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        t_activities_info
+        WHERE
+        city_name LIKE CONCAT('%', #{cityName}, '%')
+        UNION
+        SELECT
+        *
+        FROM
+        t_activities_info
+        WHERE
+        state = 1
+        ) b
+        WHERE
+        b.is_lexiang = 1
+        AND b.del_flag = 0
+        AND b.show_time &lt; NOW()
+        AND b.hide_time &gt; NOW()
+        AND (b.os = 0 OR b.os = #{os})
+        ORDER BY
+        b.sort DESC,
+        b.add_time DESC
+    </select>
+</mapper>
