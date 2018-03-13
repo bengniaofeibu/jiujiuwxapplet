@@ -55,9 +55,6 @@ public class AuthorizedController {
             String sessionKey = jo.getString("session_key");
 
 
-
-            String unionId = jo.getString("unionid");
-
             String uuid = UuidUtil.getUuid();
             String session = Md5Util.MD5(uuid + openId);
 

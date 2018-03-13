@@ -21,9 +21,11 @@ import com.applet.utils.common.XmlOrMapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +34,10 @@ import java.util.Map;
 public class ApplePayController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplePayController.class);
+
+
+    @Value("${pay.amount}")
+    private String amount;
 
 
     @Autowired
@@ -45,12 +51,16 @@ public class ApplePayController extends BaseController {
         try {
 
             String remoteAddr = request.getRemoteAddr();
-
+            wxAppletPayRequest.setAmount(amount);
             AppletResult appletResult=consumerService.appletPlay(wxAppletPayRequest,remoteAddr,session);
             return appletResult;
         } catch (Exception e) {
             LOGGER.error("ERROR {}", e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.print(new BigDecimal(Integer.valueOf("9900")/100));
     }
 }

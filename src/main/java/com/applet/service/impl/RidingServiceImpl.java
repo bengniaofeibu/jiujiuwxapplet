@@ -6,12 +6,10 @@ import com.applet.entity.LockRequest.QueryRidingStatusRequest;
 import com.applet.entity.LockResponse.QueryRidingStatusResponse;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.FeedbackInfoMapper;
+import com.applet.mapper.SysDictMapper;
 import com.applet.mapper.TransRecordTempMapper;
 import com.applet.mapper.UserInfoMapper;
-import com.applet.model.FeedbackInfo;
-import com.applet.model.TransRecordTemp;
-import com.applet.model.UserInfo;
-import com.applet.model.WxUserInfo;
+import com.applet.model.*;
 import com.applet.service.RidingService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
@@ -21,9 +19,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class RidingServiceImpl implements RidingService{
@@ -36,6 +35,9 @@ public class RidingServiceImpl implements RidingService{
 
     @Autowired
     private FeedbackInfoMapper feedbackInfoMapper;
+
+    @Autowired
+    private SysDictMapper sysDictMapper;
 
     private static final Logger LOGGER= LoggerFactory.getLogger(RidingServiceImpl.class);
 
@@ -118,5 +120,20 @@ public class RidingServiceImpl implements RidingService{
         }else{
             return ResultUtil.error(ResultEnums.INVALID_USER);
         }
+    }
+
+    /**
+     * 获取故障报修列表
+     *
+     * @param type 报修类型
+     * @return
+     */
+    @SystemServerLog(funcionExplain = "获取故障保修列表")
+    @Override
+    public List<SysDict> getFailureWarrantyList(String type) {
+        LOGGER.debug("type {}",type);
+
+        List<SysDict> sysDicts = sysDictMapper.selectLabelByType(type);
+        return sysDicts;
     }
 }

@@ -201,14 +201,14 @@
       <if test="imei != null">
         imei,
       </if>
-      <if test="mac != null">
-        mac,
-      </if>
       <if test="idfa != null">
         idfa,
       </if>
       <if test="userSource != null">
         user_source,
+      </if>
+      <if test="mac != null">
+        mac,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -337,14 +337,14 @@
       <if test="imei != null">
         #{imei,jdbcType=VARCHAR},
       </if>
-      <if test="mac != null">
-        #{mac,jdbcType=VARCHAR},
-      </if>
       <if test="idfa != null">
         #{idfa,jdbcType=VARCHAR},
       </if>
       <if test="userSource != null">
         #{userSource,jdbcType=INTEGER},
+      </if>
+      <if test="mac != null">
+        #{mac,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

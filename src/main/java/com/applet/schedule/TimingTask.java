@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class TimingTask {
 
-    @Scheduled(cron = "0 0/1 * * * ?")
-    public void test(){
-        System.out.println(CommonUtils.getCurrentTimeFormat("yyyy-MM-dd HH:mm:ss") + "定时任务测试");
-    }
+//    @Scheduled(cron = "0 0/1 * * * ?")
+//    public void test(){
+//        System.out.println(CommonUtils.getCurrentTimeFormat("yyyy-MM-dd HH:mm:ss") + "定时任务测试");
+//    }
 }
