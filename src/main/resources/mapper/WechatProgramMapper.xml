@@ -137,4 +137,28 @@
         b.sort DESC,
         b.add_time DESC
     </select>
+
+
+    <select id="getUserByAdminId"  parameterType="java.lang.String" resultType="com.applet.entity.wechatprogram.UserInfo">
+        SELECT
+	          *
+        FROM
+	          t_user_info
+        WHERE
+	          id = #{adminId}
+        AND del_flag = '0'
+    </select>
+
+
+    <select id="getCouponNum"  parameterType="java.lang.String" resultType="java.lang.Long">
+       SELECT
+	      count(*)
+        FROM
+	      t_coupon_info
+        WHERE
+	      id = #{adminId}
+        AND end_time > NOW()
+        AND del_flag = '0'
+    </select>
+
 </mapper>

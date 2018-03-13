@@ -2,6 +2,7 @@ package com.applet.service.impl;
 
 import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
+import com.applet.entity.wechatprogram.UserInfo;
 import com.applet.mapper.WechatProgramMapper;
 import com.applet.service.WechatProgramService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,15 @@ public class WechatProgramServiceImpl implements WechatProgramService{
     @Override
     public List<ActivitiesInfo> getActivitiesInfos(String cityName,Integer os) {
         return wechatProgramMapper.getActivitiesInfos(cityName,os);
+    }
+
+    @Override
+    public UserInfo getUserByAdminId(String adminId) {
+        return wechatProgramMapper.getUserByAdminId(adminId);
+    }
+
+    @Override
+    public Long getCouponNum(String adminId) {
+        return wechatProgramMapper.getCouponNum(adminId);
     }
 }

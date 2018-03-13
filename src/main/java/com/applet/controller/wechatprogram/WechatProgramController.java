@@ -4,6 +4,7 @@ import com.applet.annotation.SystemControllerLog;
 import com.applet.controller.BaseController;
 import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
+import com.applet.entity.wechatprogram.UserInfo;
 import com.applet.enums.ResultEnums;
 import com.applet.service.WechatProgramService;
 import com.applet.utils.AppletResult;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * BannerController
@@ -63,6 +66,28 @@ public class WechatProgramController extends BaseController {
             List<ActivitiesInfo> activitiesInfoList = wechatProgramService.getActivitiesInfos(cityName,os);
             LOGGER.info("activitiesInfoList"+activitiesInfoList);
             return ResultUtil.success(activitiesInfoList);
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+            return ResultUtil.error(ResultEnums.SERVER_ERROR);
+        }
+    }
+
+
+
+    @SystemControllerLog(funcionExplain = "获取钱包信息")
+    @CrossOrigin
+    @PostMapping(value = "/get/wallet")
+    public AppletResult getWallet(@RequestBody Map map){
+        String adminId = (String) map.get("adminId");
+        Map<String, Object> content = new HashMap<>();
+        try {
+            UserInfo user = wechatProgramService.getUserByAdminId(adminId);
+            Long couponNum = wechatProgramService.getCouponNum(adminId);
+            content.put("luckyMoney", user.getLuckyMoney());
+            content.put("phone", user.getPhone());
+            content.put("deposit", user.getDeposit());
+            content.put("couponNum", couponNum);
+            return ResultUtil.success(content);
         }catch (Exception e){
             LOGGER.info(e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
