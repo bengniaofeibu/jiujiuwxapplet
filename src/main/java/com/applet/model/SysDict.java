@@ -30,6 +30,8 @@ public class SysDict extends BaseModel {
 
     private String delFlag;
 
+    private int isSelect;
+
     public String getId() {
         return id;
     }

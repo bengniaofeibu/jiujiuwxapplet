@@ -9,6 +9,10 @@ spring:
     prefer-file-system-access: false
   application:
        name: jjwxapplet
+  mvc:
+    view:
+      prefix: /jsp/
+      suffix: .jsp
   profiles:
     active: dev
 #    active: prod
@@ -34,4 +38,3 @@ logging:
 wxApplet.appId: wxd1cfbb46ce504c75
 wxApplet.appSecret: b9ed8ecf76a6156455d9d0b6bcf46330
 wxApplet.sessionTime: 1800
-
