@@ -11,6 +11,7 @@ spring:
        name: jjwxapplet
   profiles:
     active: dev
+#    active: prod
   http:
     encoding:
       charset: utf-8
@@ -21,13 +22,6 @@ spring:
       proxy-target-class: true
   jmx:
     default-domain: applet
-eureka:
-  client:
-    service-url:
-       defaultZone: http://139.196.194.172:8091/eureka/
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -40,5 +34,4 @@ logging:
 wxApplet.appId: wxd1cfbb46ce504c75
 wxApplet.appSecret: b9ed8ecf76a6156455d9d0b6bcf46330
 wxApplet.sessionTime: 1800
-
 

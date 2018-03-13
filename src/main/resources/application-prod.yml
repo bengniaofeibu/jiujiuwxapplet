@@ -1,21 +1,52 @@
 spring:
   datasource:
-      url: jdbc:mysql://139.196.194.172:3306/electric_bicycle_pro_dev?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=true
-      userName: jjtest
-      password: 99b39189a35c
-      driver-class-name: com.mysql.jdbc.Driver
+     url: jdbc:mysql://rm-uf60293l37qz86flz.mysql.rds.aliyuncs.com:3306/electric_bicycle_pro?useUnicode=true&characterEncoding=utf8&useSSL=false
+     username: jjdc_123
+     password: jjdc_99bicycle
+     driver-class-name: com.mysql.jdbc.Driver
+     type: org.apache.commons.dbcp2.BasicDataSource
+     dbcp2:
+       initial-size: 5
+       min-idle: 5
+       max-idle: 10
 #  data:
 #    elasticsearch:
-#      cluster-name: elasticsearch
-#      cluster-nodes: localhost:9300
+##      cluster-name: elasticsearch
+#      cluster-nodes: 172.16.20.14:9300
 #      repositories:
 #        enabled: true
   redis:
-      database: 4
-      host: 139.196.194.172
-      password: test123
+      database: 31
+      host: r-uf64853ed47ec874.redis.rds.aliyuncs.com
+      password: Zjqyznkj123456
       port: 6379
       pool:
-       max-active: 8
-       max-wait: 1000
+        max-active: 8
+        max-wait: 1000
       timeout: 1000
+
+eureka:
+  client:
+    service-url:
+       defaultZone: http://10.0.180.65:8091/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+# LOGGING
+logging:
+    level:
+       com.example: DEBUG
+    config: classpath:logback/logback-dev.xml
+mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  config-location: classpath:mybatis/mybatis.xml
+
+
+sms.prefix: applet
+sms.url: http://10.1.229.39:81/sms/captcha
+sms.checkUrl: http://10.1.229.39:81/sms/ckCaptcha
+
+#小程序单位为分
+pay.amount: 100

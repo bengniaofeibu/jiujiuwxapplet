@@ -25,6 +25,16 @@ spring:
       max-wait: 1000
     timeout: 1000
 
+eureka:
+  client:
+    service-url:
+       defaultZone: http://139.196.194.172:8091/eureka/
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+
 # LOGGING
 logging:
     level:
@@ -39,3 +49,6 @@ mybatis:
 sms.prefix: applet
 sms.url: http://106.15.47.133:8080/sms/captcha
 sms.checkUrl: http://106.15.47.133:8080/sms/ckCaptcha
+
+#小程序单位为分
+pay.amount: 100
