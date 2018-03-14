@@ -44,6 +44,8 @@ public class WechatProgramController extends BaseController {
         String cityName = (String)map.get("cityName");
         Integer type = Integer.parseInt((String)map.get("type"));
         try {
+
+
             Date now = new Date();
             List<BannerInfor> bannerInfoList = wechatProgramService.getBanners(cityName,now,type);
             if(bannerInfoList==null || bannerInfoList.size()==0){
