@@ -30,7 +30,9 @@ public enum ResultEnums {
 
     WX_PLAY_FAIL(1004,"微信支付失败"),
 
-    SCAVENING_UNLOCK_ERRORTRANSRECORD(20008,"订单错误");
+    SCAVENING_UNLOCK_ERRORTRANSRECORD(20008,"订单错误"),
+
+    ELECTRICFANCE_VALIDATION_FAIL(2,"验证失败！");
 
     private Integer code;
 

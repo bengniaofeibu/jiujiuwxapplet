@@ -2,6 +2,7 @@ package com.applet.service.impl;
 
 import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
+import com.applet.entity.wechatprogram.ElectricFanceInfo;
 import com.applet.entity.wechatprogram.UserInfo;
 import com.applet.mapper.WechatProgramMapper;
 import com.applet.service.WechatProgramService;
@@ -28,13 +29,13 @@ public class WechatProgramServiceImpl implements WechatProgramService{
 
 
     @Override
-    public List<BannerInfor> getBanners(String cityName, Date now) {
-        return wechatProgramMapper.getBanners(cityName,now);
+    public List<BannerInfor> getBanners(String cityName, Date now,Integer type) {
+        return wechatProgramMapper.getBanners(cityName,now,type);
     }
 
     @Override
-    public List<BannerInfor> getBannerList(Date now) {
-        return wechatProgramMapper.getBannerList(now);
+    public List<BannerInfor> getBannerList(Date now,Integer type) {
+        return wechatProgramMapper.getBannerList(now,type);
     }
 
     @Override
@@ -50,5 +51,10 @@ public class WechatProgramServiceImpl implements WechatProgramService{
     @Override
     public Long getCouponNum(String adminId) {
         return wechatProgramMapper.getCouponNum(adminId);
+    }
+
+    @Override
+    public List<ElectricFanceInfo> findFanceByAreaName(String areaName) {
+        return wechatProgramMapper.findFanceByAreaName(areaName);
     }
 }

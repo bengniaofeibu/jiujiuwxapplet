@@ -42,7 +42,7 @@ ext {
 dependencies {
 
     //依赖本地jar包(lib需要和build.gradle同一个路径)
-    compile fileTree(dir:'libs',include:['*.jar'])
+    compile fileTree(dir:'lib',include:['*.jar'])
 
     mybatisGenerator 'org.mybatis.generator:mybatis-generator-core:1.3.5'
     mybatisGenerator 'mysql:mysql-connector-java:5.1.40'

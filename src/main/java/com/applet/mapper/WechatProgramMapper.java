@@ -2,6 +2,7 @@ package com.applet.mapper;
 
 import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
+import com.applet.entity.wechatprogram.ElectricFanceInfo;
 import com.applet.entity.wechatprogram.UserInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,19 +23,21 @@ public interface WechatProgramMapper {
      * 微信小程序获取banners
      * @param cityName 城市名
      * @param now 查询时间
+     * @param type 查询类型
      * @return List<BannerInfor>
      */
-    List<BannerInfor> getBanners(@Param("cityName")String cityName,@Param("now")Date now);
+    List<BannerInfor> getBanners(@Param("cityName")String cityName,@Param("now")Date now,@Param("type") Integer type);
 
     /**
      * 微信小程序获取banners
      * @param now 查询时间
+     * @param type 查询类型
      * @return List<BannerInfor>
      */
-    List<BannerInfor> getBannerList(@Param("now")Date now);
+    List<BannerInfor> getBannerList(@Param("now")Date now,@Param("type") Integer type);
 
     /**
-     * 微信小程序获取banners
+     * 微信小程序获取赳赳乐享
      * @param cityName 城市名称
      * @param os 设备名称
      * @return List<ActivitiesInfo>
@@ -54,4 +57,11 @@ public interface WechatProgramMapper {
      * @return Long
      */
     Long getCouponNum(@Param("adminId")String adminId);
+
+    /**
+     * 微信小程序获取电子围栏
+     * @param areaName 城市名称
+     * @return List<ElectricFanceInfo>
+     */
+    List<ElectricFanceInfo> findFanceByAreaName(@Param("areaName")String areaName);
 }

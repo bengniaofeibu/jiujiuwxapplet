@@ -2,6 +2,7 @@ package com.applet.service;
 
 import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
+import com.applet.entity.wechatprogram.ElectricFanceInfo;
 import com.applet.entity.wechatprogram.UserInfo;
 
 import java.util.Date;
@@ -18,16 +19,18 @@ public interface WechatProgramService {
      * 获取Banner图片信息
      * @param cityName 城市名
      * @param now 查询时间
+     * @param type 查询类型
      * @return List<BannerInfor>
      */
-    List<BannerInfor> getBanners(String cityName, Date now);
+    List<BannerInfor> getBanners(String cityName, Date now,Integer type);
 
     /**
      * 获取Banner图片信息
      * @param now 查询时间
+     * @param type 查询类型
      * @return List<BannerInfor>
      */
-    List<BannerInfor> getBannerList(Date now);
+    List<BannerInfor> getBannerList(Date now,Integer type);
 
     /**
      * 获取赳赳乐享列表信息
@@ -50,4 +53,11 @@ public interface WechatProgramService {
      * @return Long
      */
     Long getCouponNum(String adminId);
+
+    /**
+     * 获取电子围栏
+     * @param areaName 城市名称
+     * @return  List<ElectricFanceInfo>
+     */
+    List<ElectricFanceInfo> findFanceByAreaName(String areaName);
 }

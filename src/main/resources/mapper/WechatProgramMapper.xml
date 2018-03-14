@@ -59,6 +59,20 @@
         <result column="end_time" property="endTime" />
     </resultMap>
 
+    <resultMap id="electricFanceInfoList" type="com.applet.entity.wechatprogram.ElectricFanceInfo">
+        <result column="id" property="id" />
+        <result column="latititude_longitude" property="latititudeLongitude" />
+        <result column="sort" property="sort" />
+        <result column="fance_no" property="fanceNo" />
+        <result column="area_name" property="areaName" />
+        <result column="del_flag" property="delFlag" />
+        <result column="area_id" property="areaId" />
+        <result column="type" property="type" />
+        <result column="latitude" property="latitude" />
+        <result column="longitude" property="longitude" />
+    </resultMap>
+
+
     <select id="getBanners"  resultMap="bannerInforList">
         SELECT
         *
@@ -66,7 +80,7 @@
         t_app_display
         WHERE
         state = 0
-        AND type = 4
+        AND type = #{type}
         AND os = 3
         AND city_name LIKE CONCAT(
         '%',
@@ -86,7 +100,7 @@
         t_app_display
         WHERE
         state = 1
-        AND type = 4
+        AND type = #{type}
         AND os = 3
         AND del_flag = 0
         AND #{now} &gt; display_time
@@ -136,6 +150,7 @@
         ORDER BY
         b.sort DESC,
         b.add_time DESC
+        LIMIT 5
     </select>
 
 
@@ -160,5 +175,29 @@
         AND end_time > NOW()
         AND del_flag = '0'
     </select>
+
+    <select id="findFanceByAreaName"  parameterType="java.lang.String" resultMap="electricFanceInfoList">
+       SELECT
+            id,
+            latititude_longitude,
+            sort,
+            fance_no,
+            area_name,
+            del_flag,
+            area_id,
+            type,
+            latitude,
+            longitude
+      FROM
+	        t_electric_fance_info
+      WHERE
+	        area_name LIKE CONCAT('%', #{areaName}, '%')
+            AND del_flag = '0'
+      ORDER BY
+	        type,
+	        fance_no,
+	        sort
+    </select>
+
 
 </mapper>
