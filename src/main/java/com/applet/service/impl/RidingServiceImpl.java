@@ -76,7 +76,7 @@ public class RidingServiceImpl implements RidingService{
             String uuid = UUID.randomUUID().toString();
             FeedbackInfo feedbackInfo = new FeedbackInfo();
             String bicycleNo;
-            if("1".equals(endOrderRequest.getSonType()) && endOrderRequest.getType() == 2){
+            if(("1".equals(endOrderRequest.getSonType()) || "9".equals(endOrderRequest.getSonType())) && endOrderRequest.getType() == 2){
                 TransRecordTemp transRecordTemp = transRecordTempMapper.selectByUserIdAndTransFlag(endOrderRequest.getId());
                 if(transRecordTemp != null){
                     transRecordTemp.setUserId(endOrderRequest.getId());
