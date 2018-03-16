@@ -32,8 +32,9 @@ public enum ResultEnums {
 
     SCAVENING_UNLOCK_ERRORTRANSRECORD(20008,"订单错误"),
 
-    ELECTRICFANCE_VALIDATION_FAIL(2,"验证失败！");
+    ELECTRICFANCE_VALIDATION_FAIL(2,"验证失败！"),
 
+    SMS_VALIDATION_FAIL(204,"短信验证码校验失败！");
     private Integer code;
 
     private String msg;

@@ -6,6 +6,7 @@ import com.applet.entity.Sms;
 import com.applet.enums.ResultEnums;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
+import com.applet.utils.common.JSONUtil;
 import com.applet.utils.common.PostRequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,8 +61,13 @@ public class SMSController{
             m.put("markId", sms.getPrefix());
             m.put("captchaNum", captchaNum);
             String s = PostRequestUtils.httpPostWithJSON(sms.getCheckUrl(), JSON.toJSONString(m));
+            Map map = JSONUtil.parseObject(s,Map.class);
             LOGGER.debug("验证验证码的返回结果 {}",s);
-            return ResultUtil.success(s);
+            if("200".equals((String)map.get("code"))){
+                return ResultUtil.success();
+            }else {
+                return ResultUtil.error(ResultEnums.SMS_VALIDATION_FAIL);
+            }
         } catch (Exception e) {
             LOGGER.error("ERROR {}",e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
