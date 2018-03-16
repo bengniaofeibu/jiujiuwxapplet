@@ -69,8 +69,8 @@ public class WechatProgramController extends BaseController {
         try {
             List<ActivitiesInfo> activitiesInfoList = wechatProgramService.getActivitiesInfos(cityName,os);
             for(ActivitiesInfo activitiesInfo:activitiesInfoList){
-                activitiesInfo.setBeginTime(activitiesInfo.getBeginTime().substring(0,10).replaceFirst("-","年").replaceFirst("-","月")+"日");
-                activitiesInfo.setEndTime(activitiesInfo.getEndTime().substring(0,10).replaceFirst("-","年").replaceFirst("-","月")+"日");
+                activitiesInfo.setBeginTime(activitiesInfo.getBeginTime().substring(5,10).replaceFirst("-","月")+"日");
+                activitiesInfo.setEndTime(activitiesInfo.getEndTime().substring(5,10).replaceFirst("-","月")+"日");
             }
             LOGGER.info("activitiesInfoList"+activitiesInfoList);
             return ResultUtil.success(activitiesInfoList);
