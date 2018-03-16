@@ -33,4 +33,12 @@ public class ResultUtil {
         }
         return result;
     }
+
+    public static AppletResult error(Integer i,String msg){
+        AppletResult result = new AppletResult();
+        result.setCode(i);
+        result.setMsg(msg);
+        return result;
+    }
+
 }
