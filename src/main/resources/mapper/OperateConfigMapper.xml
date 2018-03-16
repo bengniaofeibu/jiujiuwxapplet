@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.OperateConfigMapper">
+    <resultMap id="BaseResultMap" type="com.applet.model.OperateConfig">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="os" jdbcType="INTEGER" property="os"/>
+        <result column="city_no" jdbcType="INTEGER" property="cityNo"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="limit_hour" jdbcType="INTEGER" property="limitHour"/>
+        <result column="config_flag" jdbcType="INTEGER" property="configFlag"/>
+        <result column="create_by" jdbcType="VARCHAR" property="createBy"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_by" jdbcType="VARCHAR" property="updateBy"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+    </resultMap>
+    <sql id="Base_Column_Limit_Hour">
+      limit_hour
+  </sql>
+    <select id="selectLimitHourByCity" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+   select
+    <include refid="Base_Column_Limit_Hour"/>
+   from t_limit_operate_config where  NOW()
+   BETWEEN begin_date AND end_date AND config_flag=0 AND del_flag =0 and os=3 and city_no=#{cityNo,jdbcType=INTEGER}
+  </select>
+
+    <select id="selectLimitHourByCountry" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_Limit_Hour"/>
+        from t_limit_operate_config where  NOW()
+        BETWEEN begin_date AND end_date AND config_flag=0 AND del_flag =0 and os=0 and city_no=-1
+    </select>
+</mapper>

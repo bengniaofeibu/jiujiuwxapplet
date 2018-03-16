@@ -101,9 +101,9 @@ public class BaseController {
      * @param userMobile
      * @return
      */
-    protected UserInfoResponse getUserInfoByopenId(String userMobile) {
+    protected UserInfoResponse getUserInfoByopenId(String userMobile,String cityName) {
         String userId = wxUserInfoMapper.selectUserIdByMobile(userMobile);
-        UserInfoResponse userInfo = userInfoService.getUserInfo(userId);
+        UserInfoResponse userInfo = userInfoService.getUserInfo(userId,cityName);
         userInfo.setAdminId(userId);
         return userInfo;
     }

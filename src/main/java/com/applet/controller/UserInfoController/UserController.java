@@ -56,7 +56,7 @@ public class UserController extends BaseController {
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phoneNumber);
             if (userRegistered != null) {
-                return ResultUtil.success(getUserInfoByopenId(phoneNumber));
+                return ResultUtil.success(getUserInfoByopenId(phoneNumber,request.getCityName()));
             }
 
             //验证用户是否在单车上注册过
@@ -91,7 +91,7 @@ public class UserController extends BaseController {
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phone);
             if (userRegistered != null) {
-                return ResultUtil.success(getUserInfoByopenId(phone));
+                return ResultUtil.success(getUserInfoByopenId(phone,request.getCityName()));
             }
 
             //验证用户是否在单车上注册过
@@ -114,9 +114,9 @@ public class UserController extends BaseController {
 
     @SystemControllerLog(funcionExplain = "进入获取用户信息控制层")
     @GetMapping(value = "/wx_xcx_userinfo")
-    public AppletResult getUserInfo(String id) {
+    public AppletResult getUserInfo(String id,String cityName) {
         try {
-            UserInfoResponse userInfo = userInfoService.getUserInfo(id);
+            UserInfoResponse userInfo = userInfoService.getUserInfo(id,cityName);
             return ResultUtil.success(userInfo);
         } catch (Exception e) {
             LOGGER.error(" ERROR {}", e.getMessage());
@@ -173,7 +173,7 @@ public class UserController extends BaseController {
         Integer mBorrowBicycle = userInfo.getmBorrowBicycle();
         info.setBorrowBicycle(mBorrowBicycle);
         if(mBorrowBicycle.equals(1)){
-            long borrowBicycleDate=(new Date().getTime()-userInfo.getmBorrowBicycleDate().getTime())/(60*1000);
+            long borrowBicycleDate=(new Date().getTime()-userInfo.getmBorrowBicycleDate().getTime())/(1000);
             info.setRidingTime(borrowBicycleDate);
         }
         return info;

@@ -20,5 +20,5 @@ public interface UserInfoService {
      * @param id
      * @return
      */
-    UserInfoResponse getUserInfo(String id);
+    UserInfoResponse getUserInfo(String id,String cityName);
 }

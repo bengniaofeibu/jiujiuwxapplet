@@ -4,6 +4,8 @@ import com.applet.entity.BaseEntity.BaseResponseEntity;
 
 public class UserInfoResponse extends BaseResponseEntity{
 
+
+
     private String adminId;
 
     private String phone;
@@ -13,6 +15,13 @@ public class UserInfoResponse extends BaseResponseEntity{
     private Integer borrowBicycle;
 
     private Long ridingTime;
+
+    /** 免押金状态 0:不免 1:免 **/
+    private Integer freeDepositStatus;
+
+    private Integer UserBicycleNo;
+
+
 
     public String getAdminId() {
         return adminId;
@@ -52,5 +61,21 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     public void setRidingTime(Long ridingTime) {
         this.ridingTime = ridingTime;
+    }
+
+    public Integer getFreeDepositStatus() {
+        return freeDepositStatus;
+    }
+
+    public void setFreeDepositStatus(Integer freeDepositStatus) {
+        this.freeDepositStatus = freeDepositStatus;
+    }
+
+    public Integer getUserBicycleNo() {
+        return UserBicycleNo;
+    }
+
+    public void setUserBicycleNo(Integer userBicycleNo) {
+        UserBicycleNo = userBicycleNo;
     }
 }

@@ -14,6 +14,8 @@ public class WxUserRegisterRequest extends BaseRequestEntity{
 
     private String iv;
 
+    private String cityName;
+
     public String getRawData() {
         return rawData;
     }
@@ -52,5 +54,13 @@ public class WxUserRegisterRequest extends BaseRequestEntity{
 
     public void setIv(String iv) {
         this.iv = iv;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 }
