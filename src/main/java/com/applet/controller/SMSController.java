@@ -61,7 +61,7 @@ public class SMSController{
             m.put("captchaNum", captchaNum);
             String s = PostRequestUtils.httpPostWithJSON(sms.getCheckUrl(), JSON.toJSONString(m));
             LOGGER.debug("验证验证码的返回结果 {}",s);
-            return ResultUtil.success();
+            return ResultUtil.success(s);
         } catch (Exception e) {
             LOGGER.error("ERROR {}",e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
