@@ -61,9 +61,9 @@ public class SMSController{
             m.put("markId", sms.getPrefix());
             m.put("captchaNum", captchaNum);
             String s = PostRequestUtils.httpPostWithJSON(sms.getCheckUrl(), JSON.toJSONString(m));
-            Map map = JSONUtil.parseObject(s,Map.class);
+
             LOGGER.debug("验证验证码的返回结果 {}",s);
-            if("200".equals((String)map.get("code"))){
+            if(s.contains("200")){
                 return ResultUtil.success();
             }else {
                 return ResultUtil.error(ResultEnums.SMS_VALIDATION_FAIL);
