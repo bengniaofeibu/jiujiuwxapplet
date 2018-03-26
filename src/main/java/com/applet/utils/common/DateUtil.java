@@ -29,7 +29,7 @@ public abstract class DateUtil {
     }
 
     /**
-     * 毫秒转换时间（秒，分，小时，天）
+     * 毫秒转换时间（秒，分，小时）
      *
      * @param timeStamp 时间戳
      * @return
@@ -39,23 +39,20 @@ public abstract class DateUtil {
         long time=0L;
         switch (timeType.getType()) {
             case 1:
-                time = (timeStamp % (1000 * 60)) / 1000;
+                time = (timeStamp % 60000 ) / 1000;
                 break;
             case 2:
-                time = (timeStamp % (1000 * 60 * 60)) / (1000 * 60);
+                time = (timeStamp % 3600000) / 60000;
                 break;
             case 3:
-                time = (timeStamp % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);
-                break;
-            case 4:
-                time = timeStamp / (1000 * 60 * 60 * 24);
+                time = timeStamp / 3600000;
                 break;
         }
         return time;
     }
 
     public enum TimeType {
-        SECONDS(1), MINUTES(2), HOURS(3), DAYS(4);
+        SECONDS(1), MINUTES(2), HOURS(3);
 
         int type;
 
