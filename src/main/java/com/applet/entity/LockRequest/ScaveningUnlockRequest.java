@@ -10,6 +10,9 @@ public class ScaveningUnlockRequest extends BaseLockRequest{
 
     private String barcode;
 
+    /** 免押金状态 0:不免 1:免 **/
+    private Integer freeDepositStatus;
+
     public String getLongitude() {
         return longitude;
     }
@@ -40,5 +43,13 @@ public class ScaveningUnlockRequest extends BaseLockRequest{
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public Integer getFreeDepositStatus() {
+        return freeDepositStatus;
+    }
+
+    public void setFreeDepositStatus(Integer freeDepositStatus) {
+        this.freeDepositStatus = freeDepositStatus;
     }
 }

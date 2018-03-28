@@ -32,6 +32,7 @@ public class UserController extends BaseController {
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
     @GetMapping("/wx_xcx_auth")
     public AppletResult register(WxUserRegisterRequest request, @RequestHeader("session") String session) {
+        LOGGER.debug("session---> {}",session);
 
         Cat authInfo = getAuthInfo(session);
         LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));
@@ -79,6 +80,7 @@ public class UserController extends BaseController {
     @SystemControllerLog(funcionExplain = "进入手机号注册登录控制层")
     @GetMapping("/wx_xcx_phone")
     public AppletResult phoneRegister(PhoneRegisterRequest request, @RequestHeader("session") String session) {
+        LOGGER.debug("session---> {}",session);
 
         UserInfoResponse info;
         try {
@@ -179,3 +181,4 @@ public class UserController extends BaseController {
         return info;
     }
 }
+

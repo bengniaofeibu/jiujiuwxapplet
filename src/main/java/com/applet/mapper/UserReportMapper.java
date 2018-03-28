@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 public interface UserReportMapper {
 
     int insertUserReportInfo(UserReport record);
+
+    int selectUserIdByUserId(String userId);
 }

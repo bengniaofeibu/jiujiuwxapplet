@@ -8,6 +8,15 @@
     <result column="kilometers" jdbcType="DOUBLE" property="kilometers" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
   </resultMap>
+
+  <select id="selectUserIdByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT
+    COUNT(1)
+    FROM t_user_report
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+
+
   <insert id="insertUserReportInfo" parameterType="com.applet.model.UserReport">
     insert into t_user_report
     <trim prefix="(" suffix=")" suffixOverrides=",">

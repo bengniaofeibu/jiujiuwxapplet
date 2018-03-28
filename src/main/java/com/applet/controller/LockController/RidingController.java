@@ -34,6 +34,7 @@ public class RidingController extends BaseController{
     @SystemControllerLog(funcionExplain = "故障报修")
     @GetMapping(value = "/wx_xcx_end_order")
     public AppletResult endOrder(EndOrderRequest endOrderRequest, @RequestHeader("session") String session){
+        LOGGER.debug("session---> {}",session);
 
         Cat authInfo = getAuthInfo(session);
         LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));

@@ -58,9 +58,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         wxUserInfoMapper.insertSelective(wxUserInfo);
         LOGGER.debug("记录微信用户信息 {}", JSONUtil.toJSONString(wxUserInfo));
 
-        UserReport userReport = new UserReport(UuidUtil.getUuid(), 0.0, 0.0, 0.0, userInfo.getId());
-        userReportMapper.insertUserReportInfo(userReport);
-        LOGGER.debug("记录用户report信息 {}", JSONUtil.toJSONString(userReport));
+        int userReportCount = userReportMapper.selectUserIdByUserId(wxUserInfo.getUserId());
+        if (userReportCount == 0 ){
+            UserReport userReport = new UserReport(UuidUtil.getUuid(), 0.0, 0.0, 0.0, userInfo.getId());
+            userReportMapper.insertUserReportInfo(userReport);
+            LOGGER.debug("记录用户report信息 {}", JSONUtil.toJSONString(userReport));
+        }
 
         UserInfoResponse info = new UserInfoResponse();
         info.setAdminId(userInfo.getId());

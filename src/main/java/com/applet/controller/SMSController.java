@@ -67,7 +67,7 @@ public class SMSController{
             if(s.contains("200")){
                 return ResultUtil.success();
             }else {
-                return ResultUtil.error(Integer.parseInt((String)resultMap.get("code")),(String)resultMap.get("msg"));
+                return ResultUtil.error(resultMap.get("code"),resultMap.get("msg").toString());
             }
         } catch (Exception e) {
             LOGGER.error("ERROR {}",e.getMessage());

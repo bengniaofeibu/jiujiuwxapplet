@@ -47,7 +47,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
         if(!bicycleNo.equals("0")){
             UserInfo userInfo = userInfoMapper.selectByPrimaryKey(scaveningUnlockRequest.getId());
             if(userInfo != null){
-                if(userInfo.getAccountStatus() == 0 || userInfo.getAccountStatus() == 2){
+                if(scaveningUnlockRequest.getFreeDepositStatus().equals(0) && (userInfo.getAccountStatus() == 0 || userInfo.getAccountStatus() == 2)){
                     return ResultUtil.error(ResultEnums.USER_NON_RECHARGE);
                 }else{
                     if(userInfo.getmBorrowBicycle() == 1){
@@ -56,12 +56,13 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
                         JSONObject jsonObject = HttpLockApiUtils.GetBikeInfoByBicycleNo(bicycleNo);
                         if(jsonObject != null){
                             String bikeInfo = jsonObject.get("bikeInfo").toString();
+                            LOGGER.debug("bikeInfo {}",bikeInfo);
                             String lockGPSRealData = jsonObject.get("lockGPSRealData").toString();
                             JSONObject jsonBikeInfo = new JSONObject(bikeInfo);
                             JSONObject jsonLockGPRSRealData = new JSONObject(lockGPSRealData);
                             if(Integer.parseInt(jsonLockGPRSRealData.get("batteryLevel").toString()) >= 20){
                                 if(jsonBikeInfo.get("lockSeries") != null){
-                                    if(Integer.parseInt(jsonBikeInfo.get("lockSeries").toString()) == 2){
+                                    if(Integer.parseInt(jsonBikeInfo.get("lockSeries").toString()) == 3){
                                         //短信开锁
                                         int resSmsOpenlock = openLockBySms(scaveningUnlockRequest,jsonBikeInfo,userInfo);
                                         if(resSmsOpenlock == 1){
@@ -105,7 +106,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
     }
 
     private int openLockBySms(ScaveningUnlockRequest scaveningUnlockRequest,JSONObject jsonBikeInfo,UserInfo userInfo){
-        int res = HttpLockApiUtils.OpenLockBySms(jsonBikeInfo.get("iccid").toString());
+        int res = HttpLockApiUtils.OpenLockBySms(jsonBikeInfo.get("gprsNo").toString());
         if(res == 1){
             //生成订单
             long orderNum = System.currentTimeMillis() * 100 + CommonUtils.getRandom(100);

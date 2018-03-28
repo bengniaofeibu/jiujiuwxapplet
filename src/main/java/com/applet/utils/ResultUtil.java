@@ -34,7 +34,7 @@ public class ResultUtil {
         return result;
     }
 
-    public static AppletResult error(Integer i,String msg){
+    public static AppletResult error(Object i,String msg){
         AppletResult result = new AppletResult();
         result.setCode(i);
         result.setMsg(msg);

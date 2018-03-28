@@ -8,7 +8,7 @@ import com.applet.utils.common.JSONUtil;
 public class AppletResult {
 
      /** 返回码 **/
-     Integer code;
+     Object code;
 
      /** msg **/
      String msg;
@@ -16,11 +16,11 @@ public class AppletResult {
      /** 业务返回具体信息 **/
      Object data;
 
-    public Integer getCode() {
+    public Object getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(Object code) {
         this.code = code;
     }
 

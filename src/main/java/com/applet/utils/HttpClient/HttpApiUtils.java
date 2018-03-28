@@ -6,9 +6,11 @@ public class HttpApiUtils {
 
     private static String recEncoding = "UTF-8";
 
-    private static final String OPEN_LOCK="http://139.196.194.172:8082/MidComPro/lock?action=OPENLOCK";
+//    private static final String OPEN_LOCK="http://139.196.194.172:8082/MidComPro/lock?action=OPENLOCK";
+    private static final String OPEN_LOCK="http://10.0.180.37/MidComPro/lock?action=OPENLOCK";
 
-    private static final String GET_BIKE_INFOS="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";
+//    private static final String GET_BIKE_INFOS="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";
+    private static final String GET_BIKE_INFOS="http://10.0.180.67/LockApi/lock?action=GETBIKEINFOS";
 
 
     public static String getRecEncoding() {
@@ -37,7 +39,7 @@ public class HttpApiUtils {
     }
 
     public static String openLockBySms(Map params){
-        String url = "http://106.14.155.161/SMSComPro/Sms?action=SENDSMSUNLOCK";
+        String url = "http://106.14.155.161/SMSComPro/Sms?action=SENDSMSORDER";
         return HttpRequestProxy.doPost(url, params , getRecEncoding());
     }
 }
