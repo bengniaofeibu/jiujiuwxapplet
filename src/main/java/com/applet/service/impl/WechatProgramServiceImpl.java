@@ -1,9 +1,6 @@
 package com.applet.service.impl;
 
-import com.applet.entity.wechatprogram.ActivitiesInfo;
-import com.applet.entity.wechatprogram.BannerInfor;
-import com.applet.entity.wechatprogram.ElectricFanceInfo;
-import com.applet.entity.wechatprogram.UserInfo;
+import com.applet.entity.wechatprogram.*;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.LuckyMoneyDailyParameterMapper;
 import com.applet.mapper.WechatProgramMapper;
@@ -102,6 +99,7 @@ public class WechatProgramServiceImpl implements WechatProgramService{
     @Override
     public AppletResult getLuckMoneyPrompt(String userId){
         String currentDate = CommonUtils.getTimeFormat(new Date(),"yyyy-MM-dd");
+        LuckMoneyResponese luckMoneyResponese = new LuckMoneyResponese();
         LuckyMoneyDailyParameter luckyMoneyDailyParameter = luckyMoneyDailyParameterMapper.getLuckyMoneyActivityInfo(currentDate);
         if(luckyMoneyDailyParameter != null){
             if(luckyMoneyDailyParameter.getCurrentTotalCount() < luckyMoneyDailyParameter.getTotalCount() ||
@@ -110,19 +108,29 @@ public class WechatProgramServiceImpl implements WechatProgramService{
                     LOGGER.info("luckmoney的key:" + luck_money_key + currentDate);
                     Object res = redisUtil.getValueByKeyAndDb(luck_money_key + currentDate,1,userId);
                     if(res != null){
-                        return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE);
+                        luckMoneyResponese.setCode(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getCode());
+                        luckMoneyResponese.setMessage(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getMsg());
+                        return ResultUtil.success(luckMoneyResponese);
                     }else{
-                        return ResultUtil.success();
+                        luckMoneyResponese.setCode(ResultEnums.LUCK_MONEY_SUCCESS.getCode());
+                        luckMoneyResponese.setMessage(ResultEnums.LUCK_MONEY_SUCCESS.getMsg());
+                        return ResultUtil.success(luckMoneyResponese);
                     }
                 }else{
-                    return ResultUtil.success();
+                    luckMoneyResponese.setCode(ResultEnums.LUCK_MONEY_SUCCESS.getCode());
+                    luckMoneyResponese.setMessage(ResultEnums.LUCK_MONEY_SUCCESS.getMsg());
+                    return ResultUtil.success(luckMoneyResponese);
                 }
             }else{
-                return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE);
+                luckMoneyResponese.setCode(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getCode());
+                luckMoneyResponese.setMessage(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getMsg());
+                return ResultUtil.success(luckMoneyResponese);
             }
 
         }else{
-            return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_NO_ACTIVITY);
+            luckMoneyResponese.setCode(ResultEnums.LUCKY_MONEY_ERROR_NO_ACTIVITY.getCode());
+            luckMoneyResponese.setMessage(ResultEnums.LUCKY_MONEY_ERROR_NO_ACTIVITY.getMsg());
+            return ResultUtil.success(luckMoneyResponese);
         }
 
     }
