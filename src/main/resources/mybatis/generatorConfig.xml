@@ -35,7 +35,7 @@
 
 
         <!-- 生成表和实体 注意如果重新生成会覆盖原来的Class,xml会以追加的方式 -->
-        <table tableName="t_lucky_money_daily_parameter" domainObjectName="LuckyMoneyDailyParameter" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table tableName="t_lucky_money_history" domainObjectName="LuckMoneyHistory" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
     </context>
 </generatorConfiguration>

@@ -2,8 +2,10 @@ package com.applet.service.impl;
 
 import com.applet.entity.wechatprogram.*;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.LuckMoneyHistoryMapper;
 import com.applet.mapper.LuckyMoneyDailyParameterMapper;
 import com.applet.mapper.WechatProgramMapper;
+import com.applet.model.LuckMoneyHistory;
 import com.applet.model.LuckyMoneyDailyParameter;
 import com.applet.service.WechatProgramService;
 import com.applet.utils.AppletResult;
@@ -37,6 +39,9 @@ public class WechatProgramServiceImpl implements WechatProgramService{
 
     @Autowired
     private LuckyMoneyDailyParameterMapper luckyMoneyDailyParameterMapper;
+
+    @Autowired
+    private LuckMoneyHistoryMapper luckMoneyHistoryMapper;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -106,18 +111,24 @@ public class WechatProgramServiceImpl implements WechatProgramService{
                     luckyMoneyDailyParameter.getCurrentTotalMoney() < luckyMoneyDailyParameter.getTotalMoney()){
                 if(!StringUtils.isEmpty(userId) && !"0".equals(userId)){
                     LOGGER.info("luckmoney的key:" + luck_money_key + currentDate);
+
                     Object res = redisUtil.getValueByKeyAndDb(luck_money_key + currentDate,1,userId);
                     if(res != null){
                         try{
-                            int times = (int)res;
-                            LOGGER.info("res:" + times);
+                            LOGGER.info("res:" + res);
                         }catch (Exception e){
                             LOGGER.info(e.getMessage());
                         }
-
-                        luckMoneyResponese.setCode(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getCode());
-                        luckMoneyResponese.setMessage(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getMsg());
-                        return ResultUtil.success(luckMoneyResponese);
+                        List<LuckMoneyHistory> LuckMoneyHistorys = luckMoneyHistoryMapper.getTodayLuckyMoneyHistoryInfos(currentDate,userId);
+                        if(LuckMoneyHistorys.size() >= luckyMoneyDailyParameter.getPersonalTotalCount()){
+                            luckMoneyResponese.setCode(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getCode());
+                            luckMoneyResponese.setMessage(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getMsg());
+                            return ResultUtil.success(luckMoneyResponese);
+                        }else{
+                            luckMoneyResponese.setCode(ResultEnums.LUCK_MONEY_SUCCESS.getCode());
+                            luckMoneyResponese.setMessage(ResultEnums.LUCK_MONEY_SUCCESS.getMsg());
+                            return ResultUtil.success(luckMoneyResponese);
+                        }
                     }else{
                         luckMoneyResponese.setCode(ResultEnums.LUCK_MONEY_SUCCESS.getCode());
                         luckMoneyResponese.setMessage(ResultEnums.LUCK_MONEY_SUCCESS.getMsg());

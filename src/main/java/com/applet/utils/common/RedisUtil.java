@@ -121,7 +121,7 @@ public class RedisUtil {
 		JedisConnectionFactory factory = (JedisConnectionFactory)stringRedisTemplate.getConnectionFactory();
 		factory.setDatabase(db);
 		stringRedisTemplate.setConnectionFactory(factory);
-		return stringRedisTemplate.opsForHash().get(key,mapkey);
+		return  stringRedisTemplate.opsForHash().get(key,mapkey);
 	}
 
 	/**
