@@ -97,11 +97,11 @@ public class UserInfoServiceImpl implements UserInfoService {
                 if (countryConfig != null) {
                     setFreeDepositStatus(countryConfig.getLimitHour(), info, userInfoResponse);
                 } else {
-                    userInfoResponse.setFreeDepositStatus(FREE_DEPOSIT_STATUS_YES);
+                    userInfoResponse.setFreeDepositStatus(FREE_DEPOSIT_STATUS_NO);
                 }
             }
         } else {
-            userInfoResponse.setFreeDepositStatus(FREE_DEPOSIT_STATUS_YES);
+            userInfoResponse.setFreeDepositStatus(FREE_DEPOSIT_STATUS_NO);
         }
 
         if (borrowBicycle.intValue() == 1) {

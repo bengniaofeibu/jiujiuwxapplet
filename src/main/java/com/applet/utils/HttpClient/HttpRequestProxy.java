@@ -40,7 +40,7 @@ public class HttpRequestProxy {
 	 */
 	 
 	public static String doGet(String reqUrl, Map parameters,String recvEncoding)  {
-		StringBuffer params = new StringBuffer();
+		StringBuilder params = new StringBuilder();
 		for (Iterator iter = parameters.entrySet().iterator(); iter.hasNext();) {
 			Entry element = (Entry) iter.next();
 			if(element!=null && element.getValue()!=null && !"".equals(element.getValue())){
@@ -89,7 +89,7 @@ public class HttpRequestProxy {
 			InputStream in = url_con.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(in,recvEncoding));
 			String tempLine = rd.readLine();
-			StringBuffer temp = new StringBuffer();
+			StringBuilder temp = new StringBuilder();
 			String crlf = System.getProperty("line.separator");
 			while (tempLine != null) {
 				temp.append(tempLine);
@@ -153,7 +153,7 @@ public class HttpRequestProxy {
 			InputStream in = url_con.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(in,recvEncoding));
 			String tempLine = rd.readLine();
-			StringBuffer tempStr = new StringBuffer();
+			StringBuilder tempStr = new StringBuilder();
 			String crlf = System.getProperty("line.separator");
 			while (tempLine != null) {
 				tempStr.append(tempLine);
@@ -217,7 +217,7 @@ public class HttpRequestProxy {
 			InputStream in = url_con.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(in,recvEncoding));
 			String tempLine = rd.readLine();
-			StringBuffer tempStr = new StringBuffer();
+			StringBuilder tempStr = new StringBuilder();
 			String crlf = System.getProperty("line.separator");
 			while (tempLine != null) {
 				tempStr.append(tempLine);
@@ -290,7 +290,7 @@ public class HttpRequestProxy {
     public static String decodeUnicode(String theString) {
         char aChar;
         int len = theString.length();
-        StringBuffer outBuffer = new StringBuffer(len);
+		StringBuilder outBuffer = new StringBuilder(len);
         for (int x = 0; x < len;) {
             aChar = theString.charAt(x++);
             if (aChar == '\\') {

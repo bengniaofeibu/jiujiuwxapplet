@@ -104,6 +104,21 @@ public class WechatProgramController extends BaseController {
 
 
 
+    @SystemControllerLog(funcionExplain = "进入获取优惠券图片URL控制层")
+    @CrossOrigin
+    @PostMapping(value = "/get/couponimageurl")
+    public AppletResult getCouponImageUrl(@RequestBody Map param){
+
+        try {
+            return wechatProgramService.getCouponImageUrl(param.get("userId").toString(), param.get("cityName").toString());
+        }catch (Exception e){
+            LOGGER.info(e.getMessage());
+            return ResultUtil.error(ResultEnums.SERVER_ERROR);
+        }
+    }
+
+
+
     /*@SystemControllerLog(funcionExplain = "获取电子围栏信息")
     @CrossOrigin
     @PostMapping(value = "/get/electricFance")

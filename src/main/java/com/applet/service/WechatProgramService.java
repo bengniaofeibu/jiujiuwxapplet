@@ -4,6 +4,7 @@ import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
 import com.applet.entity.wechatprogram.ElectricFanceInfo;
 import com.applet.entity.wechatprogram.UserInfo;
+import com.applet.utils.AppletResult;
 
 import java.util.Date;
 import java.util.List;
@@ -53,6 +54,14 @@ public interface WechatProgramService {
      * @return Long
      */
     Long getCouponNum(String adminId);
+
+    /**
+     * 获取优惠券图片url
+     * @param userId
+     * @param cityName
+     * @return
+     */
+    AppletResult getCouponImageUrl(String userId,String cityName) throws Exception;
 
     /**
      * 获取电子围栏
