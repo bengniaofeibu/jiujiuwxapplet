@@ -108,6 +108,13 @@ public class WechatProgramServiceImpl implements WechatProgramService{
                     LOGGER.info("luckmoney的key:" + luck_money_key + currentDate);
                     Object res = redisUtil.getValueByKeyAndDb(luck_money_key + currentDate,1,userId);
                     if(res != null){
+                        try{
+                            int times = (int)res;
+                            LOGGER.info("res:" + times);
+                        }catch (Exception e){
+                            LOGGER.info(e.getMessage());
+                        }
+
                         luckMoneyResponese.setCode(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getCode());
                         luckMoneyResponese.setMessage(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE.getMsg());
                         return ResultUtil.success(luckMoneyResponese);

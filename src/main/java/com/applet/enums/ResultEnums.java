@@ -42,7 +42,7 @@ public enum ResultEnums {
 
     LUCKY_MONEY_ERROR_TODAY_DONE(602,"今日已领完"),
 
-    LUCK_MONEY_SUCCESS(600,"请到App中领取");
+    LUCK_MONEY_SUCCESS(200,"请到App中领取");
 
     private Integer code;
 
