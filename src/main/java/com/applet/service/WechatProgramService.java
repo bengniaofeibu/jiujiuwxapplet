@@ -4,6 +4,7 @@ import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
 import com.applet.entity.wechatprogram.ElectricFanceInfo;
 import com.applet.entity.wechatprogram.UserInfo;
+import com.applet.utils.AppletResult;
 
 import java.util.Date;
 import java.util.List;
@@ -60,4 +61,9 @@ public interface WechatProgramService {
      * @return  List<ElectricFanceInfo>
      */
     List<ElectricFanceInfo> findFanceByAreaName(String areaName);
+
+    /*
+    * 获取红包提示
+    * */
+    AppletResult getLuckMoneyPrompt(String userId);
 }

@@ -34,7 +34,12 @@ public enum ResultEnums {
 
     ELECTRICFANCE_VALIDATION_FAIL(2,"验证失败！"),
 
-    SMS_VALIDATION_FAIL(204,"短信验证码校验失败！");
+    SMS_VALIDATION_FAIL(204,"短信验证码校验失败！"),
+
+    LUCKY_MONEY_ERROR_NO_ACTIVITY(601,"今日无红包活动"),
+
+    LUCKY_MONEY_ERROR_TODAY_DONE(602,"今日已领完");
+
     private Integer code;
 
     private String msg;

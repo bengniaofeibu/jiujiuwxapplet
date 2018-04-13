@@ -3,6 +3,7 @@ package com.applet.utils.common;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -114,6 +115,13 @@ public class RedisUtil {
 	public String getValuesStr(String key) {
 		String value = (String) valOpsStr.get(key);
 		return value;
+	}
+
+	public Object getValueByKeyAndDb(String key,Integer db,String mapkey){
+		JedisConnectionFactory factory = (JedisConnectionFactory)stringRedisTemplate.getConnectionFactory();
+		factory.setDatabase(db);
+		stringRedisTemplate.setConnectionFactory(factory);
+		return stringRedisTemplate.opsForHash().get(key,mapkey);
 	}
 
 	/**

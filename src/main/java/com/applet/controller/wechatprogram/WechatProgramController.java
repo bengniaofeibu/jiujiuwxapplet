@@ -61,6 +61,12 @@ public class WechatProgramController extends BaseController {
         }
     }
 
+    @SystemControllerLog(funcionExplain = "获取红包提示")
+    @CrossOrigin
+    @PostMapping(value = "/get/luckMoneyPrompt")
+    public AppletResult getLuckMoneyPrompt(@RequestParam(value = "cityName") String cityName,@RequestParam(value = "userId") String userId){
+        return wechatProgramService.getLuckMoneyPrompt(userId);
+    }
 
     @SystemControllerLog(funcionExplain = "获取赳赳乐享列表信息")
     @CrossOrigin
