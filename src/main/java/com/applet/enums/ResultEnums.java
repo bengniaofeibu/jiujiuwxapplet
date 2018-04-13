@@ -10,6 +10,8 @@ public enum ResultEnums {
 
     USER_DATA_VALIDATE_FAIL(1002,"用户数据验证失败"),
 
+    REQUEST_RESULT_FAIL(501,"请求结果出错"),
+
     INVALID_USER(20001,"无效用户"),
 
     USER_NON_RECHARGE(20002,"用户未充值"),

@@ -1,5 +1,10 @@
 package com.applet.utils.HttpClient;
 
+import com.applet.utils.common.JSONUtil;
+import com.applet.utils.common.XmlOrMapUtils;
+import com.google.gson.JsonObject;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class HttpApiUtils {
@@ -11,6 +16,13 @@ public class HttpApiUtils {
 
 //    private static final String GET_BIKE_INFOS="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";
     private static final String GET_BIKE_INFOS="http://10.0.180.67/LockApi/lock?action=GETBIKEINFOS";
+
+//    private static final String GET_COUPON_IMAGE_URL="http://139.196.194.172:8088/basicservice/coupon/collection";
+    private static final String GET_COUPON_IMAGE_URL="http://10.0.180.120/basicservice/coupon/collection";
+
+    private static final String SMS_OPEN_LOCK_URL = "http://106.14.155.161/SMSComPro/Sms?action=SENDSMSORDER";
+
+    private static final String WX_PAY_URL="https://api.mch.weixin.qq.com/pay/unifiedorder";
 
 
     public static String getRecEncoding() {
@@ -35,11 +47,23 @@ public class HttpApiUtils {
      * @return
      */
     public static String sendRequest(String params){
-         return HttpsUtil.httpMethodPost("https://api.mch.weixin.qq.com/pay/unifiedorder",params);
+         return HttpsUtil.httpMethodPost(WX_PAY_URL,params);
     }
 
     public static String openLockBySms(Map params){
-        String url = "http://106.14.155.161/SMSComPro/Sms?action=SENDSMSORDER";
-        return HttpRequestProxy.doPost(url, params , getRecEncoding());
+        return HttpRequestProxy.doPost(SMS_OPEN_LOCK_URL, params , getRecEncoding());
+    }
+
+    /**
+     * 获取优惠券图片url
+     * @param userId
+     * @param cityName
+     * @return
+     */
+    public static String getCouponImageUrl(String userId,String cityName) throws Exception {
+        Map<String,Object> paramMap=new HashMap<>();
+        paramMap.put("userId",userId);
+        paramMap.put("cityName",cityName);
+        return  HttpRequestProxy.doPost(GET_COUPON_IMAGE_URL, JSONUtil.toJSONString(paramMap),getRecEncoding());
     }
 }

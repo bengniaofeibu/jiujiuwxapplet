@@ -56,6 +56,14 @@ public interface WechatProgramService {
     Long getCouponNum(String adminId);
 
     /**
+     * 获取优惠券图片url
+     * @param userId
+     * @param cityName
+     * @return
+     */
+    AppletResult getCouponImageUrl(String userId,String cityName) throws Exception;
+
+    /**
      * 获取电子围栏
      * @param areaName 城市名称
      * @return  List<ElectricFanceInfo>

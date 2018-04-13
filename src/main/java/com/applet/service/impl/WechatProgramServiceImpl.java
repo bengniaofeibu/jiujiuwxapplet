@@ -10,8 +10,10 @@ import com.applet.mapper.WechatProgramMapper;
 import com.applet.model.LuckyMoneyDailyParameter;
 import com.applet.service.WechatProgramService;
 import com.applet.utils.AppletResult;
+import com.applet.utils.HttpClient.HttpApiUtils;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.CommonUtils;
+import com.applet.utils.common.JSONUtil;
 import com.applet.utils.common.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,8 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 /**
  * WechatProgramServiceImpl
  *
@@ -71,6 +75,23 @@ public class WechatProgramServiceImpl implements WechatProgramService{
     @Override
     public Long getCouponNum(String adminId) {
         return wechatProgramMapper.getCouponNum(adminId);
+    }
+
+    /**
+     * 获取优惠券图片url
+     *
+     * @param userId
+     * @param cityName
+     * @return
+     */
+    @Override
+    public AppletResult getCouponImageUrl(String userId, String cityName) throws Exception {
+        String couponImageUrl = HttpApiUtils.getCouponImageUrl(userId, cityName);
+        Map map = JSONUtil.parseObject(couponImageUrl, Map.class);
+        if (map.get("data")!=null){
+            return ResultUtil.success(map.get("data"));
+        }
+        return ResultUtil.error(ResultEnums.REQUEST_RESULT_FAIL);
     }
 
     @Override
