@@ -650,8 +650,8 @@ public class CommonUtils {
 	}
 
 	public static void main(String[] args) {
-		String time = getCurrentTimeFormat("yyyyMMddHHmmss");
-		System.out.println("time:" + time);
+		String currentDate = CommonUtils.getTimeFormat(new Date(),"yyyy-MM-dd");
+		System.out.println(currentDate);
 	}
 
 }

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.LuckyMoneyDailyParameterMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.LuckyMoneyDailyParameter">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="current_total_count" jdbcType="INTEGER" property="currentTotalCount" />
+    <result column="current_total_money" jdbcType="DOUBLE" property="currentTotalMoney" />
+    <result column="personal_total_count" jdbcType="INTEGER" property="personalTotalCount" />
+    <result column="total_count" jdbcType="INTEGER" property="totalCount" />
+    <result column="total_money" jdbcType="DOUBLE" property="totalMoney" />
+    <result column="day" jdbcType="VARCHAR" property="day" />
+    <result column="winning_ratio" jdbcType="INTEGER" property="winningRatio" />
+    <result column="max_money" jdbcType="DOUBLE" property="maxMoney" />
+    <result column="min_money" jdbcType="DOUBLE" property="minMoney" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, current_total_count, current_total_money, personal_total_count, total_count, 
+    total_money, day, winning_ratio, max_money, min_money
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_lucky_money_daily_parameter
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_lucky_money_daily_parameter
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.applet.model.LuckyMoneyDailyParameter">
+    insert into t_lucky_money_daily_parameter (id, current_total_count, current_total_money, 
+      personal_total_count, total_count, total_money, 
+      day, winning_ratio, max_money, 
+      min_money)
+    values (#{id,jdbcType=VARCHAR}, #{currentTotalCount,jdbcType=INTEGER}, #{currentTotalMoney,jdbcType=DOUBLE}, 
+      #{personalTotalCount,jdbcType=INTEGER}, #{totalCount,jdbcType=INTEGER}, #{totalMoney,jdbcType=DOUBLE}, 
+      #{day,jdbcType=VARCHAR}, #{winningRatio,jdbcType=INTEGER}, #{maxMoney,jdbcType=DOUBLE}, 
+      #{minMoney,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.LuckyMoneyDailyParameter">
+    insert into t_lucky_money_daily_parameter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="currentTotalCount != null">
+        current_total_count,
+      </if>
+      <if test="currentTotalMoney != null">
+        current_total_money,
+      </if>
+      <if test="personalTotalCount != null">
+        personal_total_count,
+      </if>
+      <if test="totalCount != null">
+        total_count,
+      </if>
+      <if test="totalMoney != null">
+        total_money,
+      </if>
+      <if test="day != null">
+        day,
+      </if>
+      <if test="winningRatio != null">
+        winning_ratio,
+      </if>
+      <if test="maxMoney != null">
+        max_money,
+      </if>
+      <if test="minMoney != null">
+        min_money,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="currentTotalCount != null">
+        #{currentTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="currentTotalMoney != null">
+        #{currentTotalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="personalTotalCount != null">
+        #{personalTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalCount != null">
+        #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalMoney != null">
+        #{totalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=VARCHAR},
+      </if>
+      <if test="winningRatio != null">
+        #{winningRatio,jdbcType=INTEGER},
+      </if>
+      <if test="maxMoney != null">
+        #{maxMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="minMoney != null">
+        #{minMoney,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.LuckyMoneyDailyParameter">
+    update t_lucky_money_daily_parameter
+    <set>
+      <if test="currentTotalCount != null">
+        current_total_count = #{currentTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="currentTotalMoney != null">
+        current_total_money = #{currentTotalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="personalTotalCount != null">
+        personal_total_count = #{personalTotalCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalCount != null">
+        total_count = #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalMoney != null">
+        total_money = #{totalMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="day != null">
+        day = #{day,jdbcType=VARCHAR},
+      </if>
+      <if test="winningRatio != null">
+        winning_ratio = #{winningRatio,jdbcType=INTEGER},
+      </if>
+      <if test="maxMoney != null">
+        max_money = #{maxMoney,jdbcType=DOUBLE},
+      </if>
+      <if test="minMoney != null">
+        min_money = #{minMoney,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.LuckyMoneyDailyParameter">
+    update t_lucky_money_daily_parameter
+    set current_total_count = #{currentTotalCount,jdbcType=INTEGER},
+      current_total_money = #{currentTotalMoney,jdbcType=DOUBLE},
+      personal_total_count = #{personalTotalCount,jdbcType=INTEGER},
+      total_count = #{totalCount,jdbcType=INTEGER},
+      total_money = #{totalMoney,jdbcType=DOUBLE},
+      day = #{day,jdbcType=VARCHAR},
+      winning_ratio = #{winningRatio,jdbcType=INTEGER},
+      max_money = #{maxMoney,jdbcType=DOUBLE},
+      min_money = #{minMoney,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getLuckyMoneyActivityInfo" resultMap="BaseResultMap">
+    SELECT * FROM t_lucky_money_daily_parameter WHERE day = #{day,jdbcType=VARCHAR}
+  </select>
+</mapper>

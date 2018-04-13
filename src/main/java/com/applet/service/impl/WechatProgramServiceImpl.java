@@ -1,26 +1,26 @@
 package com.applet.service.impl;
 
-import com.applet.annotation.SystemServerLog;
 import com.applet.entity.wechatprogram.ActivitiesInfo;
 import com.applet.entity.wechatprogram.BannerInfor;
 import com.applet.entity.wechatprogram.ElectricFanceInfo;
 import com.applet.entity.wechatprogram.UserInfo;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.LuckyMoneyDailyParameterMapper;
 import com.applet.mapper.WechatProgramMapper;
+import com.applet.model.LuckyMoneyDailyParameter;
 import com.applet.service.WechatProgramService;
 import com.applet.utils.AppletResult;
-import com.applet.utils.HttpClient.HttpApiUtils;
 import com.applet.utils.ResultUtil;
-import com.applet.utils.common.JSONUtil;
+import com.applet.utils.common.CommonUtils;
+import com.applet.utils.common.RedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
 /**
  * WechatProgramServiceImpl
  *
@@ -30,12 +30,17 @@ import java.util.Map;
 @Service
 public class WechatProgramServiceImpl implements WechatProgramService{
 
-
     private static final Logger LOGGER= LoggerFactory.getLogger(WechatProgramServiceImpl.class);
 
     private final WechatProgramMapper wechatProgramMapper;
 
-    private static final String REQUEST_ERROR_CODE="500";
+    @Autowired
+    private LuckyMoneyDailyParameterMapper luckyMoneyDailyParameterMapper;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    private static final String luck_money_key = "user:luck:money";
 
     @Autowired
     public WechatProgramServiceImpl(WechatProgramMapper wechatProgramMapper){
@@ -68,32 +73,30 @@ public class WechatProgramServiceImpl implements WechatProgramService{
         return wechatProgramMapper.getCouponNum(adminId);
     }
 
-    /**
-     * 获取优惠券图片url
-     *
-     * @param userId
-     * @param cityName
-     * @return
-     */
-    @SystemServerLog(funcionExplain = "获取优惠券图片url")
-    @Override
-    public AppletResult getCouponImageUrl(String userId, String cityName) throws Exception {
-        String resResult = HttpApiUtils.getCouponImageUrl(userId, cityName);
-        LOGGER.debug("获取优惠券图片结果 --> {}",resResult);
-        AppletResult appletResult=JSONUtil.parseObject(resResult, AppletResult.class);
-        if (!REQUEST_ERROR_CODE.equals(appletResult.getCode())){
-            if (appletResult.getData()!=null){
-                return ResultUtil.success(appletResult.getData());
-            }else {
-                return appletResult;
-            }
-        }
-         return ResultUtil.error(ResultEnums.REQUEST_RESULT_FAIL);
-    }
-
-
     @Override
     public List<ElectricFanceInfo> findFanceByAreaName(String areaName) {
         return wechatProgramMapper.findFanceByAreaName(areaName);
+    }
+
+    @Override
+    public AppletResult getLuckMoneyPrompt(String userId){
+        String currentDate = CommonUtils.getTimeFormat(new Date(),"yyyy-MM-dd");
+        LuckyMoneyDailyParameter luckyMoneyDailyParameter = luckyMoneyDailyParameterMapper.getLuckyMoneyActivityInfo(currentDate);
+        if(luckyMoneyDailyParameter != null){
+            if(!StringUtils.isEmpty(userId) || !"0".equals(userId)){
+                LOGGER.info("luckmoney的key:" + luck_money_key + currentDate);
+                Object res = redisUtil.getValueByKeyAndDb(luck_money_key + currentDate,1,userId);
+                if(res != null){
+                    return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE);
+                }else{
+                    return ResultUtil.success();
+                }
+            }else{
+                return ResultUtil.success();
+            }
+        }else{
+            return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_NO_ACTIVITY);
+        }
+
     }
 }
