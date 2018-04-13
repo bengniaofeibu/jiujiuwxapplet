@@ -83,17 +83,23 @@ public class WechatProgramServiceImpl implements WechatProgramService{
         String currentDate = CommonUtils.getTimeFormat(new Date(),"yyyy-MM-dd");
         LuckyMoneyDailyParameter luckyMoneyDailyParameter = luckyMoneyDailyParameterMapper.getLuckyMoneyActivityInfo(currentDate);
         if(luckyMoneyDailyParameter != null){
-            if(!StringUtils.isEmpty(userId) || !"0".equals(userId)){
-                LOGGER.info("luckmoney的key:" + luck_money_key + currentDate);
-                Object res = redisUtil.getValueByKeyAndDb(luck_money_key + currentDate,1,userId);
-                if(res != null){
-                    return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE);
+            if(luckyMoneyDailyParameter.getCurrentTotalCount() < luckyMoneyDailyParameter.getTotalCount() ||
+                    luckyMoneyDailyParameter.getCurrentTotalMoney() < luckyMoneyDailyParameter.getTotalMoney()){
+                if(!StringUtils.isEmpty(userId) && !"0".equals(userId)){
+                    LOGGER.info("luckmoney的key:" + luck_money_key + currentDate);
+                    Object res = redisUtil.getValueByKeyAndDb(luck_money_key + currentDate,1,userId);
+                    if(res != null){
+                        return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE);
+                    }else{
+                        return ResultUtil.success();
+                    }
                 }else{
                     return ResultUtil.success();
                 }
             }else{
-                return ResultUtil.success();
+                return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_TODAY_DONE);
             }
+
         }else{
             return ResultUtil.error(ResultEnums.LUCKY_MONEY_ERROR_NO_ACTIVITY);
         }
