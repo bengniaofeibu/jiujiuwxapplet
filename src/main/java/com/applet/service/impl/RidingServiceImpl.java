@@ -159,7 +159,7 @@ public class RidingServiceImpl implements RidingService {
      * @param request
      * @return
      */
-    @SystemServerLog
+    @SystemServerLog(funcionExplain = "获取骑行结束后的信息")
     @Override
     public AppletResult queryCyclingEndInfo(CyclingEndInfoRequest request) {
 

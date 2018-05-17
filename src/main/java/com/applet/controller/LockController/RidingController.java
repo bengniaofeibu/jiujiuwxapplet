@@ -3,6 +3,7 @@ package com.applet.controller.LockController;
 import com.applet.annotation.SystemControllerLog;
 import com.applet.controller.BaseController;
 import com.applet.entity.Cat;
+import com.applet.entity.LockRequest.CyclingEndInfoRequest;
 import com.applet.entity.LockRequest.EndOrderRequest;
 import com.applet.entity.LockRequest.QueryRidingStatusRequest;
 import com.applet.entity.LockRequest.ScaveningUnlockRequest;
@@ -55,5 +56,11 @@ public class RidingController extends BaseController{
             LOGGER.error(e.getMessage());
            return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
+    }
+
+    @SystemControllerLog(funcionExplain = "进入获取骑行结束后信息控制层")
+    @GetMapping(value ="/wx_xcx_get_cycling_info")
+    public AppletResult queryCyclingEndInfo(CyclingEndInfoRequest request){
+        return ridingService.queryCyclingEndInfo(request);
     }
 }
