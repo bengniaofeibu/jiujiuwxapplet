@@ -28,6 +28,8 @@ public enum ResultEnums {
 
     SCAVENING_UNLOCK_ERRORBARCODE(20008,"非法二维码"),
 
+    DATA_NOT_FOUND(20009,"没有门店信息"),
+
     USER_ALREADY_EXIST(1003,"用户已经存在"),
 
     WX_PLAY_FAIL(1004,"微信支付失败"),

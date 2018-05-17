@@ -20,6 +20,16 @@ public interface UserInfoService {
      * @param id
      * @return
      */
-    UserInfoResponse getUserInfo(String id,String cityName);
+    UserInfoResponse getUserInfo(String openId,String id,String cityName);
+
+
+    /**
+     * 更新用户登录状态
+     * @param phone
+     * @return
+     */
+    void updateUserLoginStatus(String phone,String openId);
+
+
 
 }

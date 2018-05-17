@@ -54,7 +54,7 @@
       #{description,jdbcType=VARCHAR}, #{picurl,jdbcType=VARCHAR}, #{sonType,jdbcType=VARCHAR}, 
       #{type,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
-      #{remarks,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{remarks,jdbcType=VARCHAR}, 0, #{phone,jdbcType=VARCHAR},
       #{checkedType,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, #{isBikeFaulted,jdbcType=INTEGER}, 
       #{platform,jdbcType=INTEGER}, #{transId,jdbcType=VARCHAR}, #{bikeLat,jdbcType=VARCHAR}, 
       #{bikeLng,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR})
@@ -101,9 +101,7 @@
       <if test="remarks != null">
         remarks,
       </if>
-      <if test="delFlag != null">
         del_flag,
-      </if>
       <if test="phone != null">
         phone,
       </if>
@@ -172,9 +170,7 @@
       <if test="remarks != null">
         #{remarks,jdbcType=VARCHAR},
       </if>
-      <if test="delFlag != null">
-        #{delFlag,jdbcType=VARCHAR},
-      </if>
+        0,
       <if test="phone != null">
         #{phone,jdbcType=VARCHAR},
       </if>

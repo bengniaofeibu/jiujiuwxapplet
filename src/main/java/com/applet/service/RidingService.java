@@ -1,5 +1,6 @@
 package com.applet.service;
 
+import com.applet.entity.LockRequest.CyclingEndInfoRequest;
 import com.applet.entity.LockRequest.EndOrderRequest;
 import com.applet.entity.LockRequest.QueryRidingStatusRequest;
 import com.applet.model.SysDict;
@@ -19,5 +20,15 @@ public interface RidingService {
      * @return
      */
     List<SysDict> getFailureWarrantyList(String type);
+
+    /**
+     * 获取骑行结束后的信息
+     * @param request
+     * @return
+     */
+    AppletResult queryCyclingEndInfo(CyclingEndInfoRequest request);
+
+
+
 
 }

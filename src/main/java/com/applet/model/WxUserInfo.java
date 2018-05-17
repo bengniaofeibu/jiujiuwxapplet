@@ -23,6 +23,8 @@ public class WxUserInfo {
 
     private String transactionId;
 
+    private Integer loginStatus;
+
     private Date addTime;
 
     private Date updateTime;
@@ -105,6 +107,14 @@ public class WxUserInfo {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId == null ? null : transactionId.trim();
+    }
+
+    public Integer getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(Integer loginStatus) {
+        this.loginStatus = loginStatus;
     }
 
     public Date getAddTime() {

@@ -11,15 +11,15 @@ public class HttpApiUtils {
 
     private static String recEncoding = "UTF-8";
 
-//    private static final String OPEN_LOCK="http://139.196.194.172:8082/MidComPro/lock?action=OPENLOCK";
-    private static final String OPEN_LOCK="http://10.0.180.37/MidComPro/lock?action=OPENLOCK";
+    private static final String OPEN_LOCK="http://139.196.194.172:8082/MidComPro/lock?action=OPENLOCK";
+//    private static final String OPEN_LOCK="http://10.0.180.37/MidComPro/lock?action=OPENLOCK";
 
-//    private static final String GET_BIKE_INFOS="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";
-    private static final String GET_BIKE_INFOS="http://10.0.180.67/LockApi/lock?action=GETBIKEINFOS";
+    private static final String GET_BIKE_INFOS="http://139.196.194.172:8084/LockApi/lock?action=GETBIKEINFOS";
+//    private static final String GET_BIKE_INFOS="http://10.0.180.67/LockApi/lock?action=GETBIKEINFOS";
 
-//    private static final String GET_COUPON_IMAGE_URL="http://139.196.194.172:8088/basicservice/coupon/collection";
-    private static final String GET_COUPON_IMAGE_URL="http://10.0.180.120/basicservice/coupon/collection";
-
+    private static final String GET_COUPON_IMAGE_URL="http://139.196.194.172:8083/basicservice/coupon/collection";
+//    private static final String GET_COUPON_IMAGE_URL="http://10.0.180.120/basicservice/coupon/collection";
+//
     private static final String SMS_OPEN_LOCK_URL = "http://106.14.155.161/SMSComPro/Sms?action=SENDSMSORDER";
 
     private static final String WX_PAY_URL="https://api.mch.weixin.qq.com/pay/unifiedorder";

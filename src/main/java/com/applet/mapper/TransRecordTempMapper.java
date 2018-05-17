@@ -2,6 +2,7 @@ package com.applet.mapper;
 
 import com.applet.model.TransRecordTemp;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,4 +23,11 @@ public interface TransRecordTempMapper {
     int updateByUserIdAndBorrowFlag(TransRecordTemp record);
 
     TransRecordTemp selectByUserIdAndTransFlag(String userId);
+
+    /**
+     * 获取用户骑行时间
+     * @param userId
+     * @return
+     */
+    String selectEndTimeByUserIdAndTransFlag(@Param("userId") String userId);
 }

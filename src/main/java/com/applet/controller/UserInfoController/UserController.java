@@ -54,10 +54,14 @@ public class UserController extends BaseController {
 
             String phoneNumber = generalUserInfo.getPhoneNumber();
 
+
+            //记录或更新用户登录状态
+            userInfoService.updateUserLoginStatus(phoneNumber,authInfo.getOpenId());
+
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phoneNumber);
             if (userRegistered != null) {
-                return ResultUtil.success(getUserInfoByopenId(phoneNumber,request.getCityName()));
+                return ResultUtil.success(getUserInfoByopenId(authInfo.getOpenId(),phoneNumber,request.getCityName()));
             }
 
             //验证用户是否在单车上注册过
@@ -90,10 +94,14 @@ public class UserController extends BaseController {
 
             String phone = request.getPhone();
 
+
+            //记录或更新用户登录状态
+            userInfoService.updateUserLoginStatus(phone,authInfo.getOpenId());
+
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phone);
             if (userRegistered != null) {
-                return ResultUtil.success(getUserInfoByopenId(phone,request.getCityName()));
+                return ResultUtil.success(getUserInfoByopenId(authInfo.getOpenId(),phone,request.getCityName()));
             }
 
             //验证用户是否在单车上注册过
@@ -116,9 +124,13 @@ public class UserController extends BaseController {
 
     @SystemControllerLog(funcionExplain = "进入获取用户信息控制层")
     @GetMapping(value = "/wx_xcx_userinfo")
-    public AppletResult getUserInfo(String id,String cityName) {
+    public AppletResult getUserInfo(String id,String cityName,@RequestHeader("session") String session) {
         try {
-            UserInfoResponse userInfo = userInfoService.getUserInfo(id,cityName);
+
+            Cat authInfo = getAuthInfo(session);
+            LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));
+
+            UserInfoResponse userInfo = userInfoService.getUserInfo(authInfo.getOpenId(),id,cityName);
             return ResultUtil.success(userInfo);
         } catch (Exception e) {
             LOGGER.error(" ERROR {}", e.getMessage());

@@ -16,11 +16,12 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     private Long ridingTime;
 
+    private Integer loginStatus;
+
     /** 免押金状态 0:不免 1:免 **/
     private Integer freeDepositStatus;
 
     private Integer UserBicycleNo;
-
 
 
     public String getAdminId() {
@@ -77,5 +78,13 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     public void setUserBicycleNo(Integer userBicycleNo) {
         UserBicycleNo = userBicycleNo;
+    }
+
+    public Integer getLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(Integer loginStatus) {
+        this.loginStatus = loginStatus;
     }
 }

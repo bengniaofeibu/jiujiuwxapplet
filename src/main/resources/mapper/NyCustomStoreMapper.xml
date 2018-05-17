@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.NyCustomStoreMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.NyCustomStore">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="custom_id" jdbcType="VARCHAR" property="customId" />
+    <result column="contact" jdbcType="VARCHAR" property="contact" />
+    <result column="store_addr" jdbcType="VARCHAR" property="storeAddr" />
+    <result column="store_tel" jdbcType="VARCHAR" property="storeTel" />
+    <result column="store_provinceid" jdbcType="BIGINT" property="storeProvinceid" />
+    <result column="store_cityid" jdbcType="BIGINT" property="storeCityid" />
+    <result column="store_regionid" jdbcType="BIGINT" property="storeRegionid" />
+    <result column="store_streetid" jdbcType="BIGINT" property="storeStreetid" />
+    <result column="longitude" jdbcType="VARCHAR" property="longitude" />
+    <result column="latitude" jdbcType="VARCHAR" property="latitude" />
+    <result column="service_tel" jdbcType="VARCHAR" property="serviceTel" />
+    <result column="business_begin_time" jdbcType="VARCHAR" property="businessBeginTime" />
+    <result column="business_end_time" jdbcType="VARCHAR" property="businessEndTime" />
+    <result column="business_weekday" jdbcType="VARCHAR" property="businessWeekday" />
+    <result column="store_pic1" jdbcType="VARCHAR" property="storePic1" />
+    <result column="store_pic2" jdbcType="VARCHAR" property="storePic2" />
+    <result column="store_recommend" jdbcType="VARCHAR" property="storeRecommend" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+    <result column="open_flag" jdbcType="BIT" property="openFlag" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="avg_cost" jdbcType="INTEGER" property="avgCost" />
+    <result column="small_tip" jdbcType="VARCHAR" property="smallTip" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="m_url" jdbcType="VARCHAR" property="mUrl" />
+    <result column="m_content" jdbcType="VARCHAR" property="mContent" />
+    <result column="cbd" jdbcType="VARCHAR" property="cbd" />
+    <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, store_name, custom_id, contact, store_addr, store_tel, store_provinceid, store_cityid, 
+    store_regionid, store_streetid, longitude, latitude, service_tel, business_begin_time, 
+    business_end_time, business_weekday, store_pic1, store_pic2, store_recommend, add_time, 
+    del_flag, open_flag, create_by, create_date, update_by, update_date, avg_cost, small_tip, 
+    title, m_url, m_content, cbd, share_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ny_custom_store
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ny_custom_store
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.applet.model.NyCustomStore">
+    insert into ny_custom_store (id, store_name, custom_id, 
+      contact, store_addr, store_tel, 
+      store_provinceid, store_cityid, store_regionid, 
+      store_streetid, longitude, latitude, 
+      service_tel, business_begin_time, business_end_time, 
+      business_weekday, store_pic1, store_pic2, 
+      store_recommend, add_time, del_flag, 
+      open_flag, create_by, create_date, 
+      update_by, update_date, avg_cost, 
+      small_tip, title, m_url, 
+      m_content, cbd, share_url
+      )
+    values (#{id,jdbcType=VARCHAR}, #{storeName,jdbcType=VARCHAR}, #{customId,jdbcType=VARCHAR}, 
+      #{contact,jdbcType=VARCHAR}, #{storeAddr,jdbcType=VARCHAR}, #{storeTel,jdbcType=VARCHAR}, 
+      #{storeProvinceid,jdbcType=BIGINT}, #{storeCityid,jdbcType=BIGINT}, #{storeRegionid,jdbcType=BIGINT}, 
+      #{storeStreetid,jdbcType=BIGINT}, #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR}, 
+      #{serviceTel,jdbcType=VARCHAR}, #{businessBeginTime,jdbcType=VARCHAR}, #{businessEndTime,jdbcType=VARCHAR}, 
+      #{businessWeekday,jdbcType=VARCHAR}, #{storePic1,jdbcType=VARCHAR}, #{storePic2,jdbcType=VARCHAR}, 
+      #{storeRecommend,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=BIT}, 
+      #{openFlag,jdbcType=BIT}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{avgCost,jdbcType=INTEGER}, 
+      #{smallTip,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{mUrl,jdbcType=VARCHAR}, 
+      #{mContent,jdbcType=VARCHAR}, #{cbd,jdbcType=VARCHAR}, #{shareUrl,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.NyCustomStore">
+    insert into ny_custom_store
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="storeName != null">
+        store_name,
+      </if>
+      <if test="customId != null">
+        custom_id,
+      </if>
+      <if test="contact != null">
+        contact,
+      </if>
+      <if test="storeAddr != null">
+        store_addr,
+      </if>
+      <if test="storeTel != null">
+        store_tel,
+      </if>
+      <if test="storeProvinceid != null">
+        store_provinceid,
+      </if>
+      <if test="storeCityid != null">
+        store_cityid,
+      </if>
+      <if test="storeRegionid != null">
+        store_regionid,
+      </if>
+      <if test="storeStreetid != null">
+        store_streetid,
+      </if>
+      <if test="longitude != null">
+        longitude,
+      </if>
+      <if test="latitude != null">
+        latitude,
+      </if>
+      <if test="serviceTel != null">
+        service_tel,
+      </if>
+      <if test="businessBeginTime != null">
+        business_begin_time,
+      </if>
+      <if test="businessEndTime != null">
+        business_end_time,
+      </if>
+      <if test="businessWeekday != null">
+        business_weekday,
+      </if>
+      <if test="storePic1 != null">
+        store_pic1,
+      </if>
+      <if test="storePic2 != null">
+        store_pic2,
+      </if>
+      <if test="storeRecommend != null">
+        store_recommend,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="openFlag != null">
+        open_flag,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="avgCost != null">
+        avg_cost,
+      </if>
+      <if test="smallTip != null">
+        small_tip,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="mUrl != null">
+        m_url,
+      </if>
+      <if test="mContent != null">
+        m_content,
+      </if>
+      <if test="cbd != null">
+        cbd,
+      </if>
+      <if test="shareUrl != null">
+        share_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="storeName != null">
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="customId != null">
+        #{customId,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddr != null">
+        #{storeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="storeTel != null">
+        #{storeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="storeProvinceid != null">
+        #{storeProvinceid,jdbcType=BIGINT},
+      </if>
+      <if test="storeCityid != null">
+        #{storeCityid,jdbcType=BIGINT},
+      </if>
+      <if test="storeRegionid != null">
+        #{storeRegionid,jdbcType=BIGINT},
+      </if>
+      <if test="storeStreetid != null">
+        #{storeStreetid,jdbcType=BIGINT},
+      </if>
+      <if test="longitude != null">
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceTel != null">
+        #{serviceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="businessBeginTime != null">
+        #{businessBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="businessEndTime != null">
+        #{businessEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="businessWeekday != null">
+        #{businessWeekday,jdbcType=VARCHAR},
+      </if>
+      <if test="storePic1 != null">
+        #{storePic1,jdbcType=VARCHAR},
+      </if>
+      <if test="storePic2 != null">
+        #{storePic2,jdbcType=VARCHAR},
+      </if>
+      <if test="storeRecommend != null">
+        #{storeRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="openFlag != null">
+        #{openFlag,jdbcType=BIT},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avgCost != null">
+        #{avgCost,jdbcType=INTEGER},
+      </if>
+      <if test="smallTip != null">
+        #{smallTip,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="mUrl != null">
+        #{mUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mContent != null">
+        #{mContent,jdbcType=VARCHAR},
+      </if>
+      <if test="cbd != null">
+        #{cbd,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null">
+        #{shareUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.NyCustomStore">
+    update ny_custom_store
+    <set>
+      <if test="storeName != null">
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="customId != null">
+        custom_id = #{customId,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddr != null">
+        store_addr = #{storeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="storeTel != null">
+        store_tel = #{storeTel,jdbcType=VARCHAR},
+      </if>
+      <if test="storeProvinceid != null">
+        store_provinceid = #{storeProvinceid,jdbcType=BIGINT},
+      </if>
+      <if test="storeCityid != null">
+        store_cityid = #{storeCityid,jdbcType=BIGINT},
+      </if>
+      <if test="storeRegionid != null">
+        store_regionid = #{storeRegionid,jdbcType=BIGINT},
+      </if>
+      <if test="storeStreetid != null">
+        store_streetid = #{storeStreetid,jdbcType=BIGINT},
+      </if>
+      <if test="longitude != null">
+        longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null">
+        latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceTel != null">
+        service_tel = #{serviceTel,jdbcType=VARCHAR},
+      </if>
+      <if test="businessBeginTime != null">
+        business_begin_time = #{businessBeginTime,jdbcType=VARCHAR},
+      </if>
+      <if test="businessEndTime != null">
+        business_end_time = #{businessEndTime,jdbcType=VARCHAR},
+      </if>
+      <if test="businessWeekday != null">
+        business_weekday = #{businessWeekday,jdbcType=VARCHAR},
+      </if>
+      <if test="storePic1 != null">
+        store_pic1 = #{storePic1,jdbcType=VARCHAR},
+      </if>
+      <if test="storePic2 != null">
+        store_pic2 = #{storePic2,jdbcType=VARCHAR},
+      </if>
+      <if test="storeRecommend != null">
+        store_recommend = #{storeRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="openFlag != null">
+        open_flag = #{openFlag,jdbcType=BIT},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="avgCost != null">
+        avg_cost = #{avgCost,jdbcType=INTEGER},
+      </if>
+      <if test="smallTip != null">
+        small_tip = #{smallTip,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="mUrl != null">
+        m_url = #{mUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="mContent != null">
+        m_content = #{mContent,jdbcType=VARCHAR},
+      </if>
+      <if test="cbd != null">
+        cbd = #{cbd,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null">
+        share_url = #{shareUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.NyCustomStore">
+    update ny_custom_store
+    set store_name = #{storeName,jdbcType=VARCHAR},
+      custom_id = #{customId,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=VARCHAR},
+      store_addr = #{storeAddr,jdbcType=VARCHAR},
+      store_tel = #{storeTel,jdbcType=VARCHAR},
+      store_provinceid = #{storeProvinceid,jdbcType=BIGINT},
+      store_cityid = #{storeCityid,jdbcType=BIGINT},
+      store_regionid = #{storeRegionid,jdbcType=BIGINT},
+      store_streetid = #{storeStreetid,jdbcType=BIGINT},
+      longitude = #{longitude,jdbcType=VARCHAR},
+      latitude = #{latitude,jdbcType=VARCHAR},
+      service_tel = #{serviceTel,jdbcType=VARCHAR},
+      business_begin_time = #{businessBeginTime,jdbcType=VARCHAR},
+      business_end_time = #{businessEndTime,jdbcType=VARCHAR},
+      business_weekday = #{businessWeekday,jdbcType=VARCHAR},
+      store_pic1 = #{storePic1,jdbcType=VARCHAR},
+      store_pic2 = #{storePic2,jdbcType=VARCHAR},
+      store_recommend = #{storeRecommend,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=BIT},
+      open_flag = #{openFlag,jdbcType=BIT},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      avg_cost = #{avgCost,jdbcType=INTEGER},
+      small_tip = #{smallTip,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      m_url = #{mUrl,jdbcType=VARCHAR},
+      m_content = #{mContent,jdbcType=VARCHAR},
+      cbd = #{cbd,jdbcType=VARCHAR},
+      share_url = #{shareUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

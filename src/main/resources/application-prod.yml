@@ -36,8 +36,8 @@ eureka:
 # LOGGING
 logging:
     level:
-       com.example: DEBUG
-    config: classpath:logback/logback-dev.xml
+       com.example: ERROR
+    config: classpath:logback/logback-prod.xml
 mybatis:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -49,4 +49,4 @@ sms.url: http://10.1.229.39:81/sms/captcha
 sms.checkUrl: http://10.1.229.39:81/sms/ckCaptcha
 
 #小程序单位为分
-pay.amount: 100
+pay.amount: 9900

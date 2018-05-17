@@ -12,6 +12,7 @@
     <result column="deposit_flag" jdbcType="INTEGER" property="depositFlag" />
     <result column="deposit_fee" jdbcType="BIGINT" property="depositFee" />
     <result column="transaction_id" jdbcType="VARCHAR" property="transactionId" />
+    <result column="login_status" jdbcType="SMALLINT" property="loginStatus" />
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
@@ -27,6 +28,15 @@
     from t_wx_user_info
     where user_mobile = #{userMobile,jdbcType=VARCHAR}
   </select>
+
+  <!-- 查询用户登录状态 -->
+  <select id="selectLoginStatusByMobile" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    login_status
+    from t_wx_user_info
+    where user_mobile = #{userMobile,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_wx_user_info
     where id = #{id,jdbcType=VARCHAR}
@@ -114,5 +124,23 @@
         update_time = NOW(),
     </set>
     where open_id = #{openId,jdbcType=BIGINT} AND regist_flag = 4
+  </update>
+
+  <!-- 修改状态为未登录状态 -->
+  <update id="updateNoLoginStatusByOpenId" parameterType="com.applet.model.WxUserInfo">
+    update t_wx_user_info
+    <set>
+      login_status =0,
+    </set>
+    where open_id = #{openId,jdbcType=BIGINT} AND login_status = 1
+  </update>
+
+  <!-- 修改状态为已登录状态 -->
+  <update id="updateAlreadyLoginStatusByOpenId" parameterType="com.applet.model.WxUserInfo">
+    update t_wx_user_info
+    <set>
+      login_status =1,
+    </set>
+    where open_id = #{openId,jdbcType=BIGINT}
   </update>
 </mapper>

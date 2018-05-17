@@ -412,4 +412,11 @@
     from t_trans_record_temp
     where user_id = #{userId,jdbcType=VARCHAR} AND trans_flag = 0 ORDER BY borrow_date_time DESC LIMIT 1
   </select>
+
+  <select id="selectEndTimeByUserIdAndTransFlag" parameterType="java.lang.String" resultType="java.lang.String">
+    select
+     duration
+    from t_trans_record_temp
+    where user_id = #{userId,jdbcType=VARCHAR} AND trans_flag = 0 ORDER BY borrow_date_time DESC LIMIT 1
+  </select>
 </mapper>
