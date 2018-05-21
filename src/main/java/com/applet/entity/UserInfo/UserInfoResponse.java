@@ -23,7 +23,6 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     private Integer UserBicycleNo;
 
-
     public String getAdminId() {
         return adminId;
     }

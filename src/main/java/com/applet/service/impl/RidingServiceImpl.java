@@ -187,39 +187,41 @@ public class RidingServiceImpl implements RidingService {
             if (returnDataUtil != null) {
                 GeoInfo geoInfo = JSONUtil.parseObject(JSONUtil.toJSONString(returnDataUtil.getReturnData()), GeoInfo.class);
                 LOGGER.debug("geoinfo {}", geoInfo);
-
-                List<BikeGeoInfo> bikeGeoInfoList = geoInfo.getResults();
-                List<NyCustomStore> nyCustomStores = new LinkedList<>();
-                if (bikeGeoInfoList != null || bikeGeoInfoList.size() > 0) {
-                    for (BikeGeoInfo bikeGeoInfo : bikeGeoInfoList) {
-                        //获取指定门店信息
-                        AppletResult storeResult = storeCacheService.queryStoreCacheInfo(bikeGeoInfo.getContent().getName());
-                        if (storeResult != null) {
-                            ReturnDataUtil storeDataUtil = JSONUtil.parseObject(JSONUtil.toJSONString(storeResult.getData()), ReturnDataUtil.class);
-                            NyCustomStore storeInfo;
-                            if (storeDataUtil != null && storeDataUtil.getReturnData() != null) {
-                                NyCustomStore nyCustomStore = JSONUtil.parseObject(JSONUtil.toJSONString(storeDataUtil.getReturnData()), NyCustomStore.class);
-                                if (nyCustomStore != null) {
-                                    storeInfo = new NyCustomStore();
-                                    storeInfo.setId(nyCustomStore.getId());
-                                    storeInfo.setTitle(nyCustomStore.getTitle());
-                                    storeInfo.setStoreAddr(nyCustomStore.getStoreAddr());
-                                    storeInfo.setStorePic1(nyCustomStore.getStorePic1());
-                                    storeInfo.setDistance(new BigDecimal(bikeGeoInfo.getDistance().getValue()).intValue());
-                                    nyCustomStores.add(storeInfo);
+                if (geoInfo !=null ){
+                    List<BikeGeoInfo> bikeGeoInfoList = geoInfo.getResults();
+                    List<NyCustomStore> nyCustomStores = new LinkedList<>();
+                    if (bikeGeoInfoList != null || bikeGeoInfoList.size() > 0) {
+                        for (BikeGeoInfo bikeGeoInfo : bikeGeoInfoList) {
+                            //获取指定门店信息
+                            AppletResult storeResult = storeCacheService.queryStoreCacheInfo(bikeGeoInfo.getContent().getName());
+                            if (storeResult != null) {
+                                ReturnDataUtil storeDataUtil = JSONUtil.parseObject(JSONUtil.toJSONString(storeResult.getData()), ReturnDataUtil.class);
+                                NyCustomStore storeInfo;
+                                if (storeDataUtil != null && storeDataUtil.getReturnData() != null) {
+                                    NyCustomStore nyCustomStore = JSONUtil.parseObject(JSONUtil.toJSONString(storeDataUtil.getReturnData()), NyCustomStore.class);
+                                    if (nyCustomStore != null) {
+                                        storeInfo = new NyCustomStore();
+                                        storeInfo.setId(nyCustomStore.getId());
+                                        storeInfo.setTitle(nyCustomStore.getTitle());
+                                        storeInfo.setStoreAddr(nyCustomStore.getStoreAddr());
+                                        storeInfo.setStorePic1(nyCustomStore.getStorePic1());
+                                        storeInfo.setDistance(new BigDecimal(bikeGeoInfo.getDistance().getValue()).intValue());
+                                        storeInfo.setCustomType(nyCustomStore.getCustomType());
+                                        nyCustomStores.add(storeInfo);
+                                    }
                                 }
                             }
                         }
+                        //过滤出探店门店信息
+                        List<NyCustomStore> agentShop = nyCustomStores.stream().filter((x) -> x.getCustomType().equals(1)).limit(1).collect(Collectors.toList());
+
+                        //过滤出早餐门店信息
+                        List<NyCustomStore> breakFast = nyCustomStores.stream().filter((x) -> x.getCustomType().equals(3)).limit(1).collect(Collectors.toList());
+                        LOGGER.debug("agentShop {}  breakFast {}",agentShop,breakFast);
+
+                        agentShop.addAll(breakFast);
+                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,agentShop));
                     }
-                    //过滤出探店门店信息
-                    List<NyCustomStore> agentShop = nyCustomStores.stream().filter((x) -> x.getCustomType().equals(1)).limit(1).collect(Collectors.toList());
-
-                    //过滤出早餐门店信息
-                    List<NyCustomStore> breakFast = nyCustomStores.stream().filter((x) -> x.getCustomType().equals(3)).limit(1).collect(Collectors.toList());
-                    LOGGER.debug("agentShop {}  breakFast {}",agentShop,breakFast);
-
-                    agentShop.addAll(breakFast);
-                    return ResultUtil.success(new CyclingEndInfoResponse(endTime,agentShop));
                 }
             }
 

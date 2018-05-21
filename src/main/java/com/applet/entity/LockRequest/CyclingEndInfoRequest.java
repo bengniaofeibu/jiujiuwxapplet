@@ -5,9 +5,9 @@ public class CyclingEndInfoRequest extends BaseLockRequest {
 
     private String userId;
 
-    private String Latitude;
+    private String latitude;
 
-    private String Longitude ;
+    private String longitude ;
 
     public String getUserId() {
         return userId;
@@ -18,18 +18,18 @@ public class CyclingEndInfoRequest extends BaseLockRequest {
     }
 
     public String getLatitude() {
-        return Latitude;
+        return latitude;
     }
 
     public void setLatitude(String latitude) {
-        Latitude = latitude;
+        this.latitude = latitude;
     }
 
     public String getLongitude() {
-        return Longitude;
+        return longitude;
     }
 
     public void setLongitude(String longitude) {
-        Longitude = longitude;
+        this.longitude = longitude;
     }
 }

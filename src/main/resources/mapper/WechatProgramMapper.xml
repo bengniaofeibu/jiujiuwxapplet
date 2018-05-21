@@ -126,37 +126,24 @@
         begin_time,
         end_time
         FROM
-        (
-        SELECT
-        *
-        FROM
         t_activities_info
         WHERE
-        city_name LIKE CONCAT('%', #{cityName}, '%')
-        UNION
-        SELECT
-        *
-        FROM
-        t_activities_info
-        WHERE
-        state = 1
-        ) b
-        WHERE
-        b.is_lexiang = 1
-        AND b.del_flag = 0
-        AND b.show_time &lt; NOW()
-        AND b.hide_time &gt; NOW()
-        AND (b.os = 0 OR b.os = #{os})
+        (city_name LIKE CONCAT('%', #{cityName}, '%') OR state = 1)
+        AND is_lexiang = 1
+        AND del_flag = 0
+        AND show_time &lt; NOW()
+        AND hide_time &gt; NOW()
+        AND (os = 0 OR os = #{os})
         ORDER BY
-        b.sort DESC,
-        b.add_time DESC
+        sort,
+        add_time DESC
         LIMIT 5
     </select>
 
 
     <select id="getUserByAdminId"  parameterType="java.lang.String" resultType="com.applet.entity.wechatprogram.UserInfo">
         SELECT
-	          *
+	          lucky_money,phone,deposit,picurl
         FROM
 	          t_user_info
         WHERE
@@ -198,6 +185,4 @@
 	        fance_no,
 	        sort
     </select>
-
-
 </mapper>

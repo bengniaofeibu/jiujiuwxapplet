@@ -102,6 +102,7 @@ public class WechatProgramController extends BaseController {
             content.put("phone", user.getPhone());
             content.put("deposit", user.getDeposit().toString());
             content.put("couponNum", couponNum);
+            content.put("picurl",user.getPicurl());
             return ResultUtil.success(content);
         }catch (Exception e){
             LOGGER.info(e.getMessage());
