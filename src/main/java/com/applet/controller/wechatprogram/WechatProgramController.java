@@ -31,6 +31,8 @@ public class WechatProgramController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WechatProgramController.class);
 
+    private static final String USER_COLLECTION_LIST_KEY = "user:collection:list:";
+
     private final WechatProgramService wechatProgramService;
     @Autowired
     public WechatProgramController(WechatProgramService wechatProgramService) {
@@ -98,11 +100,15 @@ public class WechatProgramController extends BaseController {
         try {
             UserInfo user = wechatProgramService.getUserByAdminId(adminId);
             Long couponNum = wechatProgramService.getCouponNum(adminId);
+
+            String cacheBuilder = new StringBuilder(USER_COLLECTION_LIST_KEY).append(adminId).toString();
+            List<Object> objList = redisUtil.getObjList(cacheBuilder);
             content.put("luckyMoney", user.getLuckyMoney().toString());
             content.put("phone", user.getPhone());
             content.put("deposit", user.getDeposit().toString());
             content.put("couponNum", couponNum);
             content.put("picurl",user.getPicurl());
+            content.put("collectionNum",objList == null?0:objList.size());
             return ResultUtil.success(content);
         }catch (Exception e){
             LOGGER.info(e.getMessage());
