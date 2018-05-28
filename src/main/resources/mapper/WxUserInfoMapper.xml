@@ -20,7 +20,7 @@
     select 
     user_id
     from t_wx_user_info
-    where user_mobile = #{userMobile,jdbcType=VARCHAR}
+    where user_mobile = #{userMobile,jdbcType=VARCHAR} limit 1
   </select>
   <select id="selectNumByMobile" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
@@ -34,7 +34,7 @@
     select
     login_status
     from t_wx_user_info
-    where user_mobile = #{userMobile,jdbcType=VARCHAR}
+    where user_mobile = #{userMobile,jdbcType=VARCHAR} limit 1
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

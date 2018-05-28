@@ -9,6 +9,7 @@ import com.applet.enums.ResultEnums;
 import com.applet.service.WechatProgramService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class WechatProgramController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WechatProgramController.class);
 
     private static final String USER_COLLECTION_LIST_KEY = "user:collection:list:";
+
+    private static final String USER_DEFAULT_HEAD="https://apk.99bicycle.com/appIcon/defaultHead.png";
+
+    private static final String USER_HEAD_PREFIX="https://jjdc-client.oss-cn-shanghai.aliyuncs.com/";
 
     private final WechatProgramService wechatProgramService;
     @Autowired
@@ -107,7 +112,17 @@ public class WechatProgramController extends BaseController {
             content.put("phone", user.getPhone());
             content.put("deposit", user.getDeposit().toString());
             content.put("couponNum", couponNum);
-            content.put("picurl",user.getPicurl());
+
+            String userHeadPicurl=user.getPicurl();
+
+
+            if (userHeadPicurl.startsWith("http")){
+                content.put("picurl",userHeadPicurl);
+            }else {
+                content.put("picurl",new StringBuilder(USER_HEAD_PREFIX).append(user.getPicurl()).toString());
+            }
+
+
             content.put("collectionNum",objList == null?0:objList.size());
             return ResultUtil.success(content);
         }catch (Exception e){

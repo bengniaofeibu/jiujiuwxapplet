@@ -35,3 +35,6 @@ mybatis:
 wxApplet.appId: wxd1cfbb46ce504c75
 wxApplet.appSecret: b9ed8ecf76a6156455d9d0b6bcf46330
 wxApplet.sessionTime: 1800
+
+
+api.sign: 402880496058fbb7016058fc201e0009

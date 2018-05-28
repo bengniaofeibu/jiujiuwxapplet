@@ -88,11 +88,11 @@ public class WechatProgramServiceImpl implements WechatProgramService{
      */
     @Override
     public AppletResult getCouponImageUrl(String userId, String cityName) throws Exception {
-        String couponImageUrl = HttpApiUtils.getCouponImageUrl(userId, cityName);
-        Map map = JSONUtil.parseObject(couponImageUrl, Map.class);
-        if (map.get("data")!=null){
-            return ResultUtil.success(map.get("data"));
-        }
+//        String couponImageUrl = HttpApiUtils.getCouponImageUrl(userId, cityName);
+//        Map map = JSONUtil.parseObject(couponImageUrl, Map.class);
+//        if (map.get("data")!=null){
+//            return ResultUtil.success(map.get("data"));
+//        }
         return ResultUtil.error(ResultEnums.REQUEST_RESULT_FAIL);
     }
 

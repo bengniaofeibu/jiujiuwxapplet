@@ -16,15 +16,12 @@ import com.applet.utils.ResultUtil;
 import com.applet.utils.common.EncrypUtil;
 import com.applet.utils.common.JSONUtil;
 import com.applet.utils.common.RedisUtil;
-import com.applet.utils.common.XmlOrMapUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BaseController {
 
@@ -65,17 +62,15 @@ public class BaseController {
      * @param encryptedData
      * @param sessionKey
      * @param iv
-     * @param tClass
-     * @param <T>
      * @return
      * @throws InvalidAlgorithmParameterException
      * @throws UnsupportedEncodingException
      */
-    protected  <T> T encryptedDataToObject(String encryptedData,String sessionKey,String iv,Class<T> tClass) throws InvalidAlgorithmParameterException, UnsupportedEncodingException {
+    protected JSONObject encryptedDataToObject(String encryptedData, String sessionKey, String iv) throws InvalidAlgorithmParameterException, UnsupportedEncodingException {
         byte[] resultByte = EncrypUtil.decrypt(Base64.decodeBase64(encryptedData), Base64.decodeBase64(sessionKey), Base64.decodeBase64(iv));
         if (null != resultByte && resultByte.length > 0) {
             String userInfo = new String(resultByte, "UTF-8");
-            return JSONUtil.parseObject(userInfo, tClass);
+            return new JSONObject(userInfo);
         }
            return null;
     }

@@ -119,10 +119,10 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoResponse.setUserBicycleNo(borrowBicycleNum);
         }
 
-        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
-        LOGGER.debug("用户登录状态 -->{}",loginStatus);
-
-        userInfoResponse.setLoginStatus(loginStatus);
+//        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
+//        LOGGER.debug("用户登录状态 -->{}",loginStatus);
+//
+//        userInfoResponse.setLoginStatus(loginStatus);
 
         return userInfoResponse;
     }

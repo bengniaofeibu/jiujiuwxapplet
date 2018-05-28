@@ -15,6 +15,7 @@ import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.*;
 import io.swagger.models.auth.In;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,8 @@ public class UserController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
+    private static final String USER_DEFAULT_NICKNAME="99宝贝";
+
 
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
     @GetMapping("/wx_xcx_auth")
@@ -39,24 +42,25 @@ public class UserController extends BaseController {
 
 
 
-        StringBuffer buffer = new StringBuffer(request.getRawData());
+      /*  StringBuffer buffer = new StringBuffer(request.getRawData());
         String signature = Sha1Util.encode(buffer.append(authInfo.getSessionKey()).toString());
         if (!signature.equals(request.getSignature())) {
             LOGGER.debug("signature {} wxsignature {}", signature, request.getSignature());
             return ResultUtil.error(ResultEnums.USER_DATA_VALIDATE_FAIL);
-        }
+        }*/
 
         try {
 
-            WxDetailedUserInfo detailedUserInfo = JSONUtil.parseObject(request.getRawData(), WxDetailedUserInfo.class);
+//            WxDetailedUserInfo detailedUserInfo = JSONUtil.parseObject(request.getRawData(), WxDetailedUserInfo.class);
 
-            WxGeneralUserInfo generalUserInfo = encryptedDataToObject(request.getGeneralEncryptedData(), authInfo.getSessionKey(), request.getIv(), WxGeneralUserInfo.class);
+            JSONObject jsonObject = encryptedDataToObject(request.getGeneralEncryptedData(), authInfo.getSessionKey(), request.getIv());
 
-            String phoneNumber = generalUserInfo.getPhoneNumber();
+            String phoneNumber = jsonObject.get("phoneNumber").toString();
+            LOGGER.debug("微信授权登录手机号 {}",phoneNumber);
 
 
             //记录或更新用户登录状态
-            userInfoService.updateUserLoginStatus(phoneNumber,authInfo.getOpenId());
+//            userInfoService.updateUserLoginStatus(phoneNumber,authInfo.getOpenId());
 
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phoneNumber);
@@ -68,11 +72,11 @@ public class UserController extends BaseController {
             UserInfo userInfo = userInfoMapper.selectByUserPhone(phoneNumber);
             if (userInfo != null) {
                 UserInfoResponse userInfoResponse = setBicycleUserInfo(userInfo);
-                baseAddRegisterUser(0,userInfo.getId(),authInfo.getOpenId(), phoneNumber, detailedUserInfo.getCountry(), detailedUserInfo.getGender(), detailedUserInfo.getNickName(), detailedUserInfo.getAvatarUrl());
+                baseAddRegisterUser(0,userInfo.getId(),authInfo.getOpenId(), phoneNumber, "", null,"");
                 return ResultUtil.success(userInfoResponse);
             }
 
-            UserInfoResponse info = baseAddRegisterUser(2,UuidUtil.getUuid(),authInfo.getOpenId(), phoneNumber, detailedUserInfo.getCountry(), detailedUserInfo.getGender(), detailedUserInfo.getNickName(), detailedUserInfo.getAvatarUrl());
+            UserInfoResponse info = baseAddRegisterUser(2,UuidUtil.getUuid(),authInfo.getOpenId(), phoneNumber, "", null,"");
 
             return ResultUtil.success(info);
         } catch (Exception e) {
@@ -96,7 +100,7 @@ public class UserController extends BaseController {
 
 
             //记录或更新用户登录状态
-            userInfoService.updateUserLoginStatus(phone,authInfo.getOpenId());
+//            userInfoService.updateUserLoginStatus(phone,authInfo.getOpenId());
 
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phone);
@@ -108,12 +112,12 @@ public class UserController extends BaseController {
             UserInfo userInfo = userInfoMapper.selectByUserPhone(phone);
             if (userInfo != null) {
                 UserInfoResponse userInfoResponse = setBicycleUserInfo(userInfo);
-                baseAddRegisterUser(0,userInfo.getId(),authInfo.getOpenId(), phone, null, null, null, null);
+                baseAddRegisterUser(0,userInfo.getId(),authInfo.getOpenId(), phone, null, null,null);
                 return ResultUtil.success(userInfoResponse);
             }
 
 
-             info = baseAddRegisterUser(2,UuidUtil.getUuid(),authInfo.getOpenId(), phone, null, null, null, null);
+             info = baseAddRegisterUser(2,UuidUtil.getUuid(),authInfo.getOpenId(), phone, null, null,null);
             return ResultUtil.success(info);
         } catch (Exception e) {
             LOGGER.error(" ERROR {}", e.getMessage());
@@ -146,7 +150,7 @@ public class UserController extends BaseController {
      * @param country
      * @return
      */
-    private UserInfoResponse baseAddRegisterUser(Integer userSource,String id, String openId, String phone, String country, Integer gender, String nickname, String picurl) {
+    private UserInfoResponse baseAddRegisterUser(Integer userSource,String id, String openId, String phone, String country, Integer gender,String picurl) {
 
         UserInfo userInfo = new UserInfo();
         userInfo.setId(id);
@@ -155,12 +159,12 @@ public class UserController extends BaseController {
         userInfo.setPhone(phone);
         userInfo.setNationality(country == null ? "" : country);
         userInfo.setGuesterState(gender == null ? 0 : gender);
-        userInfo.setNickname(nickname == null ? "" : nickname);
+        userInfo.setNickname(USER_DEFAULT_NICKNAME);
         userInfo.setPicurl(picurl == null ? "" : picurl);
 
         WxUserInfo wxUserInfo = new WxUserInfo();
         wxUserInfo.setOpenId(openId);
-        wxUserInfo.setUserName(nickname == null ? "" : nickname);
+        wxUserInfo.setUserName(USER_DEFAULT_NICKNAME);
         wxUserInfo.setUserMobile(phone);
         wxUserInfo.setRegistFlag(4);
         UserInfoResponse info = userInfoService.addRegisterUser(userInfo, wxUserInfo);
