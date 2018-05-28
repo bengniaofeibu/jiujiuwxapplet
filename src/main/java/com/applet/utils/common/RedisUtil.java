@@ -237,6 +237,14 @@ public class RedisUtil {
 		return redisTemplate.opsForList().range(key, 0, -1);
 	}
 
+	public List<Object> getObjListForDb(String key,Integer db){
+		JedisConnectionFactory jedisConnectionFactory =
+				(JedisConnectionFactory)redisTemplate.getConnectionFactory();
+		jedisConnectionFactory.setDatabase(db);
+		redisTemplate.setConnectionFactory(jedisConnectionFactory);
+		return redisTemplate.opsForList().range(key, 0, -1);
+	}
+
 	/**
 	 * 根据索引获取集合数据
 	 */

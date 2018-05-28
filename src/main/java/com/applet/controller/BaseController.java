@@ -6,6 +6,7 @@ import com.applet.entity.BaseEntity.BaseRequestEntity;
 import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.enums.ResultEnums;
 import com.applet.enums.WxCallBackResultEnums;
+import com.applet.mapper.NyCollectionInfoMapper;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.mapper.WxUserInfoMapper;
 import com.applet.service.RidingService;
@@ -44,6 +45,9 @@ public class BaseController {
 
     @Autowired
     protected UserInfoMapper userInfoMapper;
+
+    @Autowired
+    protected NyCollectionInfoMapper nyCollectionInfoMapper;
 
 
     /**

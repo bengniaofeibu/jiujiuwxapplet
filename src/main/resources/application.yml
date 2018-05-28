@@ -14,8 +14,8 @@ spring:
       prefix: /jsp/
       suffix: .jsp
   profiles:
-    active: dev
-#    active: prod
+#    active: dev
+    active: prod
   http:
     encoding:
       charset: utf-8

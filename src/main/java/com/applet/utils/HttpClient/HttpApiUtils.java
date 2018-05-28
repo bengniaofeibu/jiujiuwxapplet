@@ -19,7 +19,7 @@ public class HttpApiUtils {
 
 //    private static final String GET_COUPON_IMAGE_URL="http://139.196.194.172:8083/basicservice/coupon/collection";
     private static final String GET_COUPON_IMAGE_URL="http://10.0.180.120/basicservice/coupon/collection";
-//
+
     private static final String SMS_OPEN_LOCK_URL = "http://106.14.155.161/SMSComPro/Sms?action=SENDSMSORDER";
 
     private static final String WX_PAY_URL="https://api.mch.weixin.qq.com/pay/unifiedorder";

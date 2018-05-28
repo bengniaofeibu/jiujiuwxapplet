@@ -104,26 +104,30 @@ public class WechatProgramController extends BaseController {
         Map<String, Object> content = new HashMap<>();
         try {
             UserInfo user = wechatProgramService.getUserByAdminId(adminId);
+            if(user == null){
+                return ResultUtil.success(ResultEnums.INVALID_USER);
+            }
             Long couponNum = wechatProgramService.getCouponNum(adminId);
 
-            String cacheBuilder = new StringBuilder(USER_COLLECTION_LIST_KEY).append(adminId).toString();
-            List<Object> objList = redisUtil.getObjList(cacheBuilder);
+//            String cacheBuilder = new StringBuilder(USER_COLLECTION_LIST_KEY).append(adminId).toString();
+//            List<Object> objList = redisUtil.getObjListForDb(cacheBuilder,4);
             content.put("luckyMoney", user.getLuckyMoney().toString());
             content.put("phone", user.getPhone());
             content.put("deposit", user.getDeposit().toString());
             content.put("couponNum", couponNum);
 
-            String userHeadPicurl=user.getPicurl();
+            if(!StringUtils.isBlank(user.getPicurl())){
+                String userHeadPicurl=user.getPicurl();
 
 
-            if (userHeadPicurl.startsWith("http")){
-                content.put("picurl",userHeadPicurl);
-            }else {
-                content.put("picurl",new StringBuilder(USER_HEAD_PREFIX).append(user.getPicurl()).toString());
+                if (userHeadPicurl.startsWith("http")){
+                    content.put("picurl",userHeadPicurl);
+                }else {
+                    content.put("picurl",new StringBuilder(USER_HEAD_PREFIX).append(user.getPicurl()).toString());
+                }
             }
-
-
-            content.put("collectionNum",objList == null?0:objList.size());
+            int collectionNum = nyCollectionInfoMapper.getCountNyCollectionInfoByUserId(adminId);
+            content.put("collectionNum",collectionNum);
             return ResultUtil.success(content);
         }catch (Exception e){
             LOGGER.info(e.getMessage());
