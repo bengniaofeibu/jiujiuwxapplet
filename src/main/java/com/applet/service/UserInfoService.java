@@ -30,6 +30,9 @@ public interface UserInfoService {
      */
     void updateUserLoginStatus(String phone,String openId);
 
-
-
+    /**
+     * 记录用户打开小程序
+     * @param userInfo
+     */
+    AppletResult recordUserOpenXcx(UserInfo userInfo);
 }

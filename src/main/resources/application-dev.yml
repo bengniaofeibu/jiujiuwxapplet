@@ -9,12 +9,16 @@ spring:
       initial-size: 5
       min-idle: 5
       max-idle: 10
-#  data:
-#    elasticsearch:
-##      cluster-name: elasticsearch
-#      cluster-nodes: 172.16.20.14:9300
-#      repositories:
-#        enabled: true
+  data:
+    elasticsearch:
+      cluster-name: jjdctest
+      repositories:
+        enabled: true
+      ip: 10.31.204.201
+      port: 9300
+      index: app_position_statistics
+      type: openMiniApps
+
   redis:
     database: 4
     host: 139.196.194.172

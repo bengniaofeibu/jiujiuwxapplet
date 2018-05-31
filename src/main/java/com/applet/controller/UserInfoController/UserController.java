@@ -142,6 +142,12 @@ public class UserController extends BaseController {
         }
     }
 
+    @SystemControllerLog(funcionExplain = "进入记录用户打开小程序控制层")
+    @GetMapping(value = "/wx_xcx_recorduseropen")
+    public AppletResult recordUserOpenXcx(UserInfo userInfo){
+        return userInfoService.recordUserOpenXcx(userInfo);
+    }
+
     /**
      * 添加新用户的公共方法
      *

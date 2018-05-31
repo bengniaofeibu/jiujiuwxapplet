@@ -1,21 +1,23 @@
 package com.applet.service.impl;
 
 import com.applet.annotation.SystemServerLog;
+import com.applet.entity.UserInfo.EsUserInfo;
 import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.mapper.*;
 import com.applet.model.*;
 import com.applet.service.UserInfoService;
 import com.applet.utils.AppletResult;
-import com.applet.utils.common.DateUtil;
-import com.applet.utils.common.JSONUtil;
-import com.applet.utils.common.RedisUtil;
-import com.applet.utils.common.UuidUtil;
+import com.applet.utils.ResultUtil;
+import com.applet.utils.common.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Service
@@ -43,13 +45,25 @@ public class UserInfoServiceImpl implements UserInfoService {
     private SysAreaMapper sysAreaMapper;
 
     @Autowired
+    private LoginDailyLogMapper loginDailyLogMapper;
+
+    @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private EsUtil esUtil;
 
     private static final int FREE_DEPOSIT_STATUS_NO = 0;
 
     private static final int FREE_DEPOSIT_STATUS_YES = 1;
 
     private static final String USER_LOGIN_STATUS_KEY="user:login:status:";
+
+    @Value("${spring.data.elasticsearch.index}")
+    private String esIndex;
+
+    @Value("${spring.data.elasticsearch.type}")
+    private String esType;
 
 
 
@@ -164,6 +178,35 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         //记录用户登录状态到缓存
         redisUtil.setObj(userLoginStatusKey,openId);
+    }
+
+    /**
+     * 记录用户打开小程序
+     *
+     * @param userInfo
+     */
+    @SystemServerLog(funcionExplain = "记录用户打开小程序")
+    @Override
+    public AppletResult recordUserOpenXcx(UserInfo userInfo) {
+
+        //查询用户当天有没有打开小程序记录
+        long count = loginDailyLogMapper.selectUserCurdateCountById(userInfo.getId());
+
+        if (count == 0){
+            //记录用户当天打开小程序记录
+            LoginDailyLog loginDailyLog=new LoginDailyLog();
+            loginDailyLog.setId(UuidUtil.getUuid());
+            loginDailyLog.setUserId(userInfo.getId());
+            loginDailyLog.setAppVersion("");
+            loginDailyLog.setPhoneSystemVersion("");
+            loginDailyLogMapper.insertUserLoginRecord(loginDailyLog);
+        }
+
+
+        //存储到es
+        esUtil.save(esIndex,esType,userInfo);
+
+        return ResultUtil.success();
     }
 
     //设置用户免压状态
