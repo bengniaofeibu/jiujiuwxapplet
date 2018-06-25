@@ -81,7 +81,7 @@
         WHERE
         state = 0
         AND type = #{type}
-        AND os = 3
+        AND (os = 3 OR os = 0)
         AND city_name LIKE CONCAT(
         '%',
         #{cityName},
@@ -101,7 +101,7 @@
         WHERE
         state = 1
         AND type = #{type}
-        AND os = 3
+        AND (os = 3 OR os = 0)
         AND del_flag = 0
         AND #{now} &gt; display_time
         AND #{now} &lt; del_time
@@ -143,7 +143,7 @@
 
     <select id="getUserByAdminId"  parameterType="java.lang.String" resultType="com.applet.entity.wechatprogram.UserInfo">
         SELECT
-	          lucky_money,phone,deposit,picurl
+	          lucky_money,phone,deposit,picurl,integral,guester_state
         FROM
 	          t_user_info
         WHERE

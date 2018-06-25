@@ -15,7 +15,7 @@
   </sql>
   
   <select id="selectUserCurdateCountById" parameterType="java.lang.String" resultType="java.lang.Long">
-    SELECT COUNT(1) FROM t_login_daily_log WHERE user_id=#{userId,jdbcType=VARCHAR} AND day=CURDATE()
+    SELECT COUNT(1) FROM t_login_daily_log WHERE user_id=#{userId,jdbcType=VARCHAR} AND day=CURDATE() AND phone_system_version ='' and app_version =''
   </select>
   <insert id="insertUserLoginRecord" parameterType="com.applet.model.LoginDailyLog">
     insert into t_login_daily_log

@@ -115,6 +115,8 @@ public class WechatProgramController extends BaseController {
             content.put("phone", user.getPhone());
             content.put("deposit", user.getDeposit().toString());
             content.put("couponNum", couponNum);
+            content.put("jiuRice", user.getIntegral());
+            content.put("guesterState",user.getGuesterState());
 
             if(!StringUtils.isBlank(user.getPicurl())){
                 String userHeadPicurl=user.getPicurl();

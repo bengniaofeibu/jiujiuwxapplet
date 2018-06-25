@@ -13,6 +13,7 @@ public class RegisterController {
     @SystemControllerLog(funcionExplain = "进入获取服务协议控制层")
     @GetMapping(value = "/wx_xcx_sp")
     public String getRegisterProtocol(){
+
         return "register-protocol";
     }
 }

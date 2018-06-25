@@ -220,7 +220,9 @@ public class RidingServiceImpl implements RidingService {
                         LOGGER.debug("agentShop {}  breakFast {}",agentShop,breakFast);
 
                         agentShop.addAll(breakFast);
-                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,agentShop));
+
+
+                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,5,agentShop));
                     }
                 }
             }

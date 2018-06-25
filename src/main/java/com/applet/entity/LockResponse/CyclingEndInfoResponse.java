@@ -6,15 +6,19 @@ import java.util.List;
 
 public class CyclingEndInfoResponse extends BaseLockResponse {
 
-      private String cyclingTime;
+    private String cyclingTime;
 
-      private List<NyCustomStore> nyCustomStores;
+    private Integer jiuRice;
+
+    private List<NyCustomStore> nyCustomStores;
+
 
     public CyclingEndInfoResponse() {
     }
 
-    public CyclingEndInfoResponse(String cyclingTime, List<NyCustomStore> nyCustomStores) {
+    public CyclingEndInfoResponse(String cyclingTime,Integer jiuRice, List<NyCustomStore> nyCustomStores) {
         this.cyclingTime = cyclingTime;
+        this.jiuRice=jiuRice;
         this.nyCustomStores = nyCustomStores;
     }
 
@@ -24,6 +28,14 @@ public class CyclingEndInfoResponse extends BaseLockResponse {
 
     public void setCyclingTime(String cyclingTime) {
         this.cyclingTime = cyclingTime;
+    }
+
+    public Integer getJiuRice() {
+        return jiuRice;
+    }
+
+    public void setJiuRice(Integer jiuRice) {
+        this.jiuRice = jiuRice;
     }
 
     public List<NyCustomStore> getNyCustomStores() {
