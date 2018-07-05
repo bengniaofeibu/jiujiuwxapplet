@@ -1,8 +1,8 @@
 server:
   port: 3333
-  ssl.key-store: classpath:214075900090332.pfx
-  ssl.key-store-password: 214075900090332
-  ssl.keyStoreType: PKCS12
+#  ssl.key-store: classpath:214075900090332.pfx
+#  ssl.key-store-password: 214075900090332
+#  ssl.keyStoreType: PKCS12
 
 spring:
   freemarker:
@@ -14,8 +14,8 @@ spring:
       prefix: /jsp/
       suffix: .jsp
   profiles:
-#    active: dev
-    active: prod
+    active: dev
+#    active: prod
   http:
     encoding:
       charset: utf-8

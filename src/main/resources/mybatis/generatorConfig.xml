@@ -35,7 +35,7 @@
 
 
         <!-- 生成表和实体 注意如果重新生成会覆盖原来的Class,xml会以追加的方式 -->
-        <table tableName="ny_collection_info" domainObjectName="NyCollectionInfo" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table tableName="t_jiumi_mission" domainObjectName="JiumiMission" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
         </table>
     </context>
 </generatorConfiguration>

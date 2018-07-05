@@ -30,6 +30,8 @@ public enum ResultEnums {
 
     DATA_NOT_FOUND(20009,"没有门店信息"),
 
+    USER_ALREADY_RECHARGE(20010,"您已经充值过押金"),
+
     USER_ALREADY_EXIST(1003,"用户已经存在"),
 
     WX_PLAY_FAIL(1004,"微信支付失败"),

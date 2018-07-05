@@ -9,6 +9,7 @@ import com.applet.enums.WxCallBackResultEnums;
 import com.applet.mapper.NyCollectionInfoMapper;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.mapper.WxUserInfoMapper;
+import com.applet.model.UserInfo;
 import com.applet.service.RidingService;
 import com.applet.service.ScavengingUnlockService;
 import com.applet.service.UserInfoService;
@@ -81,7 +82,7 @@ public class BaseController {
 
 
     /**
-     * 判断用法是否存在
+     * 判断用户是否存在
      * @param userMobile
      * @return
      */
@@ -105,5 +106,13 @@ public class BaseController {
         UserInfoResponse userInfo = userInfoService.getUserInfo(openId,userId,cityName);
         userInfo.setAdminId(userId);
         return userInfo;
+    }
+
+    /**
+     * 通过用户id获取用户信息
+     * @return
+     */
+    protected UserInfo getUserInfoByUserId(String userId){
+       return  userInfoMapper.selectUserInfoById(userId);
     }
 }

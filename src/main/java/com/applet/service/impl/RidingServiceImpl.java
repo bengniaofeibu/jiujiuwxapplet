@@ -60,7 +60,7 @@ public class RidingServiceImpl implements RidingService {
     @Override
     @SystemServerLog(funcionExplain = "查询骑行状态")
     public AppletResult queryRidingStatus(QueryRidingStatusRequest queryRidingStatusRequest) {
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(queryRidingStatusRequest.getId());
+        UserInfo userInfo = userInfoMapper.selectUserInfoById(queryRidingStatusRequest.getId());
         if (userInfo != null) {
             QueryRidingStatusResponse queryRidingStatusResponse = new QueryRidingStatusResponse();
             queryRidingStatusResponse.setRidingFlag(userInfo.getmBorrowBicycle());
@@ -86,7 +86,7 @@ public class RidingServiceImpl implements RidingService {
     @Override
     @SystemServerLog(funcionExplain = "故障报修")
     public AppletResult endOrder(EndOrderRequest endOrderRequest) {
-        UserInfo userInfo = userInfoMapper.selectByPrimaryKey(endOrderRequest.getId());
+        UserInfo userInfo = userInfoMapper.selectUserInfoById(endOrderRequest.getId());
         if (userInfo != null) {
             String uuid = UUID.randomUUID().toString();
             FeedbackInfo feedbackInfo = new FeedbackInfo();
@@ -221,8 +221,7 @@ public class RidingServiceImpl implements RidingService {
 
                         agentShop.addAll(breakFast);
 
-
-                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,5,agentShop));
+                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,agentShop));
                     }
                 }
             }

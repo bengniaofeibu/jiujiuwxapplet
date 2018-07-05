@@ -10,6 +10,7 @@ import com.applet.enums.WxCallBackResultEnums;
 import com.applet.mapper.AmountRecordMapper;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.model.AmountRecord;
+import com.applet.model.UserInfo;
 import com.applet.service.ConsumerService;
 import com.applet.service.WxAppleetPayService;
 import com.applet.utils.AppletResult;
@@ -50,6 +51,13 @@ public class ApplePayController extends BaseController {
     public AppletResult appletPlay(WxAppletPayRequest wxAppletPayRequest, HttpServletRequest request, @RequestHeader("session") String session) {
         try {
 
+            UserInfo userInfo = getUserInfoByUserId(wxAppletPayRequest.getAdminId());
+            LOGGER.debug("userInfo {}",JSONUtil.toJSONString(userInfo));
+
+            if (userInfo!= null && (userInfo.getAccountStatus() == 1 || userInfo.getAccountStatus() == 3 )){
+                  return ResultUtil.error(ResultEnums.USER_ALREADY_RECHARGE);
+            }
+
             String remoteAddr = request.getRemoteAddr();
             wxAppletPayRequest.setAmount(amount);
             AppletResult appletResult=consumerService.appletPlay(wxAppletPayRequest,remoteAddr,session);
@@ -58,9 +66,5 @@ public class ApplePayController extends BaseController {
             LOGGER.error("ERROR {}", e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.print(new BigDecimal(Integer.valueOf("9900")/100));
     }
 }

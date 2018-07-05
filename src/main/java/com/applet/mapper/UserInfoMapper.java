@@ -10,7 +10,7 @@ public interface UserInfoMapper {
 
     int insertSelective(UserInfo record);
 
-    UserInfo selectByPrimaryKey(String id);
+    UserInfo selectUserInfoById(String id);
 
     int updateByPrimaryKeySelective(UserInfo record);
 
