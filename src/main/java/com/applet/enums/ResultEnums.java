@@ -46,7 +46,11 @@ public enum ResultEnums {
 
     LUCKY_MONEY_ERROR_TODAY_DONE(602,"今日已领完"),
 
-    LUCK_MONEY_SUCCESS(200,"请到App中领取");
+    LUCK_MONEY_SUCCESS(200,"请到App中领取"),
+
+    USER_NOT_FOUND(1005,"用户不存在"),
+
+    NOT_FOUND_RANKING_LIST_FAIL(1006,"无排行信息");
 
     private Integer code;
 

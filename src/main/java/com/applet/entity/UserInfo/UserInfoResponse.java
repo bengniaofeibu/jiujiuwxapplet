@@ -23,6 +23,11 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     private Integer UserBicycleNo;
 
+    /** 是否是新用户标识 0:否 1:是 **/
+    private Integer isNewUserFlag=0;
+
+    private Integer jiumNum;
+
     public String getAdminId() {
         return adminId;
     }
@@ -85,5 +90,21 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     public void setLoginStatus(Integer loginStatus) {
         this.loginStatus = loginStatus;
+    }
+
+    public Integer getIsNewUserFlag() {
+        return isNewUserFlag;
+    }
+
+    public void setIsNewUserFlag(Integer isNewUserFlag) {
+        this.isNewUserFlag = isNewUserFlag;
+    }
+
+    public Integer getJiumNum() {
+        return jiumNum;
+    }
+
+    public void setJiumNum(Integer jiumNum) {
+        this.jiumNum = jiumNum;
     }
 }

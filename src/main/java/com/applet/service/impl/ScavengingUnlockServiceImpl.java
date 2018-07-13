@@ -45,7 +45,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService{
     public AppletResult scaveningUnlock(ScaveningUnlockRequest scaveningUnlockRequest){
         String bicycleNo = CommonUtils.DecodeBarcode(scaveningUnlockRequest.getBarcode());
         if(!bicycleNo.equals("0")){
-            UserInfo userInfo = userInfoMapper.selectByPrimaryKey(scaveningUnlockRequest.getId());
+            UserInfo userInfo = userInfoMapper.selectUserInfoById(scaveningUnlockRequest.getId());
             if(userInfo != null){
                 if(scaveningUnlockRequest.getFreeDepositStatus().equals(0) && (userInfo.getAccountStatus() == 0 || userInfo.getAccountStatus() == 2)){
                     return ResultUtil.error(ResultEnums.USER_NON_RECHARGE);

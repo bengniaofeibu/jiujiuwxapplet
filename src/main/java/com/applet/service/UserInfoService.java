@@ -35,4 +35,13 @@ public interface UserInfoService {
      * @param userInfo
      */
     AppletResult recordUserOpenXcx(UserInfo userInfo);
+
+
+    /**
+     * 获取用户赳米周榜
+     * @param userId
+     * @return
+     */
+    AppletResult getUserJiuMiWeekRankingList(String userId,Integer rankingType);
+
 }

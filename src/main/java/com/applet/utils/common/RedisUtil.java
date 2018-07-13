@@ -200,7 +200,7 @@ public class RedisUtil {
 	/**
 	 * 添加list
 	 */
-	public void setObjList(String key, List<Object> list) {
+	public void setObjList(String key, List< ? extends Object> list) {
 		for (Object obj : list) {
 			redisTemplate.opsForList().leftPush(key, obj);
 		}
@@ -233,7 +233,7 @@ public class RedisUtil {
 	/**
 	 * 获得整个集合
 	 */
-	public List<Object> getObjList(String key) {
+	public List<? extends Object> getObjList(String key) {
 		return redisTemplate.opsForList().range(key, 0, -1);
 	}
 

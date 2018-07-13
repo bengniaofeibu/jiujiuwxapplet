@@ -1,6 +1,7 @@
 package com.applet.controller.UserInfoController;
 
 import com.applet.annotation.SystemControllerLog;
+import com.applet.annotation.SystemServerLog;
 import com.applet.controller.BaseController;
 import com.applet.entity.Cat;
 import com.applet.entity.UserInfo.WxGeneralUserInfo;
@@ -18,6 +19,7 @@ import io.swagger.models.auth.In;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -30,6 +32,9 @@ public class UserController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     private static final String USER_DEFAULT_NICKNAME="99宝贝";
+
+    @Value("${user.jiumNum}")
+    private Integer jiumNum;
 
 
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
@@ -65,7 +70,7 @@ public class UserController extends BaseController {
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phoneNumber);
             if (userRegistered != null) {
-                return ResultUtil.success(getUserInfoByopenId(authInfo.getOpenId(),phoneNumber,request.getCityName()));
+                return ResultUtil.success(getUserInfoByopenId(authInfo.getOpenId(),userRegistered.getData().toString(),request.getCityName()));
             }
 
             //验证用户是否在单车上注册过
@@ -105,7 +110,7 @@ public class UserController extends BaseController {
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phone);
             if (userRegistered != null) {
-                return ResultUtil.success(getUserInfoByopenId(authInfo.getOpenId(),phone,request.getCityName()));
+                return ResultUtil.success(getUserInfoByopenId(authInfo.getOpenId(),userRegistered.getData().toString(),request.getCityName()));
             }
 
             //验证用户是否在单车上注册过
@@ -148,6 +153,20 @@ public class UserController extends BaseController {
         return userInfoService.recordUserOpenXcx(userInfo);
     }
 
+
+
+    /**
+     * 获取用户赳米周榜
+     *
+     * @param userId
+     * @return
+     */
+    @SystemControllerLog(funcionExplain = "获取用户赳米周榜")
+    @GetMapping(value = "/wx_xcx_getuserjiumiweekrankinglist")
+    public AppletResult getUserJiuMiWeekRankingList(String userId,Integer rankingType){
+        return userInfoService.getUserJiuMiWeekRankingList(userId,rankingType);
+    }
+
     /**
      * 添加新用户的公共方法
      *
@@ -167,6 +186,7 @@ public class UserController extends BaseController {
         userInfo.setGuesterState(gender == null ? 0 : gender);
         userInfo.setNickname(USER_DEFAULT_NICKNAME);
         userInfo.setPicurl(picurl == null ? "" : picurl);
+        userInfo.setIntegral(jiumNum+30);
 
         WxUserInfo wxUserInfo = new WxUserInfo();
         wxUserInfo.setOpenId(openId);
@@ -174,6 +194,8 @@ public class UserController extends BaseController {
         wxUserInfo.setUserMobile(phone);
         wxUserInfo.setRegistFlag(4);
         UserInfoResponse info = userInfoService.addRegisterUser(userInfo, wxUserInfo);
+        info.setIsNewUserFlag(1);
+        info.setJiumNum(jiumNum);
         return info;
     }
 

@@ -1,8 +1,10 @@
 package com.applet.utils.common;
 
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
@@ -49,6 +51,13 @@ public abstract class DateUtil {
                 break;
         }
         return time;
+    }
+
+    //获取本周一的日期
+    public static String getMondayDate(){
+        DateTime dateTime=DateTime.now();
+        DateTime dateTime1 = dateTime.withDayOfWeek(1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0);
+        return  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(dateTime1.toDate());
     }
 
     public enum TimeType {

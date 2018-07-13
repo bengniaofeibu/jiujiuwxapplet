@@ -88,6 +88,15 @@ public class NyCustomStore extends BaseModel{
 
     private int isCollection;
 
+    //0:不跳转  1：原生  2：内部链接  3：外部链接
+    private Integer actionType;
+
+    //跳转链接
+    private String actionUrl;
+
+    //分享的id
+    private String actionShareId;
+
     public String getId() {
         return id;
     }
@@ -406,5 +415,29 @@ public class NyCustomStore extends BaseModel{
 
     public void setIsCollection(int isCollection) {
         this.isCollection = isCollection;
+    }
+
+    public Integer getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(Integer actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getActionUrl() {
+        return actionUrl;
+    }
+
+    public void setActionUrl(String actionUrl) {
+        this.actionUrl = actionUrl;
+    }
+
+    public String getActionShareId() {
+        return actionShareId;
+    }
+
+    public void setActionShareId(String actionShareId) {
+        this.actionShareId = actionShareId;
     }
 }

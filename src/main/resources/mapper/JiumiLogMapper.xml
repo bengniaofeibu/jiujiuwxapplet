@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.JiumiLogMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.JiumiLog">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="jm_type" jdbcType="INTEGER" property="jmType" />
+    <result column="nike_name" jdbcType="VARCHAR" property="nikeName"/>
+    <result column="picurl" jdbcType="VARCHAR" property="picurl"/>
+    <result column="jiu_sum" jdbcType="INTEGER" property="jiuSum"/>
+    <result column="inc_value" jdbcType="DECIMAL" property="incValue" />
+    <result column="before_inc_value" jdbcType="DECIMAL" property="beforeIncValue" />
+    <result column="obj_id" jdbcType="VARCHAR" property="objId" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="jm_desc" jdbcType="VARCHAR" property="jmDesc" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, jm_type, inc_value, before_inc_value, obj_id, del_flag, jm_desc, remarks, 
+    create_by, create_date, update_by, update_date
+  </sql>
+
+  <!-- 前100名用户赳米本周统计 -->
+  <select id="selectWeekRankingList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT user_id,(SELECT userinfo.nickname  FROM t_user_info userinfo  WHERE userinfo.id = jiumlog.user_id) as nike_name , (SELECT  userinfo.picurl  FROM t_user_info userinfo  WHERE userinfo.id = jiumlog.user_id) as picurl,
+  SUM(jiumlog.inc_value) AS jiu_sum FROM t_jiumi_log jiumlog   WHERE jiumlog.create_date BETWEEN #{startDate} and NOW() GROUP BY jiumlog.user_id LIMIT 100
+</select>
+
+  <!-- 该用户本周领取赳米统计 -->
+  <select id="selectWeekJiuMiNumByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+   SELECT (SELECT  userinfo.nickname  FROM t_user_info userinfo  WHERE userinfo.id = jiumlog.user_id) as nike_name ,
+   (SELECT  userinfo.picurl  FROM t_user_info userinfo  WHERE userinfo.id = jiumlog.user_id) as picurl,
+   SUM(jiumlog.inc_value) AS jiu_sum FROM t_jiumi_log jiumlog WHERE jiumlog.user_id=#{userId,jdbcType=VARCHAR} and  jiumlog.create_date BETWEEN #{startDate} and NOW()
+  </select>
+
+  <!-- 前100名用户总赳米统计 -->
+  <select id="selectTotalJiuMiNum"  resultMap="BaseResultMap">
+    SELECT nickname as nike_name,picurl, integral as jiu_sum FROM t_user_info ORDER BY integral desc LIMIT 100
+  </select>
+
+  <!-- 该用户总赳米统计 -->
+  <select id="selectTotalJiuMiNumByUserId"  resultMap="BaseResultMap">
+    SELECT nickname as nike_name,picurl, integral as jiu_sum FROM t_user_info WHERE id=#{id,jdbcType=VARCHAR}
+  </select>
+
+  <insert id="insert" parameterType="com.applet.model.JiumiLog">
+    insert into t_jiumi_log (id, user_id, jm_type, 
+      inc_value, before_inc_value, obj_id, 
+      del_flag, jm_desc, remarks, 
+      create_by, create_date, update_by, 
+      update_date)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR}, #{jmType,jdbcType=INTEGER}, 
+      #{incValue,jdbcType=DECIMAL}, #{beforeIncValue,jdbcType=DECIMAL}, #{objId,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=INTEGER}, #{jmDesc,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}, 
+      #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.JiumiLog">
+    insert into t_jiumi_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="jmType != null">
+        jm_type,
+      </if>
+      <if test="incValue != null">
+        inc_value,
+      </if>
+      <if test="beforeIncValue != null">
+        before_inc_value,
+      </if>
+      <if test="objId != null">
+        obj_id,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="jmDesc != null">
+        jm_desc,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="jmType != null">
+        #{jmType,jdbcType=INTEGER},
+      </if>
+      <if test="incValue != null">
+        #{incValue,jdbcType=DECIMAL},
+      </if>
+      <if test="beforeIncValue != null">
+        #{beforeIncValue,jdbcType=DECIMAL},
+      </if>
+      <if test="objId != null">
+        #{objId,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="jmDesc != null">
+        #{jmDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.JiumiLog">
+    update t_jiumi_log
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="jmType != null">
+        jm_type = #{jmType,jdbcType=INTEGER},
+      </if>
+      <if test="incValue != null">
+        inc_value = #{incValue,jdbcType=DECIMAL},
+      </if>
+      <if test="beforeIncValue != null">
+        before_inc_value = #{beforeIncValue,jdbcType=DECIMAL},
+      </if>
+      <if test="objId != null">
+        obj_id = #{objId,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="jmDesc != null">
+        jm_desc = #{jmDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.JiumiLog">
+    update t_jiumi_log
+    set user_id = #{userId,jdbcType=VARCHAR},
+      jm_type = #{jmType,jdbcType=INTEGER},
+      inc_value = #{incValue,jdbcType=DECIMAL},
+      before_inc_value = #{beforeIncValue,jdbcType=DECIMAL},
+      obj_id = #{objId,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      jm_desc = #{jmDesc,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

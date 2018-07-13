@@ -14,7 +14,8 @@ spring:
       cluster-name: jjdctest
       repositories:
         enabled: true
-      ip: 10.31.204.201
+#      ip: 10.31.204.201
+      ip: 47.100.82.43
       port: 9300
       index: app_position_statistics
       type: openMiniApps

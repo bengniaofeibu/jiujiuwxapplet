@@ -221,7 +221,9 @@ public class RidingServiceImpl implements RidingService {
 
                         agentShop.addAll(breakFast);
 
-                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,agentShop));
+                        userInfoMapper.updateJiuMiByUserId(new UserInfo(request.getUserId(),10));
+
+                        return ResultUtil.success(new CyclingEndInfoResponse(endTime,-10,agentShop));
                     }
                 }
             }

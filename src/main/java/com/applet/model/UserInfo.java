@@ -100,6 +100,16 @@ public class UserInfo {
 
     private Integer userSource;
 
+    public UserInfo(){
+
+    }
+
+    public UserInfo(String id,Integer integral){
+        this.id=id;
+        this.integral=integral;
+    }
+
+
     public String getId() {
         return id;
     }

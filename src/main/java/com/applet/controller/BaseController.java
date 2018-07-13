@@ -87,9 +87,9 @@ public class BaseController {
      * @return
      */
     protected AppletResult isUserRegistered(String userMobile){
-        Integer count = wxUserInfoMapper.selectNumByMobile(userMobile);
-        if (count>0){
-            return ResultUtil.error(ResultEnums.USER_ALREADY_EXIST);
+        String userId = wxUserInfoMapper.selectUserIdByMobile(userMobile);
+        if (userId != null ){
+            return ResultUtil.success(userId);
         }
         return null;
     }
@@ -98,11 +98,9 @@ public class BaseController {
     /**
      * 获取用户信息通过openId
      *
-     * @param userMobile
      * @return
      */
-    protected UserInfoResponse getUserInfoByopenId(String openId,String userMobile,String cityName) {
-        String userId = wxUserInfoMapper.selectUserIdByMobile(userMobile);
+    protected UserInfoResponse getUserInfoByopenId(String openId,String userId,String cityName) {
         UserInfoResponse userInfo = userInfoService.getUserInfo(openId,userId,cityName);
         userInfo.setAdminId(userId);
         return userInfo;
