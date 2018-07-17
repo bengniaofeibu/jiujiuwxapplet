@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.JiumiMissionMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.JiumiMission">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mission_name" jdbcType="VARCHAR" property="missionName" />
+    <result column="mission_type" jdbcType="INTEGER" property="missionType" />
+    <result column="mission_desc" jdbcType="VARCHAR" property="missionDesc" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="display" jdbcType="INTEGER" property="display" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="on_off" jdbcType="INTEGER" property="onOff" />
+    <result column="os" jdbcType="INTEGER" property="os" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mission_name, mission_type, mission_desc, icon_url, display, del_flag, remarks, 
+    create_by, create_date, update_by, update_date, begin_time, end_time, on_off, os
+  </sql>
+  <select id="selectCountByOnOff" resultType="java.lang.Integer">
+   SELECT COUNT(1) FROM t_jiumi_mission WHERE on_off = 1
+  </select>
+</mapper>
