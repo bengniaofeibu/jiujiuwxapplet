@@ -264,7 +264,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             userJiuMiRankListRes.setJiumiLog(jiumiInfo);
             userJiuMiRankListRes.setRankListFlag(1);
             userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
-            userJiuMiRankListRes.setRankListFlag(index+1);
+            userJiuMiRankListRes.setRankListFlag(index + 1);
         }
 
         return ResultUtil.success(userJiuMiRankListRes);
@@ -291,15 +291,23 @@ public class UserInfoServiceImpl implements UserInfoService {
         return jiumiLogs;
     }
 
-   private static String setUserPicurl(String picurl){
-       String userPicurl;
-       if (!picurl.startsWith("http") && !picurl.startsWith("https") && !StringUtils.isBlank(picurl)) {
-           userPicurl = new StringBuilder(USER_PICURL_PREFIX).append(picurl).toString();
-       }else {
-           userPicurl = picurl;
-       }
-       return userPicurl;
-   }
+    private static String setUserPicurl(String picurl) {
+        String userPicurl;
+        if (!picurl.startsWith("http") && !picurl.startsWith("https") && !StringUtils.isBlank(picurl)) {
+
+            userPicurl = new StringBuilder(USER_PICURL_PREFIX).append(picurl).toString();
+
+        } else if (StringUtils.isBlank(picurl)) {
+
+            userPicurl = JiumiLog.DEFAULT_USER_PICURL;
+
+        } else {
+
+            userPicurl = picurl;
+
+        }
+        return userPicurl;
+    }
 
     private List<JiumiLog> getJiumiLogs(int type) {
         List<JiumiLog> jiumiLogs = null;
@@ -310,11 +318,11 @@ public class UserInfoServiceImpl implements UserInfoService {
             case 1:
                 jiumiLogs = (List<JiumiLog>) redisUtil.getValueObj(USER_JIUMI_TOTAL);
                 List<JiumiLog> jiumiLogList = new LinkedList<>();
-                for (int i = 0;i<jiumiLogs.size();i++){
+                for (int i = 0; i < jiumiLogs.size(); i++) {
                     JiumiLog jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
                     jiumiLogList.add(jiumiLog);
                 }
-                jiumiLogs=jiumiLogList;
+                jiumiLogs = jiumiLogList;
                 break;
         }
         return jiumiLogs;
