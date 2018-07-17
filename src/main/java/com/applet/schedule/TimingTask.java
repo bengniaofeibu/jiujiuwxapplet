@@ -17,8 +17,22 @@ import java.util.List;
 @EnableScheduling
 public class TimingTask {
 
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @Autowired
+    private JiumiLogMapper jiumiLogMapper;
+
     //每天凌晨1点执行
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 0 */12 * * ?")
+//    @Scheduled(cron = "0/50 * * * * ?")
     public void recordUserTotalJiuMiRankIngList(){
+        List<JiumiLog> jiumiLogs = jiumiLogMapper.selectTotalJiuMiNum();
+
+        if ( jiumiLogs != null &&  jiumiLogs.size()>0 ){
+            redisUtil.setObj(UserInfoServiceImpl.USER_JIUMI_TOTAL,jiumiLogs);
+        }
+
     }
 }

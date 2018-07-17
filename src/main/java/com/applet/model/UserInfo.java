@@ -100,6 +100,8 @@ public class UserInfo {
 
     private Integer userSource;
 
+    private Integer currentPage;
+
     public UserInfo(){
 
     }
@@ -492,5 +494,13 @@ public class UserInfo {
 
     public void setUserSource(Integer userSource) {
         this.userSource = userSource;
+    }
+
+    public Integer getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(Integer currentPage) {
+        this.currentPage = currentPage;
     }
 }

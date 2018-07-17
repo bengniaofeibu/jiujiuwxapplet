@@ -121,8 +121,7 @@ public class WechatProgramController extends BaseController {
             if(!StringUtils.isBlank(user.getPicurl())){
                 String userHeadPicurl=user.getPicurl();
 
-
-                if (userHeadPicurl.startsWith("http")){
+                if (userHeadPicurl.startsWith("http") || userHeadPicurl.startsWith("https")){
                     content.put("picurl",userHeadPicurl);
                 }else {
                     content.put("picurl",new StringBuilder(USER_HEAD_PREFIX).append(user.getPicurl()).toString());
