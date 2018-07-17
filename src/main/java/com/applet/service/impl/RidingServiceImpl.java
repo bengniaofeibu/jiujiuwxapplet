@@ -221,7 +221,12 @@ public class RidingServiceImpl implements RidingService {
 
                         agentShop.addAll(breakFast);
 
-                        userInfoMapper.updateJiuMiByUserId(new UserInfo(request.getUserId(),10));
+
+                        //判断是否扣除赳米
+                        if ( request.getJiuMiShowFlag() == 1 ){
+
+                            userInfoMapper.updateJiuMiByUserId(new UserInfo(request.getUserId(),10));
+                        }
 
                         return ResultUtil.success(new CyclingEndInfoResponse(endTime,-10,agentShop));
                     }

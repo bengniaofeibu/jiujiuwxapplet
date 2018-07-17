@@ -24,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +56,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     private JiumiLogMapper jiumiLogMapper;
+
+    @Autowired
+    private JiumiMissionMapper jiumiMissionMapper;
 
     @Autowired
     private RedisUtil redisUtil;
@@ -149,6 +149,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoResponse.setUserBicycleNo(borrowBicycleNum);
         }
 
+        //查询赳米是否已经关闭
+        int count = jiumiMissionMapper.selectCountByOnOff();
+        userInfoResponse.setJiuMiShowFlag(count > 0 ? 0 : 1);
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
 //
@@ -235,12 +238,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public AppletResult getUserJiuMiWeekRankingList(String userId, Integer rankingType) {
 
-        UserJiuMiRankListRes jiuMiRankListRes = getAndJiuMiRankListRes(rankingType);
-
-        if (jiuMiRankListRes != null) {
-            return ResultUtil.success(jiuMiRankListRes);
-        }
-
         List<JiumiLog> jiumiLogs = getJiumiLogs(rankingType);
 
         if (jiumiLogs == null || jiumiLogs.size() == 0) {
@@ -273,11 +270,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             userJiuMiRankListRes.setJiumiLog(jiumiInfo);
             userJiuMiRankListRes.setRankListFlag(1);
             userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
-        }
-
-        //记录全部用户赳米排行总和到缓存  12小时统计一次
-        if (rankingType == 1) {
-            redisUtil.setObjAndExpire(USER_JIUMI_TOTAL, userJiuMiRankListRes, 43200);
+            userJiuMiRankListRes.setRankListFlag(index + 1);
         }
 
         return ResultUtil.success(userJiuMiRankListRes);
@@ -299,12 +292,27 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         for (JiumiLog jiumiLog : jiumiLogs) {
             String picurl = jiumiLog.getPicurl();
-            if (!picurl.startsWith("http") && !picurl.startsWith("https") && !StringUtils.isBlank(picurl)) {
-                String userPicurl = new StringBuilder(USER_PICURL_PREFIX).append(jiumiLog.getPicurl()).toString();
-                jiumiLog.setPicurl(userPicurl);
-            }
+            jiumiLog.setPicurl(setUserPicurl(picurl));
         }
         return jiumiLogs;
+    }
+
+    private static String setUserPicurl(String picurl) {
+        String userPicurl;
+        if (!picurl.startsWith("http") && !picurl.startsWith("https") && !StringUtils.isBlank(picurl)) {
+
+            userPicurl = new StringBuilder(USER_PICURL_PREFIX).append(picurl).toString();
+
+        } else if (StringUtils.isBlank(picurl)) {
+
+            userPicurl = JiumiLog.DEFAULT_USER_PICURL;
+
+        } else {
+
+            userPicurl = picurl;
+
+        }
+        return userPicurl;
     }
 
     private List<JiumiLog> getJiumiLogs(int type) {
@@ -314,7 +322,13 @@ public class UserInfoServiceImpl implements UserInfoService {
                 jiumiLogs = jiumiLogMapper.selectWeekRankingList(DateUtil.getMondayDate());
                 break;
             case 1:
-                jiumiLogs = jiumiLogMapper.selectTotalJiuMiNum();
+                jiumiLogs = (List<JiumiLog>) redisUtil.getValueObj(USER_JIUMI_TOTAL);
+                List<JiumiLog> jiumiLogList = new LinkedList<>();
+                for (int i = 0; i < jiumiLogs.size(); i++) {
+                    JiumiLog jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
+                    jiumiLogList.add(jiumiLog);
+                }
+                jiumiLogs = jiumiLogList;
                 break;
         }
         return jiumiLogs;
@@ -330,20 +344,8 @@ public class UserInfoServiceImpl implements UserInfoService {
                 jiumiLog = jiumiLogMapper.selectTotalJiuMiNumByUserId(userId);
                 break;
         }
+
+        jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
         return jiumiLog;
-    }
-
-    //取缓存
-    private UserJiuMiRankListRes getAndJiuMiRankListRes(Integer type) {
-
-        if (type.intValue() == 1) {
-
-            UserJiuMiRankListRes jiuMiRankListRes = JSONUtil.parseObject(JSONUtil.toJSONString(redisUtil.getValueObj(USER_JIUMI_TOTAL)), UserJiuMiRankListRes.class);
-
-            if (jiuMiRankListRes != null) {
-                return jiuMiRankListRes;
-            }
-        }
-        return null;
     }
 }

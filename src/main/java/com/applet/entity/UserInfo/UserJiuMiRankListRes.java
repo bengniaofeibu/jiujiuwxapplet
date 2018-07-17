@@ -14,6 +14,8 @@ public class UserJiuMiRankListRes {
 
     private Integer jiuSumDiff=0;
 
+    private Integer myJiuMiRanking;
+
 
     public List<JiumiLog> getJiumiLogs() {
         return jiumiLogs;
@@ -45,5 +47,13 @@ public class UserJiuMiRankListRes {
 
     public void setJiuSumDiff(Integer jiuSumDiff) {
         this.jiuSumDiff = jiuSumDiff;
+    }
+
+    public Integer getMyJiuMiRanking() {
+        return myJiuMiRanking;
+    }
+
+    public void setMyJiuMiRanking(Integer myJiuMiRanking) {
+        this.myJiuMiRanking = myJiuMiRanking;
     }
 }

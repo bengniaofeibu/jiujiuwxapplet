@@ -6,7 +6,7 @@ public class JiumiLog extends BaseModel{
 
     private static String DEFAULT_NIKE_NAME="99宝贝";
 
-    private static String DEFAULT_USER_PICURL="https://jjdc-client.oss-cn-shanghai.aliyuncs.com/appIcon/defaultHead.png";
+    public static String DEFAULT_USER_PICURL="https://jjdc-client.oss-cn-shanghai.aliyuncs.com/appIcon/defaultHead.png";
 
     private Long id;
 
