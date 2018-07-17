@@ -58,6 +58,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     private JiumiLogMapper jiumiLogMapper;
 
     @Autowired
+    private JiumiMissionMapper jiumiMissionMapper;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
@@ -146,6 +149,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoResponse.setUserBicycleNo(borrowBicycleNum);
         }
 
+        //查询赳米是否已经关闭
+        int count = jiumiMissionMapper.selectCountByOnOff();
+        userInfoResponse.setJiuMiShowFlag(count > 0 ? 0 : 1);
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
 //

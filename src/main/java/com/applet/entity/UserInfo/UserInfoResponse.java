@@ -2,8 +2,7 @@ package com.applet.entity.UserInfo;
 
 import com.applet.entity.BaseEntity.BaseResponseEntity;
 
-public class UserInfoResponse extends BaseResponseEntity{
-
+public class UserInfoResponse extends BaseResponseEntity {
 
 
     private String adminId;
@@ -18,15 +17,22 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     private Integer loginStatus;
 
-    /** 免押金状态 0:不免 1:免 **/
+    /**
+     * 免押金状态 0:不免 1:免
+     **/
     private Integer freeDepositStatus;
 
     private Integer UserBicycleNo;
 
-    /** 是否是新用户标识 0:否 1:是 **/
-    private Integer isNewUserFlag=0;
+    /**
+     * 是否是新用户标识 0:否 1:是
+     **/
+    private Integer isNewUserFlag = 0;
 
     private Integer jiumNum;
+
+    /** 赳米是否显示标识 0 否 1 是 **/
+    private Integer jiuMiShowFlag;
 
     public String getAdminId() {
         return adminId;
@@ -106,5 +112,13 @@ public class UserInfoResponse extends BaseResponseEntity{
 
     public void setJiumNum(Integer jiumNum) {
         this.jiumNum = jiumNum;
+    }
+
+    public Integer getJiuMiShowFlag() {
+        return jiuMiShowFlag;
+    }
+
+    public void setJiuMiShowFlag(Integer jiuMiShowFlag) {
+        this.jiuMiShowFlag = jiuMiShowFlag;
     }
 }
