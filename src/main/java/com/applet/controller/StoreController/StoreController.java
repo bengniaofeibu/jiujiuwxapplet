@@ -9,7 +9,6 @@ import com.applet.utils.ReturnDataUtil;
 import com.applet.utils.common.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +22,7 @@ public class StoreController {
 
     @SystemControllerLog(funcionExplain = "进入小程序兑吧控制层")
     @PostMapping(value = "/duiba")
-    public AppletResult duiba(@RequestBody DuibaReq duibaReq){
+    public AppletResult duiba(DuibaReq duibaReq){
         String adminId = duibaReq.getAdminId();
         AutoLoginReq req = new AutoLoginReq();
         req.setUserId(adminId);
