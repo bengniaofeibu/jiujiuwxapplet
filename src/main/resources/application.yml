@@ -14,6 +14,7 @@ spring:
       prefix: /jsp/
       suffix: .jsp
   profiles:
+#    active: local
     active: dev
 #    active: prod
   http:
