@@ -5,6 +5,7 @@ import com.applet.annotation.SystemControllerLog;
 import com.applet.entity.Sms;
 import com.applet.entity.home.HomeReq;
 import com.applet.enums.ResultEnums;
+import com.applet.model.BicycleWxUserInfo;
 import com.applet.model.UserInfo;
 import com.applet.service.HomeService;
 import com.applet.utils.AppletResult;
@@ -66,7 +67,11 @@ public class HomeController {
                 info.setId(userId);
                 info.setPhone(newPhone);
                 int i = homeService.updatePhone(info);
-                if (i>0){
+                BicycleWxUserInfo bicycleWxUserInfo = new BicycleWxUserInfo();
+                bicycleWxUserInfo.setUserId(userId);
+                bicycleWxUserInfo.setUserMobile(newPhone);
+                int i1 = homeService.updateWxUser(bicycleWxUserInfo);
+                if (i>0&&i1>0){
                     return ResultUtil.success();
                 }else {
                     return ResultUtil.error(ResultEnums.SERVER_ERROR);

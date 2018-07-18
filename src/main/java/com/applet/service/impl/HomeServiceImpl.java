@@ -4,9 +4,11 @@ import com.applet.annotation.SystemServerLog;
 import com.applet.entity.home.HomeRes;
 import com.applet.mapper.ActivitiesInfoMapper;
 import com.applet.mapper.AppDisplayMapper;
+import com.applet.mapper.BicycleWxUserInfoMapper;
 import com.applet.mapper.UserInfoMapper;
 import com.applet.model.ActivitiesInfo;
 import com.applet.model.AppDisplay;
+import com.applet.model.BicycleWxUserInfo;
 import com.applet.model.UserInfo;
 import com.applet.service.HomeService;
 import com.applet.utils.AppletResult;
@@ -29,6 +31,9 @@ public class HomeServiceImpl implements HomeService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private BicycleWxUserInfoMapper bicycleWxUserInfoMapper;
     /**
      * 获取二级弹窗
      *
@@ -101,5 +106,17 @@ public class HomeServiceImpl implements HomeService {
     @Override
     public UserInfo selectOldPhone(UserInfo oldUser) {
         return userInfoMapper.selectOldPhone(oldUser);
+    }
+
+    /**
+     * 修改微信手机号
+     *
+     * @param bicycleWxUserInfo
+     * @return
+     */
+    @SystemServerLog(funcionExplain = "修改微信手机号")
+    @Override
+    public int updateWxUser(BicycleWxUserInfo bicycleWxUserInfo) {
+        return bicycleWxUserInfoMapper.updateWxUser(bicycleWxUserInfo);
     }
 }
