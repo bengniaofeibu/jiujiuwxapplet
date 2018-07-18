@@ -19,7 +19,7 @@ public class HomePageMapController extends BaseController{
      * @param banParkingSpotsReq
      * @return
      */
-     @PostMapping(value = "/wx_xcx_querybanparkingspots")
+     @GetMapping(value = "/wx_xcx_querybanparkingspots")
      public AppletResult selectBanParkingSpots(BanParkingSpotsReq banParkingSpotsReq){
          return banParkingSpotsService.selectBanParkingSpots(banParkingSpotsReq);
      }

@@ -34,6 +34,10 @@ public class UserInfoResponse extends BaseResponseEntity {
     /** 赳米是否显示标识 0 否 1 是 **/
     private Integer jiuMiShowFlag;
 
+
+    /** 是否可骑行 0 否 1 是 **/
+    private Integer isCanCyclingFlag;
+
     public String getAdminId() {
         return adminId;
     }
@@ -120,5 +124,13 @@ public class UserInfoResponse extends BaseResponseEntity {
 
     public void setJiuMiShowFlag(Integer jiuMiShowFlag) {
         this.jiuMiShowFlag = jiuMiShowFlag;
+    }
+
+    public Integer getIsCanCyclingFlag() {
+        return isCanCyclingFlag;
+    }
+
+    public void setIsCanCyclingFlag(Integer isCanCyclingFlag) {
+        this.isCanCyclingFlag = isCanCyclingFlag;
     }
 }

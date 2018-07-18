@@ -13,6 +13,8 @@ public class ScaveningUnlockRequest extends BaseLockRequest{
     /** 免押金状态 0:不免 1:免 **/
     private Integer freeDepositStatus;
 
+    private Integer jiuMiShowFlag;
+
     public String getLongitude() {
         return longitude;
     }
@@ -51,5 +53,13 @@ public class ScaveningUnlockRequest extends BaseLockRequest{
 
     public void setFreeDepositStatus(Integer freeDepositStatus) {
         this.freeDepositStatus = freeDepositStatus;
+    }
+
+    public Integer getJiuMiShowFlag() {
+        return jiuMiShowFlag;
+    }
+
+    public void setJiuMiShowFlag(Integer jiuMiShowFlag) {
+        this.jiuMiShowFlag = jiuMiShowFlag;
     }
 }

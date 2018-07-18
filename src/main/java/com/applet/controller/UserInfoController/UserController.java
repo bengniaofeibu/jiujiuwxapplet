@@ -5,12 +5,9 @@ import com.applet.annotation.SystemServerLog;
 import com.applet.controller.BaseController;
 import com.applet.entity.Cat;
 import com.applet.entity.MyJiuMiReq;
-import com.applet.entity.UserInfo.WxGeneralUserInfo;
-import com.applet.entity.UserInfo.WxUserRegisterRequest;
-import com.applet.entity.UserInfo.PhoneRegisterRequest;
-import com.applet.entity.UserInfo.UserInfoResponse;
-import com.applet.entity.UserInfo.WxDetailedUserInfo;
+import com.applet.entity.UserInfo.*;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.JiumiSettingMapper;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
 import com.applet.service.UserJiuMiService;
@@ -37,11 +34,11 @@ public class UserController extends BaseController {
 
     private static final String USER_DEFAULT_NICKNAME = "99宝贝";
 
-    @Value("${user.jiumNum}")
-    private Integer jiumNum;
-
     @Autowired
     private UserJiuMiService userJiuMiService;
+
+    @Autowired
+    private JiumiSettingMapper jiumiSettingMapper;
 
 
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
@@ -187,6 +184,18 @@ public class UserController extends BaseController {
     }
 
 
+    /**
+     * 获取首页罚款弹框
+     * @param wxUserinfoReq
+     * @return
+     */
+    @SystemControllerLog(funcionExplain = "获取首页罚款弹框")
+    @GetMapping(value = "/wx_xcx_queryfinebounced")
+    public AppletResult getFineBounced(WxUserInfoReq wxUserinfoReq){
+        return userJiuMiService.getFineBounced(wxUserinfoReq);
+    }
+
+
 
 
     /**
@@ -199,6 +208,9 @@ public class UserController extends BaseController {
      */
     private UserInfoResponse baseAddRegisterUser(Integer userSource, String id, String openId, String phone, String country, Integer gender, String picurl) {
 
+        int jiuMiNum = jiumiSettingMapper.selectIncValueByMissionId();
+        LOGGER.debug("用户注册送的赳米数 {} ",jiuMiNum);
+
         UserInfo userInfo = new UserInfo();
         userInfo.setId(id);
         userInfo.setUserSource(userSource);
@@ -208,7 +220,7 @@ public class UserController extends BaseController {
         userInfo.setGuesterState(gender == null ? 0 : gender);
         userInfo.setNickname(USER_DEFAULT_NICKNAME);
         userInfo.setPicurl(picurl == null ? "" : picurl);
-        userInfo.setIntegral(jiumNum + 30);
+        userInfo.setIntegral(jiuMiNum + 30);
 
         WxUserInfo wxUserInfo = new WxUserInfo();
         wxUserInfo.setOpenId(openId);
@@ -217,7 +229,7 @@ public class UserController extends BaseController {
         wxUserInfo.setRegistFlag(4);
         UserInfoResponse info = userInfoService.addRegisterUser(userInfo, wxUserInfo);
         info.setIsNewUserFlag(1);
-        info.setJiumNum(jiumNum);
+        info.setJiumNum(jiuMiNum);
         return info;
     }
 

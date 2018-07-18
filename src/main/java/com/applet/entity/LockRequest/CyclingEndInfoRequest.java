@@ -9,8 +9,6 @@ public class CyclingEndInfoRequest extends BaseLockRequest {
 
     private String longitude ;
 
-    private Integer jiuMiShowFlag;
-
     public String getUserId() {
         return userId;
     }
@@ -33,13 +31,5 @@ public class CyclingEndInfoRequest extends BaseLockRequest {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
-    }
-
-    public Integer getJiuMiShowFlag() {
-        return jiuMiShowFlag;
-    }
-
-    public void setJiuMiShowFlag(Integer jiuMiShowFlag) {
-        this.jiuMiShowFlag = jiuMiShowFlag;
     }
 }
