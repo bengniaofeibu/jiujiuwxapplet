@@ -33,7 +33,7 @@ public class HomeController {
 
     @SystemControllerLog(funcionExplain = "进入二级弹窗控制层")
     @PostMapping(value = "/popup")
-    public AppletResult getPopup(HomeReq homeReq){
+    public AppletResult getPopup(@RequestBody HomeReq homeReq){
         String cityName = homeReq.getCityName();
         return homeService.getPopup(cityName);
     }
