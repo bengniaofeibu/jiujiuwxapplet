@@ -50,7 +50,9 @@ public enum ResultEnums {
 
     USER_NOT_FOUND(1005,"用户不存在"),
 
-    NOT_FOUND_RANKING_LIST_FAIL(1006,"无排行信息");
+    NOT_FOUND_RANKING_LIST_FAIL(1006,"无排行信息"),
+
+    PHONG_USERD(1007,"手机号已经被绑定");
 
     private Integer code;
 

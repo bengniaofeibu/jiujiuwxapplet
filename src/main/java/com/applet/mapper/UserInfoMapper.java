@@ -20,5 +20,7 @@ public interface UserInfoMapper {
 
     int updateJiuMiByUserId(UserInfo userInfo);
 
+    int updatePhone(UserInfo userInfo);
+
     UserInfo selectByUserPhone(String phone);
 }

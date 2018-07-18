@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.AppDisplayMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.AppDisplay">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="display_words" jdbcType="VARCHAR" property="displayWords" />
+    <result column="display_pic" jdbcType="VARCHAR" property="displayPic" />
+    <result column="action_type" jdbcType="TINYINT" property="actionType" />
+    <result column="action_url" jdbcType="VARCHAR" property="actionUrl" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="os" jdbcType="INTEGER" property="os" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+    <result column="display_time" jdbcType="TIMESTAMP" property="displayTime" />
+    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="version_limit" jdbcType="VARCHAR" property="versionLimit" />
+    <result column="is_download" jdbcType="TINYINT" property="isDownload" />
+    <result column="download_type" jdbcType="INTEGER" property="downloadType" />
+    <result column="ios_versions" jdbcType="VARCHAR" property="iosVersions" />
+    <result column="android_versions" jdbcType="VARCHAR" property="androidVersions" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="show_type" jdbcType="INTEGER" property="showType" />
+    <result column="gif_countdown" jdbcType="INTEGER" property="gifCountdown" />
+    <result column="is_ad" jdbcType="TINYINT" property="isAd" />
+    <result column="download_way" jdbcType="INTEGER" property="downloadWay" />
+    <result column="download_id" jdbcType="VARCHAR" property="downloadId" />
+    <result column="district_ids" jdbcType="VARCHAR" property="districtIds" />
+    <result column="ios_version_ids" jdbcType="VARCHAR" property="iosVersionIds" />
+    <result column="android_version_ids" jdbcType="VARCHAR" property="androidVersionIds" />
+    <result column="ad_channel_id" jdbcType="VARCHAR" property="adChannelId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, city_name, type, display_words, display_pic, action_type, action_url, activity_id, 
+    description, add_time, update_time, state, os, del_flag, display_time, del_time, 
+    create_by, create_date, update_by, update_date, remarks, version_limit, is_download, 
+    download_type, ios_versions, android_versions, sort, show_type, gif_countdown, is_ad, 
+    download_way, download_id, district_ids, ios_version_ids, android_version_ids, ad_channel_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_app_display
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectPopup" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_app_display
+    where (city_name LIKE concat('%',#{cityName},'%') OR city_name = 'default')
+    AND NOW() BETWEEN display_time AND del_time AND os in (0,3) AND del_flag=0 AND `type`=5 AND action_type=2 AND is_ad != 1
+    ORDER BY sort DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_app_display
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.applet.model.AppDisplay">
+    insert into t_app_display (id, city_name, type, 
+      display_words, display_pic, action_type, 
+      action_url, activity_id, description, 
+      add_time, update_time, state, 
+      os, del_flag, display_time, 
+      del_time, create_by, create_date, 
+      update_by, update_date, remarks, 
+      version_limit, is_download, download_type, 
+      ios_versions, android_versions, sort, 
+      show_type, gif_countdown, is_ad, 
+      download_way, download_id, district_ids, 
+      ios_version_ids, android_version_ids, ad_channel_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, 
+      #{displayWords,jdbcType=VARCHAR}, #{displayPic,jdbcType=VARCHAR}, #{actionType,jdbcType=TINYINT}, 
+      #{actionUrl,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=TINYINT}, 
+      #{os,jdbcType=INTEGER}, #{delFlag,jdbcType=TINYINT}, #{displayTime,jdbcType=TIMESTAMP}, 
+      #{delTime,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{versionLimit,jdbcType=VARCHAR}, #{isDownload,jdbcType=TINYINT}, #{downloadType,jdbcType=INTEGER}, 
+      #{iosVersions,jdbcType=VARCHAR}, #{androidVersions,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{showType,jdbcType=INTEGER}, #{gifCountdown,jdbcType=INTEGER}, #{isAd,jdbcType=TINYINT}, 
+      #{downloadWay,jdbcType=INTEGER}, #{downloadId,jdbcType=VARCHAR}, #{districtIds,jdbcType=VARCHAR}, 
+      #{iosVersionIds,jdbcType=VARCHAR}, #{androidVersionIds,jdbcType=VARCHAR}, #{adChannelId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.AppDisplay">
+    insert into t_app_display
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="displayWords != null">
+        display_words,
+      </if>
+      <if test="displayPic != null">
+        display_pic,
+      </if>
+      <if test="actionType != null">
+        action_type,
+      </if>
+      <if test="actionUrl != null">
+        action_url,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="os != null">
+        os,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="displayTime != null">
+        display_time,
+      </if>
+      <if test="delTime != null">
+        del_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="versionLimit != null">
+        version_limit,
+      </if>
+      <if test="isDownload != null">
+        is_download,
+      </if>
+      <if test="downloadType != null">
+        download_type,
+      </if>
+      <if test="iosVersions != null">
+        ios_versions,
+      </if>
+      <if test="androidVersions != null">
+        android_versions,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="showType != null">
+        show_type,
+      </if>
+      <if test="gifCountdown != null">
+        gif_countdown,
+      </if>
+      <if test="isAd != null">
+        is_ad,
+      </if>
+      <if test="downloadWay != null">
+        download_way,
+      </if>
+      <if test="downloadId != null">
+        download_id,
+      </if>
+      <if test="districtIds != null">
+        district_ids,
+      </if>
+      <if test="iosVersionIds != null">
+        ios_version_ids,
+      </if>
+      <if test="androidVersionIds != null">
+        android_version_ids,
+      </if>
+      <if test="adChannelId != null">
+        ad_channel_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="displayWords != null">
+        #{displayWords,jdbcType=VARCHAR},
+      </if>
+      <if test="displayPic != null">
+        #{displayPic,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null">
+        #{actionType,jdbcType=TINYINT},
+      </if>
+      <if test="actionUrl != null">
+        #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=TINYINT},
+      </if>
+      <if test="os != null">
+        #{os,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="displayTime != null">
+        #{displayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delTime != null">
+        #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="versionLimit != null">
+        #{versionLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="isDownload != null">
+        #{isDownload,jdbcType=TINYINT},
+      </if>
+      <if test="downloadType != null">
+        #{downloadType,jdbcType=INTEGER},
+      </if>
+      <if test="iosVersions != null">
+        #{iosVersions,jdbcType=VARCHAR},
+      </if>
+      <if test="androidVersions != null">
+        #{androidVersions,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="showType != null">
+        #{showType,jdbcType=INTEGER},
+      </if>
+      <if test="gifCountdown != null">
+        #{gifCountdown,jdbcType=INTEGER},
+      </if>
+      <if test="isAd != null">
+        #{isAd,jdbcType=TINYINT},
+      </if>
+      <if test="downloadWay != null">
+        #{downloadWay,jdbcType=INTEGER},
+      </if>
+      <if test="downloadId != null">
+        #{downloadId,jdbcType=VARCHAR},
+      </if>
+      <if test="districtIds != null">
+        #{districtIds,jdbcType=VARCHAR},
+      </if>
+      <if test="iosVersionIds != null">
+        #{iosVersionIds,jdbcType=VARCHAR},
+      </if>
+      <if test="androidVersionIds != null">
+        #{androidVersionIds,jdbcType=VARCHAR},
+      </if>
+      <if test="adChannelId != null">
+        #{adChannelId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.AppDisplay">
+    update t_app_display
+    <set>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="displayWords != null">
+        display_words = #{displayWords,jdbcType=VARCHAR},
+      </if>
+      <if test="displayPic != null">
+        display_pic = #{displayPic,jdbcType=VARCHAR},
+      </if>
+      <if test="actionType != null">
+        action_type = #{actionType,jdbcType=TINYINT},
+      </if>
+      <if test="actionUrl != null">
+        action_url = #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=TINYINT},
+      </if>
+      <if test="os != null">
+        os = #{os,jdbcType=INTEGER},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="displayTime != null">
+        display_time = #{displayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delTime != null">
+        del_time = #{delTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="versionLimit != null">
+        version_limit = #{versionLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="isDownload != null">
+        is_download = #{isDownload,jdbcType=TINYINT},
+      </if>
+      <if test="downloadType != null">
+        download_type = #{downloadType,jdbcType=INTEGER},
+      </if>
+      <if test="iosVersions != null">
+        ios_versions = #{iosVersions,jdbcType=VARCHAR},
+      </if>
+      <if test="androidVersions != null">
+        android_versions = #{androidVersions,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="showType != null">
+        show_type = #{showType,jdbcType=INTEGER},
+      </if>
+      <if test="gifCountdown != null">
+        gif_countdown = #{gifCountdown,jdbcType=INTEGER},
+      </if>
+      <if test="isAd != null">
+        is_ad = #{isAd,jdbcType=TINYINT},
+      </if>
+      <if test="downloadWay != null">
+        download_way = #{downloadWay,jdbcType=INTEGER},
+      </if>
+      <if test="downloadId != null">
+        download_id = #{downloadId,jdbcType=VARCHAR},
+      </if>
+      <if test="districtIds != null">
+        district_ids = #{districtIds,jdbcType=VARCHAR},
+      </if>
+      <if test="iosVersionIds != null">
+        ios_version_ids = #{iosVersionIds,jdbcType=VARCHAR},
+      </if>
+      <if test="androidVersionIds != null">
+        android_version_ids = #{androidVersionIds,jdbcType=VARCHAR},
+      </if>
+      <if test="adChannelId != null">
+        ad_channel_id = #{adChannelId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.AppDisplay">
+    update t_app_display
+    set city_name = #{cityName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=TINYINT},
+      display_words = #{displayWords,jdbcType=VARCHAR},
+      display_pic = #{displayPic,jdbcType=VARCHAR},
+      action_type = #{actionType,jdbcType=TINYINT},
+      action_url = #{actionUrl,jdbcType=VARCHAR},
+      activity_id = #{activityId,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=TINYINT},
+      os = #{os,jdbcType=INTEGER},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      display_time = #{displayTime,jdbcType=TIMESTAMP},
+      del_time = #{delTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      version_limit = #{versionLimit,jdbcType=VARCHAR},
+      is_download = #{isDownload,jdbcType=TINYINT},
+      download_type = #{downloadType,jdbcType=INTEGER},
+      ios_versions = #{iosVersions,jdbcType=VARCHAR},
+      android_versions = #{androidVersions,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      show_type = #{showType,jdbcType=INTEGER},
+      gif_countdown = #{gifCountdown,jdbcType=INTEGER},
+      is_ad = #{isAd,jdbcType=TINYINT},
+      download_way = #{downloadWay,jdbcType=INTEGER},
+      download_id = #{downloadId,jdbcType=VARCHAR},
+      district_ids = #{districtIds,jdbcType=VARCHAR},
+      ios_version_ids = #{iosVersionIds,jdbcType=VARCHAR},
+      android_version_ids = #{androidVersionIds,jdbcType=VARCHAR},
+      ad_channel_id = #{adChannelId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
