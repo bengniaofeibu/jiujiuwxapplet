@@ -21,6 +21,8 @@ public class AcquireJiuMiReq{
     //用户id
     private String userId;
 
+    private String plat="wx";
+
     public Integer getMinute() {
         return minute;
     }
@@ -59,5 +61,13 @@ public class AcquireJiuMiReq{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getPlat() {
+        return plat;
+    }
+
+    public void setPlat(String plat) {
+        this.plat = plat;
     }
 }
