@@ -97,4 +97,9 @@ public class HomeServiceImpl implements HomeService {
     public int updatePhone(UserInfo userInfo) {
         return userInfoMapper.updatePhone(userInfo);
     }
+
+    @Override
+    public UserInfo selectOldPhone(UserInfo oldUser) {
+        return userInfoMapper.selectOldPhone(oldUser);
+    }
 }

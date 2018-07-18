@@ -9,4 +9,6 @@ public interface HomeService {
     UserInfo selectByUserPhone(String phone);
 
     int updatePhone(UserInfo userInfo);
+
+    UserInfo selectOldPhone(UserInfo oldUser);
 }

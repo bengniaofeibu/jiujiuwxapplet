@@ -52,7 +52,9 @@ public enum ResultEnums {
 
     NOT_FOUND_RANKING_LIST_FAIL(1006,"无排行信息"),
 
-    PHONG_USERD(1007,"手机号已经被绑定");
+    PHONG_USERD(1007,"手机号已经被绑定"),
+
+    NOT_YOUR_PHONE(1008,"原手机号错误");
 
     private Integer code;
 

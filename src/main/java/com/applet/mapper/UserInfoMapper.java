@@ -23,4 +23,6 @@ public interface UserInfoMapper {
     int updatePhone(UserInfo userInfo);
 
     UserInfo selectByUserPhone(String phone);
+
+    UserInfo selectOldPhone(UserInfo oldUser);
 }

@@ -40,24 +40,31 @@ public class HomeController {
 
     @SystemControllerLog(funcionExplain = "进入修改手机控制层")
     @GetMapping(value = "/changePhone")
-    public AppletResult changePhone(@RequestParam("phone") String phone, @RequestParam("captchaNum") String captchaNum,@RequestParam("userId")
-                                    String userId){
+    public AppletResult changePhone(@RequestParam("oldPhone") String oldPhone,@RequestParam("newPhone") String newPhone,
+                                    @RequestParam("captchaNum") String captchaNum,@RequestParam("userId") String userId){
         try {
+            UserInfo oldUser = new UserInfo();
+            oldUser.setId(userId);
+            oldUser.setPhone(oldPhone);
+            UserInfo checkUser = homeService.selectOldPhone(oldUser);
+            if (checkUser==null){
+                return ResultUtil.error(ResultEnums.NOT_YOUR_PHONE);
+            }
             Map<String, Object> m = new HashMap<>();
-            m.put("phone", phone);
+            m.put("phone", newPhone);
             m.put("markId", sms.getPrefix());
             m.put("captchaNum", captchaNum);
             String s = PostRequestUtils.httpPostWithJSON(sms.getCheckUrl(), JSON.toJSONString(m));
             Map resultMap = GsonTools.changeGsonToMaps(s);
             LOGGER.debug("验证验证码的返回结果 {}",s);
             if(s.contains("200")){
-                UserInfo userInfo = homeService.selectByUserPhone(phone);
+                UserInfo userInfo = homeService.selectByUserPhone(newPhone);
                 if (userInfo!=null){
                     return ResultUtil.error(ResultEnums.PHONG_USERD);
                 }
                 UserInfo info = new UserInfo();
                 info.setId(userId);
-                info.setPhone(phone);
+                info.setPhone(newPhone);
                 int i = homeService.updatePhone(info);
                 if (i>0){
                     return ResultUtil.success();
