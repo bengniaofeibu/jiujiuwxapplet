@@ -16,6 +16,8 @@ public interface WxUserInfoMapper {
 
     int updateUserStatusById(WxUserInfo record);
 
+    int updateWxUser(WxUserInfo record);
+
     Integer selectNumByMobile(String userMobile);
 
    int updateNoLoginStatusByOpenId(@Param("openId") String openId);

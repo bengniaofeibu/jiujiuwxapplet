@@ -135,6 +135,13 @@
     where open_id = #{openId,jdbcType=BIGINT} AND login_status = 1
   </update>
 
+  <!-- 修改手机号 -->
+  <update id="updateWxUser" parameterType="com.applet.model.WxUserInfo">
+    update t_wx_user_info
+    SET user_mobile = #{userMobile,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+
   <!-- 修改状态为已登录状态 -->
   <update id="updateAlreadyLoginStatusByOpenId" parameterType="com.applet.model.WxUserInfo">
     update t_wx_user_info
