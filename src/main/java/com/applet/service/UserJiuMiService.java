@@ -1,6 +1,7 @@
 package com.applet.service;
 
 
+import com.applet.entity.AcquireJiuMiReq;
 import com.applet.entity.MyJiuMiReq;
 import com.applet.entity.UserInfo.WxUserInfoReq;
 import com.applet.entity.WxPay.WxAppletPayRequest;
@@ -39,5 +40,14 @@ public interface UserJiuMiService {
      */
     @RequestMapping(value = "/user/query/finebounced",method = RequestMethod.POST )
     AppletResult getFineBounced(@RequestBody WxUserInfoReq wxUserinfoReq);
+
+
+    /**
+     * 获取赳米场景
+     * @param acquireJiuMiReq
+     * @return
+     */
+    @RequestMapping(value = "/jm/do/acquireJiuMi",method = RequestMethod.POST )
+    AppletResult doAcquireJiuMi(@RequestBody AcquireJiuMiReq acquireJiuMiReq);
 
 }
