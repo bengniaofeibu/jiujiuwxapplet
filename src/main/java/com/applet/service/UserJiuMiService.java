@@ -2,6 +2,7 @@ package com.applet.service;
 
 
 import com.applet.entity.MyJiuMiReq;
+import com.applet.entity.UserInfo.WxUserInfoReq;
 import com.applet.entity.WxPay.WxAppletPayRequest;
 import com.applet.utils.AppletResult;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -29,5 +30,14 @@ public interface UserJiuMiService {
      */
     @RequestMapping(value = "/jm/get/myJiuMiMission",method = RequestMethod.POST )
     AppletResult getMyJiuMission(@RequestBody MyJiuMiReq myJiuMiReq);
+
+
+    /**
+     * 获取首页罚款弹框
+     * @param wxUserinfoReq
+     * @return
+     */
+    @RequestMapping(value = "/user/query/finebounced",method = RequestMethod.POST )
+    AppletResult getFineBounced(@RequestBody WxUserInfoReq wxUserinfoReq);
 
 }

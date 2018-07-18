@@ -152,6 +152,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         //查询赳米是否已经关闭
         int count = jiumiMissionMapper.selectCountByOnOff();
         userInfoResponse.setJiuMiShowFlag(count > 0 ? 0 : 1);
+
+        userInfoResponse.setIsCanCyclingFlag(info.getIntegral() >= -100 ? 1 : 0);
+
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
 //
@@ -270,7 +273,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             userJiuMiRankListRes.setJiumiLog(jiumiInfo);
             userJiuMiRankListRes.setRankListFlag(1);
             userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
-            userJiuMiRankListRes.setRankListFlag(index + 1);
+            userJiuMiRankListRes.setMyJiuMiRanking(index + 1);
         }
 
         return ResultUtil.success(userJiuMiRankListRes);
