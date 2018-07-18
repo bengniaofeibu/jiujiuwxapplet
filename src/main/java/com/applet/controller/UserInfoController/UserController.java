@@ -3,6 +3,7 @@ package com.applet.controller.UserInfoController;
 import com.applet.annotation.SystemControllerLog;
 import com.applet.annotation.SystemServerLog;
 import com.applet.controller.BaseController;
+import com.applet.entity.AcquireJiuMiReq;
 import com.applet.entity.Cat;
 import com.applet.entity.MyJiuMiReq;
 import com.applet.entity.UserInfo.*;
@@ -193,6 +194,13 @@ public class UserController extends BaseController {
     @GetMapping(value = "/wx_xcx_queryfinebounced")
     public AppletResult getFineBounced(WxUserInfoReq wxUserinfoReq){
         return userJiuMiService.getFineBounced(wxUserinfoReq);
+    }
+
+
+    @SystemControllerLog(funcionExplain = "获取赳米场景")
+    @GetMapping(value = "/wx_xcx_doacquireJiuMi")
+    public AppletResult doAcquireJiuMi(AcquireJiuMiReq acquireJiuMiReq){
+        return userJiuMiService.doAcquireJiuMi(acquireJiuMiReq);
     }
 
 
