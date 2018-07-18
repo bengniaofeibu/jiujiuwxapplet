@@ -8,6 +8,7 @@ import com.applet.entity.Cat;
 import com.applet.entity.MyJiuMiReq;
 import com.applet.entity.UserInfo.*;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.JiumiMissionMapper;
 import com.applet.mapper.JiumiSettingMapper;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
@@ -40,6 +41,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private JiumiSettingMapper jiumiSettingMapper;
+
+    @Autowired
+    private JiumiMissionMapper jiumiMissionMapper;
 
 
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
@@ -238,6 +242,11 @@ public class UserController extends BaseController {
         UserInfoResponse info = userInfoService.addRegisterUser(userInfo, wxUserInfo);
         info.setIsNewUserFlag(1);
         info.setJiumNum(jiuMiNum);
+
+        //查询赳米是否已经关闭
+        int count = jiumiMissionMapper.selectCountByOnOff();
+        info.setJiuMiShowFlag(count > 0 ? 0 : 1);
+
         return info;
     }
 
