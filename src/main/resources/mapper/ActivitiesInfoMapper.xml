@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.ActivitiesInfoMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.ActivitiesInfo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="bike_limit" jdbcType="VARCHAR" property="bikeLimit" />
+    <result column="activity_path" jdbcType="VARCHAR" property="activityPath" />
+    <result column="video_path" jdbcType="VARCHAR" property="videoPath" />
+    <result column="cover_path" jdbcType="VARCHAR" property="coverPath" />
+    <result column="red_package" jdbcType="TINYINT" property="redPackage" />
+    <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="show_time" jdbcType="TIMESTAMP" property="showTime" />
+    <result column="hide_time" jdbcType="TIMESTAMP" property="hideTime" />
+    <result column="is_lexiang" jdbcType="TINYINT" property="isLexiang" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="share_url" jdbcType="VARCHAR" property="shareUrl" />
+    <result column="share_platform" jdbcType="VARCHAR" property="sharePlatform" />
+    <result column="share_title" jdbcType="VARCHAR" property="shareTitle" />
+    <result column="share_pic" jdbcType="VARCHAR" property="sharePic" />
+    <result column="share_content" jdbcType="VARCHAR" property="shareContent" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="credit_limit" jdbcType="INTEGER" property="creditLimit" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="state" jdbcType="CHAR" property="state" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="is_self" jdbcType="INTEGER" property="isSelf" />
+    <result column="version_limit" jdbcType="VARCHAR" property="versionLimit" />
+    <result column="os" jdbcType="INTEGER" property="os" />
+    <result column="img_path2" jdbcType="VARCHAR" property="imgPath2" />
+    <result column="business_info" jdbcType="VARCHAR" property="businessInfo" />
+    <result column="is_carousel" jdbcType="TINYINT" property="isCarousel" />
+    <result column="welfare_title" jdbcType="VARCHAR" property="welfareTitle" />
+    <result column="welfare_sec_title" jdbcType="VARCHAR" property="welfareSecTitle" />
+    <result column="day_limit" jdbcType="TINYINT" property="dayLimit" />
+    <result column="total_limit" jdbcType="INTEGER" property="totalLimit" />
+    <result column="is_goods" jdbcType="TINYINT" property="isGoods" />
+    <result column="carousel_img" jdbcType="VARCHAR" property="carouselImg" />
+    <result column="carousel_time" jdbcType="TINYINT" property="carouselTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, img_path, sort, type, bike_limit, activity_path, video_path, cover_path, red_package, 
+    begin_time, end_time, show_time, hide_time, is_lexiang, description, share_url, share_platform, 
+    share_title, share_pic, share_content, city_name, credit_limit, add_time, update_time, 
+    create_by, state, update_by, del_flag, create_date, update_date, remarks, is_self, 
+    version_limit, os, img_path2, business_info, is_carousel, welfare_title, welfare_sec_title, 
+    day_limit, total_limit, is_goods, carousel_img, carousel_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_activities_info
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_activities_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.applet.model.ActivitiesInfo">
+    insert into t_activities_info (id, img_path, sort, 
+      type, bike_limit, activity_path, 
+      video_path, cover_path, red_package, 
+      begin_time, end_time, show_time, 
+      hide_time, is_lexiang, description, 
+      share_url, share_platform, share_title, 
+      share_pic, share_content, city_name, 
+      credit_limit, add_time, update_time, 
+      create_by, state, update_by, 
+      del_flag, create_date, update_date, 
+      remarks, is_self, version_limit, 
+      os, img_path2, business_info, 
+      is_carousel, welfare_title, welfare_sec_title, 
+      day_limit, total_limit, is_goods, 
+      carousel_img, carousel_time)
+    values (#{id,jdbcType=VARCHAR}, #{imgPath,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{bikeLimit,jdbcType=VARCHAR}, #{activityPath,jdbcType=VARCHAR}, 
+      #{videoPath,jdbcType=VARCHAR}, #{coverPath,jdbcType=VARCHAR}, #{redPackage,jdbcType=TINYINT}, 
+      #{beginTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{showTime,jdbcType=TIMESTAMP}, 
+      #{hideTime,jdbcType=TIMESTAMP}, #{isLexiang,jdbcType=TINYINT}, #{description,jdbcType=VARCHAR}, 
+      #{shareUrl,jdbcType=VARCHAR}, #{sharePlatform,jdbcType=VARCHAR}, #{shareTitle,jdbcType=VARCHAR}, 
+      #{sharePic,jdbcType=VARCHAR}, #{shareContent,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, 
+      #{creditLimit,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{createBy,jdbcType=VARCHAR}, #{state,jdbcType=CHAR}, #{updateBy,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{remarks,jdbcType=VARCHAR}, #{isSelf,jdbcType=INTEGER}, #{versionLimit,jdbcType=VARCHAR}, 
+      #{os,jdbcType=INTEGER}, #{imgPath2,jdbcType=VARCHAR}, #{businessInfo,jdbcType=VARCHAR}, 
+      #{isCarousel,jdbcType=TINYINT}, #{welfareTitle,jdbcType=VARCHAR}, #{welfareSecTitle,jdbcType=VARCHAR}, 
+      #{dayLimit,jdbcType=TINYINT}, #{totalLimit,jdbcType=INTEGER}, #{isGoods,jdbcType=TINYINT}, 
+      #{carouselImg,jdbcType=VARCHAR}, #{carouselTime,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.ActivitiesInfo">
+    insert into t_activities_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="imgPath != null">
+        img_path,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="bikeLimit != null">
+        bike_limit,
+      </if>
+      <if test="activityPath != null">
+        activity_path,
+      </if>
+      <if test="videoPath != null">
+        video_path,
+      </if>
+      <if test="coverPath != null">
+        cover_path,
+      </if>
+      <if test="redPackage != null">
+        red_package,
+      </if>
+      <if test="beginTime != null">
+        begin_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="showTime != null">
+        show_time,
+      </if>
+      <if test="hideTime != null">
+        hide_time,
+      </if>
+      <if test="isLexiang != null">
+        is_lexiang,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="shareUrl != null">
+        share_url,
+      </if>
+      <if test="sharePlatform != null">
+        share_platform,
+      </if>
+      <if test="shareTitle != null">
+        share_title,
+      </if>
+      <if test="sharePic != null">
+        share_pic,
+      </if>
+      <if test="shareContent != null">
+        share_content,
+      </if>
+      <if test="cityName != null">
+        city_name,
+      </if>
+      <if test="creditLimit != null">
+        credit_limit,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="isSelf != null">
+        is_self,
+      </if>
+      <if test="versionLimit != null">
+        version_limit,
+      </if>
+      <if test="os != null">
+        os,
+      </if>
+      <if test="imgPath2 != null">
+        img_path2,
+      </if>
+      <if test="businessInfo != null">
+        business_info,
+      </if>
+      <if test="isCarousel != null">
+        is_carousel,
+      </if>
+      <if test="welfareTitle != null">
+        welfare_title,
+      </if>
+      <if test="welfareSecTitle != null">
+        welfare_sec_title,
+      </if>
+      <if test="dayLimit != null">
+        day_limit,
+      </if>
+      <if test="totalLimit != null">
+        total_limit,
+      </if>
+      <if test="isGoods != null">
+        is_goods,
+      </if>
+      <if test="carouselImg != null">
+        carousel_img,
+      </if>
+      <if test="carouselTime != null">
+        carousel_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="imgPath != null">
+        #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="bikeLimit != null">
+        #{bikeLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPath != null">
+        #{activityPath,jdbcType=VARCHAR},
+      </if>
+      <if test="videoPath != null">
+        #{videoPath,jdbcType=VARCHAR},
+      </if>
+      <if test="coverPath != null">
+        #{coverPath,jdbcType=VARCHAR},
+      </if>
+      <if test="redPackage != null">
+        #{redPackage,jdbcType=TINYINT},
+      </if>
+      <if test="beginTime != null">
+        #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showTime != null">
+        #{showTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hideTime != null">
+        #{hideTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLexiang != null">
+        #{isLexiang,jdbcType=TINYINT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null">
+        #{shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sharePlatform != null">
+        #{sharePlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="shareTitle != null">
+        #{shareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="sharePic != null">
+        #{sharePic,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContent != null">
+        #{shareContent,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="creditLimit != null">
+        #{creditLimit,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=CHAR},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelf != null">
+        #{isSelf,jdbcType=INTEGER},
+      </if>
+      <if test="versionLimit != null">
+        #{versionLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="os != null">
+        #{os,jdbcType=INTEGER},
+      </if>
+      <if test="imgPath2 != null">
+        #{imgPath2,jdbcType=VARCHAR},
+      </if>
+      <if test="businessInfo != null">
+        #{businessInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="isCarousel != null">
+        #{isCarousel,jdbcType=TINYINT},
+      </if>
+      <if test="welfareTitle != null">
+        #{welfareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareSecTitle != null">
+        #{welfareSecTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="dayLimit != null">
+        #{dayLimit,jdbcType=TINYINT},
+      </if>
+      <if test="totalLimit != null">
+        #{totalLimit,jdbcType=INTEGER},
+      </if>
+      <if test="isGoods != null">
+        #{isGoods,jdbcType=TINYINT},
+      </if>
+      <if test="carouselImg != null">
+        #{carouselImg,jdbcType=VARCHAR},
+      </if>
+      <if test="carouselTime != null">
+        #{carouselTime,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.ActivitiesInfo">
+    update t_activities_info
+    <set>
+      <if test="imgPath != null">
+        img_path = #{imgPath,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="bikeLimit != null">
+        bike_limit = #{bikeLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="activityPath != null">
+        activity_path = #{activityPath,jdbcType=VARCHAR},
+      </if>
+      <if test="videoPath != null">
+        video_path = #{videoPath,jdbcType=VARCHAR},
+      </if>
+      <if test="coverPath != null">
+        cover_path = #{coverPath,jdbcType=VARCHAR},
+      </if>
+      <if test="redPackage != null">
+        red_package = #{redPackage,jdbcType=TINYINT},
+      </if>
+      <if test="beginTime != null">
+        begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="showTime != null">
+        show_time = #{showTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hideTime != null">
+        hide_time = #{hideTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isLexiang != null">
+        is_lexiang = #{isLexiang,jdbcType=TINYINT},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="shareUrl != null">
+        share_url = #{shareUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sharePlatform != null">
+        share_platform = #{sharePlatform,jdbcType=VARCHAR},
+      </if>
+      <if test="shareTitle != null">
+        share_title = #{shareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="sharePic != null">
+        share_pic = #{sharePic,jdbcType=VARCHAR},
+      </if>
+      <if test="shareContent != null">
+        share_content = #{shareContent,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="creditLimit != null">
+        credit_limit = #{creditLimit,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=CHAR},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelf != null">
+        is_self = #{isSelf,jdbcType=INTEGER},
+      </if>
+      <if test="versionLimit != null">
+        version_limit = #{versionLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="os != null">
+        os = #{os,jdbcType=INTEGER},
+      </if>
+      <if test="imgPath2 != null">
+        img_path2 = #{imgPath2,jdbcType=VARCHAR},
+      </if>
+      <if test="businessInfo != null">
+        business_info = #{businessInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="isCarousel != null">
+        is_carousel = #{isCarousel,jdbcType=TINYINT},
+      </if>
+      <if test="welfareTitle != null">
+        welfare_title = #{welfareTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="welfareSecTitle != null">
+        welfare_sec_title = #{welfareSecTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="dayLimit != null">
+        day_limit = #{dayLimit,jdbcType=TINYINT},
+      </if>
+      <if test="totalLimit != null">
+        total_limit = #{totalLimit,jdbcType=INTEGER},
+      </if>
+      <if test="isGoods != null">
+        is_goods = #{isGoods,jdbcType=TINYINT},
+      </if>
+      <if test="carouselImg != null">
+        carousel_img = #{carouselImg,jdbcType=VARCHAR},
+      </if>
+      <if test="carouselTime != null">
+        carousel_time = #{carouselTime,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.ActivitiesInfo">
+    update t_activities_info
+    set img_path = #{imgPath,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      bike_limit = #{bikeLimit,jdbcType=VARCHAR},
+      activity_path = #{activityPath,jdbcType=VARCHAR},
+      video_path = #{videoPath,jdbcType=VARCHAR},
+      cover_path = #{coverPath,jdbcType=VARCHAR},
+      red_package = #{redPackage,jdbcType=TINYINT},
+      begin_time = #{beginTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      show_time = #{showTime,jdbcType=TIMESTAMP},
+      hide_time = #{hideTime,jdbcType=TIMESTAMP},
+      is_lexiang = #{isLexiang,jdbcType=TINYINT},
+      description = #{description,jdbcType=VARCHAR},
+      share_url = #{shareUrl,jdbcType=VARCHAR},
+      share_platform = #{sharePlatform,jdbcType=VARCHAR},
+      share_title = #{shareTitle,jdbcType=VARCHAR},
+      share_pic = #{sharePic,jdbcType=VARCHAR},
+      share_content = #{shareContent,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      credit_limit = #{creditLimit,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      state = #{state,jdbcType=CHAR},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      is_self = #{isSelf,jdbcType=INTEGER},
+      version_limit = #{versionLimit,jdbcType=VARCHAR},
+      os = #{os,jdbcType=INTEGER},
+      img_path2 = #{imgPath2,jdbcType=VARCHAR},
+      business_info = #{businessInfo,jdbcType=VARCHAR},
+      is_carousel = #{isCarousel,jdbcType=TINYINT},
+      welfare_title = #{welfareTitle,jdbcType=VARCHAR},
+      welfare_sec_title = #{welfareSecTitle,jdbcType=VARCHAR},
+      day_limit = #{dayLimit,jdbcType=TINYINT},
+      total_limit = #{totalLimit,jdbcType=INTEGER},
+      is_goods = #{isGoods,jdbcType=TINYINT},
+      carousel_img = #{carouselImg,jdbcType=VARCHAR},
+      carousel_time = #{carouselTime,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -551,6 +551,13 @@
     SET m_borrow_bicycle = #{mBorrowBicycle,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <update id="updatePhone" parameterType="com.applet.model.UserInfo">
+    update t_user_info
+    SET phone = #{phone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
   <update id="updateByStatusById" parameterType="com.applet.model.UserInfo">
     update t_user_info
     <set>
