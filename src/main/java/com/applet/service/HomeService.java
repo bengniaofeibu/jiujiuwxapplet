@@ -1,5 +1,6 @@
 package com.applet.service;
 
+import com.applet.model.BicycleWxUserInfo;
 import com.applet.model.UserInfo;
 import com.applet.utils.AppletResult;
 
@@ -11,4 +12,6 @@ public interface HomeService {
     int updatePhone(UserInfo userInfo);
 
     UserInfo selectOldPhone(UserInfo oldUser);
+
+    int updateWxUser(BicycleWxUserInfo bicycleWxUserInfo);
 }
