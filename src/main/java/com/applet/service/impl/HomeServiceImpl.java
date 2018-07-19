@@ -4,7 +4,10 @@ import com.applet.annotation.SystemServerLog;
 import com.applet.entity.home.HomeRes;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.*;
-import com.applet.model.*;
+import com.applet.model.ActivitiesInfo;
+import com.applet.model.AppDisplay;
+import com.applet.model.UserInfo;
+import com.applet.model.WxUserInfo;
 import com.applet.service.HomeService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class HomeServiceImpl implements HomeService {
@@ -82,7 +86,9 @@ public class HomeServiceImpl implements HomeService {
                 }
 
             }
-            return ResultUtil.success(list.get(0));
+            Random random = new Random();
+            int nextInt = random.nextInt(list.size());
+            return ResultUtil.success(list.get(nextInt));
         }else {
             return ResultUtil.error(ResultEnums.NO_POP);
         }
