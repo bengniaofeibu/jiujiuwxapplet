@@ -14,7 +14,7 @@ public interface JiumiLogMapper {
 
     int insert(JiumiLog record);
 
-    int insertSelective(JiumiLog record);
+    int insertJiuMiLog(JiumiLog record);
 
     List<JiumiLog> selectWeekRankingList(@Param("startDate") String startDate);
 

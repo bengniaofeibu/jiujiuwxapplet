@@ -106,6 +106,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfoResponse info = new UserInfoResponse();
         info.setAdminId(userInfo.getId());
         info.setStatus(userInfo.getAccountStatus());
+
+        if (wxUserInfo.getJiuMiShowFlag() == 0) {
+
+            //添加新用户注册赳米记录
+            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 50L, 0, "新用户注册"));
+
+            //添加新用户注册额外赠送赳米记录
+            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 30L, 0, "额外赠送"));
+
+        }
+
         return info;
     }
 
@@ -153,7 +164,16 @@ public class UserInfoServiceImpl implements UserInfoService {
         int count = jiumiMissionMapper.selectCountByOnOff();
         userInfoResponse.setJiuMiShowFlag(count > 0 ? 0 : 1);
 
-        userInfoResponse.setIsCanCyclingFlag(info.getIntegral() >= -100 ? 1 : 0);
+        //判断信用分是否大于70分 小于70不能骑行
+        if (info.getCreditScore() >= 70) {
+            if (count == 0) {
+                userInfoResponse.setIsCanCyclingFlag(info.getIntegral() >= -100 ? 1 : 0);
+            }else {
+                userInfoResponse.setIsCanCyclingFlag(1);
+            }
+        } else {
+            userInfoResponse.setIsCanCyclingFlag(0);
+        }
 
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
@@ -348,7 +368,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 break;
         }
 
-        jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
+        if (jiumiLog != null) {
+            jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
+        }
+
         return jiumiLog;
     }
 }

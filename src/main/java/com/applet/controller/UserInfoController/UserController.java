@@ -8,8 +8,10 @@ import com.applet.entity.Cat;
 import com.applet.entity.MyJiuMiReq;
 import com.applet.entity.UserInfo.*;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.JiumiLogMapper;
 import com.applet.mapper.JiumiMissionMapper;
 import com.applet.mapper.JiumiSettingMapper;
+import com.applet.model.JiumiLog;
 import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
 import com.applet.service.UserJiuMiService;
@@ -44,6 +46,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private JiumiMissionMapper jiumiMissionMapper;
+
+    @Autowired
+    private JiumiLogMapper jiumiLogMapper;
 
 
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
@@ -191,23 +196,22 @@ public class UserController extends BaseController {
 
     /**
      * 获取首页罚款弹框
+     *
      * @param wxUserinfoReq
      * @return
      */
     @SystemControllerLog(funcionExplain = "获取首页罚款弹框")
     @GetMapping(value = "/wx_xcx_queryfinebounced")
-    public AppletResult getFineBounced(WxUserInfoReq wxUserinfoReq){
+    public AppletResult getFineBounced(WxUserInfoReq wxUserinfoReq) {
         return userJiuMiService.getFineBounced(wxUserinfoReq);
     }
 
 
     @SystemControllerLog(funcionExplain = "获取赳米场景")
     @GetMapping(value = "/wx_xcx_doacquireJiuMi")
-    public AppletResult doAcquireJiuMi(AcquireJiuMiReq acquireJiuMiReq){
+    public AppletResult doAcquireJiuMi(AcquireJiuMiReq acquireJiuMiReq) {
         return userJiuMiService.doAcquireJiuMi(acquireJiuMiReq);
     }
-
-
 
 
     /**
@@ -221,7 +225,7 @@ public class UserController extends BaseController {
     private UserInfoResponse baseAddRegisterUser(Integer userSource, String id, String openId, String phone, String country, Integer gender, String picurl) {
 
         int jiuMiNum = jiumiSettingMapper.selectIncValueByMissionId();
-        LOGGER.debug("用户注册送的赳米数 {} ",jiuMiNum);
+        LOGGER.debug("用户注册送的赳米数 {} ", jiuMiNum);
 
         UserInfo userInfo = new UserInfo();
         userInfo.setId(id);
@@ -234,19 +238,20 @@ public class UserController extends BaseController {
         userInfo.setPicurl(picurl == null ? "" : picurl);
         userInfo.setIntegral(jiuMiNum + 30);
 
+
+        //查询赳米是否已经关闭
+        int count = jiumiMissionMapper.selectCountByOnOff();
+
         WxUserInfo wxUserInfo = new WxUserInfo();
         wxUserInfo.setOpenId(openId);
         wxUserInfo.setUserName(USER_DEFAULT_NICKNAME);
         wxUserInfo.setUserMobile(phone);
         wxUserInfo.setRegistFlag(4);
+        wxUserInfo.setJiuMiShowFlag(count);
         UserInfoResponse info = userInfoService.addRegisterUser(userInfo, wxUserInfo);
         info.setIsNewUserFlag(1);
         info.setJiumNum(jiuMiNum);
-
-        //查询赳米是否已经关闭
-        int count = jiumiMissionMapper.selectCountByOnOff();
         info.setJiuMiShowFlag(count > 0 ? 0 : 1);
-
         return info;
     }
 

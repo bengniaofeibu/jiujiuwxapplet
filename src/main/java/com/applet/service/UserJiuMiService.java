@@ -50,4 +50,12 @@ public interface UserJiuMiService {
     @RequestMapping(value = "/jm/do/acquireJiuMi",method = RequestMethod.POST )
     AppletResult doAcquireJiuMi(@RequestBody AcquireJiuMiReq acquireJiuMiReq);
 
+    /**
+     * 获取赳米场景
+     * @param acquireJiuMiReq
+     * @return
+     */
+    @RequestMapping(value = "/loginApi/send/jiumi",method = RequestMethod.POST )
+    AppletResult loginApiSendJiumi(@RequestBody AcquireJiuMiReq acquireJiuMiReq);
+
 }

@@ -3,6 +3,7 @@ package com.applet.controller.WxAppletPayController;
 import com.applet.annotation.SystemControllerLog;
 import com.applet.controller.BaseController;
 import com.applet.entity.Cat;
+import com.applet.entity.UserInfo.UserPayReq;
 import com.applet.entity.WxPay.WxAppletPayCallBack;
 import com.applet.entity.WxPay.WxAppletPayRequest;
 import com.applet.enums.ResultEnums;
@@ -12,6 +13,7 @@ import com.applet.mapper.UserInfoMapper;
 import com.applet.model.AmountRecord;
 import com.applet.model.UserInfo;
 import com.applet.service.ConsumerService;
+import com.applet.service.UserFinePay;
 import com.applet.service.WxAppleetPayService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
@@ -44,6 +46,10 @@ public class ApplePayController extends BaseController {
     @Autowired
     private ConsumerService consumerService;
 
+    @Autowired
+    private UserFinePay userFinePay;
+
+    private static final String DEPOSIT_RECHARGE="押金充值";
 
 
     @SystemControllerLog(funcionExplain = "进入微信支付控制层")
@@ -51,20 +57,28 @@ public class ApplePayController extends BaseController {
     public AppletResult appletPlay(WxAppletPayRequest wxAppletPayRequest, HttpServletRequest request, @RequestHeader("session") String session) {
         try {
 
-            UserInfo userInfo = getUserInfoByUserId(wxAppletPayRequest.getAdminId());
-            LOGGER.debug("userInfo {}",JSONUtil.toJSONString(userInfo));
+            if (DEPOSIT_RECHARGE.equals(wxAppletPayRequest.getModeName())){
+                UserInfo userInfo = getUserInfoByUserId(wxAppletPayRequest.getAdminId());
+                LOGGER.debug("userInfo {}", JSONUtil.toJSONString(userInfo));
 
-            if (userInfo!= null && (userInfo.getAccountStatus() == 1 || userInfo.getAccountStatus() == 3 )){
-                  return ResultUtil.error(ResultEnums.USER_ALREADY_RECHARGE);
+                if (userInfo != null && (userInfo.getAccountStatus() == 1 || userInfo.getAccountStatus() == 3)) {
+                    return ResultUtil.error(ResultEnums.USER_ALREADY_RECHARGE);
+                }
             }
 
             String remoteAddr = request.getRemoteAddr();
             wxAppletPayRequest.setAmount(amount);
-            AppletResult appletResult=consumerService.appletPlay(wxAppletPayRequest,remoteAddr,session);
+            AppletResult appletResult = consumerService.appletPlay(wxAppletPayRequest, remoteAddr, session);
             return appletResult;
         } catch (Exception e) {
             LOGGER.error("ERROR {}", e.getMessage());
             return ResultUtil.error(ResultEnums.SERVER_ERROR);
         }
+    }
+
+    @SystemControllerLog(funcionExplain = "进入微信罚款控制层")
+    @GetMapping(value = "/wx_xcx_userfinepay")
+    public AppletResult userFinePay(UserPayReq userPayReq) {
+        return userFinePay.userFinePay(userPayReq);
     }
 }

@@ -52,7 +52,7 @@
     <result column="user_source" jdbcType="INTEGER" property="userSource" />
   </resultMap>
   <sql id="Base_Column_List">
-     id, phone,account_status,add_time, m_borrow_bicycle, m_borrow_bicycle_date,integral
+     id, phone,account_status,add_time, m_borrow_bicycle, m_borrow_bicycle_date,integral,credit_score
   </sql>
   <select id="selectUserInfoById" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
