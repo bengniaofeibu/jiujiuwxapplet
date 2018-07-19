@@ -76,6 +76,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private static final String USER_PICURL_PREFIX = "https://jjdc-client.oss-cn-shanghai.aliyuncs.com/";
 
+    private static final String CREDIT_NOT_DEFICIENCY = "您的信用分不足，无法骑行";
+
+    private static final String JIUMI_NOT_DEFICIENCY = "您的赳米数量不足，无法骑行";
+
     @Value("${spring.data.elasticsearch.index}")
     private String esIndex;
 
@@ -167,11 +171,19 @@ public class UserInfoServiceImpl implements UserInfoService {
         //判断信用分是否大于70分 小于70不能骑行
         if (info.getCreditScore() >= 70) {
             if (count == 0) {
-                userInfoResponse.setIsCanCyclingFlag(info.getIntegral() >= -100 ? 1 : 0);
-            }else {
+
+                if (info.getIntegral() >= -100) {
+                    userInfoResponse.setIsCanCyclingFlag(1);
+                } else {
+                    userInfoResponse.setNotCanCylingMsg(JIUMI_NOT_DEFICIENCY);
+                    userInfoResponse.setIsCanCyclingFlag(0);
+                }
+
+            } else {
                 userInfoResponse.setIsCanCyclingFlag(1);
             }
         } else {
+            userInfoResponse.setNotCanCylingMsg(CREDIT_NOT_DEFICIENCY);
             userInfoResponse.setIsCanCyclingFlag(0);
         }
 
