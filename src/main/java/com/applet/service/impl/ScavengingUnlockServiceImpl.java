@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -50,6 +51,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
 
     @Override
     @SystemServerLog(funcionExplain = "扫码开锁")
+    @Transactional(rollbackFor = Exception.class)
     public AppletResult scaveningUnlock(ScaveningUnlockRequest scaveningUnlockRequest) {
         String bicycleNo = CommonUtils.DecodeBarcode(scaveningUnlockRequest.getBarcode());
         if (!bicycleNo.equals("0")) {
@@ -74,7 +76,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
                                         //短信开锁
                                         int resSmsOpenlock = openLockBySms(scaveningUnlockRequest, jsonBikeInfo, userInfo,scaveningUnlockRequest.getJiuMiShowFlag());
                                         if (resSmsOpenlock == 1) {
-
+                                            updateUserJiuMi(scaveningUnlockRequest.getJiuMiShowFlag(),userInfo.getId());
                                             return ResultUtil.success();
                                         } else {
                                             return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_FAILSMSOPENLOCK);
@@ -83,6 +85,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
                                         //GPRS开锁
                                         int resGprsOpenlock = openLockByGprs(scaveningUnlockRequest, jsonBikeInfo, userInfo,scaveningUnlockRequest.getJiuMiShowFlag());
                                         if (resGprsOpenlock == 1) {
+                                            updateUserJiuMi(scaveningUnlockRequest.getJiuMiShowFlag(),userInfo.getId());
                                             return ResultUtil.success();
                                         } else {
                                             return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_FAILGPRSOPENLOCK);
@@ -92,6 +95,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
                                     //GPRS开锁
                                     int resGprsOpenlock = openLockByGprs(scaveningUnlockRequest, jsonBikeInfo, userInfo,scaveningUnlockRequest.getJiuMiShowFlag());
                                     if (resGprsOpenlock == 1) {
+                                        updateUserJiuMi(scaveningUnlockRequest.getJiuMiShowFlag(),userInfo.getId());
                                         return ResultUtil.success();
                                     } else {
                                         return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_FAILGPRSOPENLOCK);
@@ -115,10 +119,9 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
     }
 
     //判断是否扣除赳米
-    private void updateUserJiuMi(int jiuMiShowFlag, String userId,String tranId) {
+    private void updateUserJiuMi(int jiuMiShowFlag, String userId) {
         if (jiuMiShowFlag == 1) {
             userInfoMapper.updateJiuMiByUserId(new UserInfo(userId, 10));
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userId,19,-10L,tranId,0,DESC));
         }
     }
 
@@ -154,7 +157,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setFenceStatus(0);
             transRecordSupply.setOrderFrom("xcx");
 
-            updateUserJiuMi(jiuMiShowFlag,userInfo.getId(),uuid);
+            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
 
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);
@@ -198,7 +201,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setOrderFrom("xcx");
             transRecordSupply.setUpdateTime(new Date());
 
-            updateUserJiuMi(jiuMiShowFlag,userInfo.getId(),uuid);
+            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
 
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);

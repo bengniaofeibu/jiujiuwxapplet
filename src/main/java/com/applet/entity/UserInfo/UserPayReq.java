@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 
 public class UserPayReq{
 
+    private String userId;
+
     private String orderNumber;
 
     private BigDecimal totalAmount;
@@ -17,6 +19,14 @@ public class UserPayReq{
 
     /** 订单用途 **/
     private String orderSubject;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getOrderNumber() {
         return orderNumber;

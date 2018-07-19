@@ -49,17 +49,21 @@ public class ApplePayController extends BaseController {
     @Autowired
     private UserFinePay userFinePay;
 
+    private static final String DEPOSIT_RECHARGE="押金充值";
+
 
     @SystemControllerLog(funcionExplain = "进入微信支付控制层")
     @GetMapping(value = "/wx_xcx_appletpay")
     public AppletResult appletPlay(WxAppletPayRequest wxAppletPayRequest, HttpServletRequest request, @RequestHeader("session") String session) {
         try {
 
-            UserInfo userInfo = getUserInfoByUserId(wxAppletPayRequest.getAdminId());
-            LOGGER.debug("userInfo {}", JSONUtil.toJSONString(userInfo));
+            if (DEPOSIT_RECHARGE.equals(wxAppletPayRequest.getModeName())){
+                UserInfo userInfo = getUserInfoByUserId(wxAppletPayRequest.getAdminId());
+                LOGGER.debug("userInfo {}", JSONUtil.toJSONString(userInfo));
 
-            if (userInfo != null && (userInfo.getAccountStatus() == 1 || userInfo.getAccountStatus() == 3)) {
-                return ResultUtil.error(ResultEnums.USER_ALREADY_RECHARGE);
+                if (userInfo != null && (userInfo.getAccountStatus() == 1 || userInfo.getAccountStatus() == 3)) {
+                    return ResultUtil.error(ResultEnums.USER_ALREADY_RECHARGE);
+                }
             }
 
             String remoteAddr = request.getRemoteAddr();
