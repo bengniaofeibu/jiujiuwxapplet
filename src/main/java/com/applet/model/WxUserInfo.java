@@ -29,6 +29,9 @@ public class WxUserInfo {
 
     private Date updateTime;
 
+    /** 赳米是否显示标识 0 否 1 是 **/
+    private Integer jiuMiShowFlag;
+
     public Long getId() {
         return id;
     }
@@ -131,5 +134,13 @@ public class WxUserInfo {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getJiuMiShowFlag() {
+        return jiuMiShowFlag;
+    }
+
+    public void setJiuMiShowFlag(Integer jiuMiShowFlag) {
+        this.jiuMiShowFlag = jiuMiShowFlag;
     }
 }

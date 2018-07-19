@@ -44,6 +44,13 @@ public class JiumiLog extends BaseModel{
     public JiumiLog() {
     }
 
+    public JiumiLog(String userId, Integer jmType, Long incValue, Integer delFlag, String jmDesc) {
+        this.userId = userId;
+        this.jmType = jmType;
+        this.incValue = incValue;
+        this.delFlag = delFlag;
+        this.jmDesc = jmDesc;
+    }
 
     public JiumiLog(String userId, Integer jmType, Long incValue, String objId, Integer delFlag, String jmDesc) {
         this.userId = userId;

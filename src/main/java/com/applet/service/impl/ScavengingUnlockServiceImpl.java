@@ -157,6 +157,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setFenceStatus(0);
             transRecordSupply.setOrderFrom("xcx");
 
+            //记录骑行赳米记录
             jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
 
             userInfo.setmBorrowBicycle(4);
@@ -201,6 +202,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setOrderFrom("xcx");
             transRecordSupply.setUpdateTime(new Date());
 
+            //记录骑行赳米记录
             jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
 
             userInfo.setmBorrowBicycle(4);
