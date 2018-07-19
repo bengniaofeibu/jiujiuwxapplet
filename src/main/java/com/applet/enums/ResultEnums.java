@@ -54,7 +54,9 @@ public enum ResultEnums {
 
     PHONG_USERD(1007,"手机号已经被绑定"),
 
-    NOT_YOUR_PHONE(1008,"原手机号错误");
+    NOT_YOUR_PHONE(1008,"原手机号错误"),
+
+    NO_POP(1009,"没有弹窗信息");
 
     private Integer code;
 

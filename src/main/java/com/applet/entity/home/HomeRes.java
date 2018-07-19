@@ -2,7 +2,7 @@ package com.applet.entity.home;
 
 public class HomeRes {
 
-    private int id;
+    private Integer id;
 
     //显示的话术
     private String displayWords;
@@ -11,11 +11,21 @@ public class HomeRes {
 
     private String actionUrl;
 
-    public int getId() {
+    private Integer actionType;
+
+    public Integer getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(Integer actionType) {
+        this.actionType = actionType;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

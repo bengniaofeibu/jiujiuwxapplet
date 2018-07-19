@@ -2,6 +2,7 @@ package com.applet.service.impl;
 
 import com.applet.annotation.SystemServerLog;
 import com.applet.entity.home.HomeRes;
+import com.applet.enums.ResultEnums;
 import com.applet.mapper.*;
 import com.applet.model.*;
 import com.applet.service.HomeService;
@@ -54,24 +55,36 @@ public class HomeServiceImpl implements HomeService {
                 if (appDisplay.getDisplayWords()!=null){
                     res.setDisplayWords(appDisplay.getDisplayWords());
                 }
-                ActivitiesInfo activitiesInfo = activitiesInfoMapper.selectByPrimaryKey(appDisplay.getActivityId());
-                if (activitiesInfo!=null){
-                    if (StringUtil.isEmpty(activitiesInfo.getImgPath2())){
-                        res.setPicUrl("");
-                    }else {
-                        res.setPicUrl(activitiesInfo.getImgPath2().split(",")[0]);
-                    }
-                    if (StringUtil.isEmpty(activitiesInfo.getActivityPath())){
-                        res.setActionUrl("");
-                    }else {
-                        res.setActionUrl(activitiesInfo.getActivityPath());
-                    }
+
+                if (appDisplay.getActionType()!=null){
+                    res.setActionType(appDisplay.getActionType().intValue());
                 }
-                list.add(res);
+
+                if (appDisplay.getActivityId()!=null&&appDisplay.getActivityId()!=""){
+                    ActivitiesInfo activitiesInfo = activitiesInfoMapper.selectByPrimaryKey(appDisplay.getActivityId());
+                    if (activitiesInfo!=null){
+                        if (StringUtil.isEmpty(activitiesInfo.getImgPath2())){
+                            res.setPicUrl("");
+                        }else {
+                            res.setPicUrl(activitiesInfo.getImgPath2().split(",")[0]);
+                        }
+                        if (StringUtil.isEmpty(activitiesInfo.getActivityPath())){
+                            res.setActionUrl("");
+                        }else {
+                            res.setActionUrl(activitiesInfo.getActivityPath());
+                        }
+                    }
+                    list.add(res);
+                }else {
+                    res.setPicUrl(appDisplay.getDisplayPic());
+                    res.setActionUrl(null);
+                    list.add(res);
+                }
+
             }
             return ResultUtil.success(list.get(0));
         }else {
-            return ResultUtil.success(list);
+            return ResultUtil.error(ResultEnums.NO_POP);
         }
 
     }
