@@ -30,6 +30,6 @@
         select
         <include refid="Base_Column_Limit_Hour"/>
         from t_limit_operate_config where  NOW()
-        BETWEEN begin_date AND end_date AND config_flag=0 AND del_flag =0 and os=0 and city_no=-1
+        BETWEEN begin_date AND end_date AND limit_hour > 0 AND config_flag=0 AND del_flag =0 and os=0 and city_no=-1
     </select>
 </mapper>

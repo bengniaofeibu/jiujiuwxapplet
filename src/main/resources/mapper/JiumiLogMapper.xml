@@ -59,7 +59,7 @@
       #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
       #{updateDate,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.applet.model.JiumiLog">
+  <insert id="insertJiuMiLog" parameterType="com.applet.model.JiumiLog">
     insert into t_jiumi_log
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

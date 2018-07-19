@@ -4,13 +4,16 @@ import com.applet.annotation.SystemServerLog;
 import com.applet.entity.LockRequest.ScaveningUnlockRequest;
 import com.applet.entity.LockResponse.ScaveningUnlockResponse;
 import com.applet.enums.ResultEnums;
+import com.applet.mapper.JiumiLogMapper;
 import com.applet.mapper.TransRecordSupplyMapper;
 import com.applet.mapper.TransRecordTempMapper;
 import com.applet.mapper.UserInfoMapper;
+import com.applet.model.JiumiLog;
 import com.applet.model.TransRecordSupply;
 import com.applet.model.TransRecordTemp;
 import com.applet.model.UserInfo;
 import com.applet.service.ScavengingUnlockService;
+import com.applet.service.UserJiuMiService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.HttpClient.HttpLockApiUtils;
 import com.applet.utils.ResultUtil;
@@ -38,6 +41,11 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
     @Autowired
     private TransRecordSupplyMapper transRecordSupplyMapper;
 
+    @Autowired
+    private JiumiLogMapper jiumiLogMapper;
+
+    private static final String DESC="小程序骑行消费";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ScavengingUnlockServiceImpl.class);
 
     @Override
@@ -64,11 +72,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
                                 if (jsonBikeInfo.get("lockSeries") != null) {
                                     if (Integer.parseInt(jsonBikeInfo.get("lockSeries").toString()) == 3) {
                                         //短信开锁
-                                        int resSmsOpenlock = openLockBySms(scaveningUnlockRequest, jsonBikeInfo, userInfo);
+                                        int resSmsOpenlock = openLockBySms(scaveningUnlockRequest, jsonBikeInfo, userInfo,scaveningUnlockRequest.getJiuMiShowFlag());
                                         if (resSmsOpenlock == 1) {
-
-                                            //扣除用户赳米数
-                                            updateUserJiuMi(scaveningUnlockRequest.getJiuMiShowFlag(),userInfo.getId());
 
                                             return ResultUtil.success();
                                         } else {
@@ -76,12 +81,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
                                         }
                                     } else {
                                         //GPRS开锁
-                                        int resGprsOpenlock = openLockByGprs(scaveningUnlockRequest, jsonBikeInfo, userInfo);
+                                        int resGprsOpenlock = openLockByGprs(scaveningUnlockRequest, jsonBikeInfo, userInfo,scaveningUnlockRequest.getJiuMiShowFlag());
                                         if (resGprsOpenlock == 1) {
-
-                                            //扣除用户赳米数
-                                            updateUserJiuMi(scaveningUnlockRequest.getJiuMiShowFlag(),userInfo.getId());
-
                                             return ResultUtil.success();
                                         } else {
                                             return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_FAILGPRSOPENLOCK);
@@ -89,12 +90,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
                                     }
                                 } else {
                                     //GPRS开锁
-                                    int resGprsOpenlock = openLockByGprs(scaveningUnlockRequest, jsonBikeInfo, userInfo);
+                                    int resGprsOpenlock = openLockByGprs(scaveningUnlockRequest, jsonBikeInfo, userInfo,scaveningUnlockRequest.getJiuMiShowFlag());
                                     if (resGprsOpenlock == 1) {
-
-                                        //扣除用户赳米数
-                                        updateUserJiuMi(scaveningUnlockRequest.getJiuMiShowFlag(),userInfo.getId());
-
                                         return ResultUtil.success();
                                     } else {
                                         return ResultUtil.error(ResultEnums.SCAVENING_UNLOCK_FAILGPRSOPENLOCK);
@@ -118,13 +115,14 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
     }
 
     //判断是否扣除赳米
-    private void updateUserJiuMi(int jiuMiShowFlag, String userId) {
+    private void updateUserJiuMi(int jiuMiShowFlag, String userId,String tranId) {
         if (jiuMiShowFlag == 1) {
             userInfoMapper.updateJiuMiByUserId(new UserInfo(userId, 10));
+            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userId,19,-10L,tranId,0,DESC));
         }
     }
 
-    private int openLockBySms(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo) {
+    private int openLockBySms(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo,int jiuMiShowFlag) {
         int res = HttpLockApiUtils.OpenLockBySms(jsonBikeInfo.get("gprsNo").toString());
         if (res == 1) {
             //生成订单
@@ -156,6 +154,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setFenceStatus(0);
             transRecordSupply.setOrderFrom("xcx");
 
+            updateUserJiuMi(jiuMiShowFlag,userInfo.getId(),uuid);
+
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);
             transRecordSupplyMapper.insert(transRecordSupply);
@@ -166,7 +166,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
         }
     }
 
-    private int openLockByGprs(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo) {
+    private int openLockByGprs(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo,int jiuMiShowFlag) {
         int res = HttpLockApiUtils.OpenLockByGprs(jsonBikeInfo.get("simNo").toString());
         if (res == 1) {
             //生成订单
@@ -197,6 +197,8 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setFenceStatus(0);
             transRecordSupply.setOrderFrom("xcx");
             transRecordSupply.setUpdateTime(new Date());
+
+            updateUserJiuMi(jiuMiShowFlag,userInfo.getId(),uuid);
 
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);

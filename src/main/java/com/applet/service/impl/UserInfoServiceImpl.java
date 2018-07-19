@@ -348,7 +348,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 break;
         }
 
-        jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
+        if (jiumiLog != null ){
+            jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
+        }
+
         return jiumiLog;
     }
 }
