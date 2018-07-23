@@ -44,6 +44,10 @@ public class JiumiLog extends BaseModel{
     public JiumiLog() {
     }
 
+    public JiumiLog(String picurl) {
+        this.picurl = picurl;
+    }
+
     public JiumiLog(String userId, Integer jmType, Long incValue, Integer delFlag, String jmDesc) {
         this.userId = userId;
         this.jmType = jmType;

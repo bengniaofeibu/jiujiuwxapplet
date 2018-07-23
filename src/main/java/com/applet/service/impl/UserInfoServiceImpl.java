@@ -61,6 +61,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     private JiumiMissionMapper jiumiMissionMapper;
 
     @Autowired
+    private FineDetailMapper fineDetailMapper;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
@@ -186,6 +189,9 @@ public class UserInfoServiceImpl implements UserInfoService {
             userInfoResponse.setNotCanCylingMsg(CREDIT_NOT_DEFICIENCY);
             userInfoResponse.setIsCanCyclingFlag(0);
         }
+
+        int fineCont = fineDetailMapper.selectCountByUserIdAndStatus(id);
+        userInfoResponse.setIsFine(fineCont == 0?0:1);
 
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
@@ -385,6 +391,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         if (jiumiLog != null) {
             jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
+        }else {
+            UserInfo userInfo = userInfoMapper.selectUserInfoById(userId);
+            return new JiumiLog(setUserPicurl(userInfo.getPicurl()));
         }
 
         return jiumiLog;
