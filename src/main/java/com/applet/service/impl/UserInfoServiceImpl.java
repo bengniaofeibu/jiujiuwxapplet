@@ -366,6 +366,9 @@ public class UserInfoServiceImpl implements UserInfoService {
                 jiumiLogs = jiumiLogList;
                 break;
         }
+
+        //过滤出赳米总数小于0的
+        jiumiLogs = jiumiLogs.stream().filter(x->x.getJiuSum()>=0).collect(Collectors.toList());
         return jiumiLogs;
     }
 
