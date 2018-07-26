@@ -28,7 +28,7 @@
     update_date, remarks, status
   </sql>
   <select id="selectCountByUserIdAndStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
-    SELECT COUNT(1) FROM t_fine_detail WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = 0 AND 
+    SELECT COUNT(1) FROM t_fine_detail WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = 0 AND fine_type = 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_fine_detail

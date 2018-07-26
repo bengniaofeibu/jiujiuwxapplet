@@ -203,7 +203,7 @@ public class UserController extends BaseController {
     @SystemControllerLog(funcionExplain = "获取首页罚款弹框")
     @GetMapping(value = "/wx_xcx_queryfinebounced")
     public AppletResult getFineBounced(WxUserInfoReq wxUserinfoReq) {
-        return userJiuMiService.getFineBounced(wxUserinfoReq);
+        return userJiuMiService.getCreditDeductionBounced(wxUserinfoReq);
     }
 
 

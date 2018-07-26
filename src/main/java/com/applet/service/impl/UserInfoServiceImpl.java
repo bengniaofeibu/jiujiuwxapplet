@@ -9,6 +9,7 @@ import com.applet.enums.ResultEnums;
 import com.applet.mapper.*;
 import com.applet.model.*;
 import com.applet.service.UserInfoService;
+import com.applet.service.UserJiuMiService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.*;
@@ -64,6 +65,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     private FineDetailMapper fineDetailMapper;
 
     @Autowired
+    private UserJiuMiService userJiuMiService;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
@@ -116,11 +120,20 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         if (wxUserInfo.getJiuMiShowFlag() == 0) {
 
-            //添加新用户注册赳米记录
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 50L, 0, "新用户注册"));
+            if (userInfo.getUserSource() != 0) {
 
-            //添加新用户注册额外赠送赳米记录
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 30L, 0, "额外赠送"));
+                //添加新用户注册赳米记录
+                jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 50L, 0, "新用户注册"));
+
+                //添加新用户注册额外赠送赳米记录
+                jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 30L, 0, "额外赠送"));
+
+            } else {
+
+                //新用户登录
+                userJiuMiService.doRegisterByFriend(userInfo.getId());
+
+            }
 
         }
 
@@ -191,7 +204,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         int fineCont = fineDetailMapper.selectCountByUserIdAndStatus(id);
-        userInfoResponse.setIsFine(fineCont == 0?0:1);
+        userInfoResponse.setIsFine(fineCont == 0 ? 0 : 1);
 
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
@@ -374,7 +387,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
 
         //过滤出赳米总数小于0的
-        jiumiLogs = jiumiLogs.stream().filter(x->x.getJiuSum()>=0).collect(Collectors.toList());
+        jiumiLogs = jiumiLogs.stream().filter(x -> x.getJiuSum() >= 0).collect(Collectors.toList());
         return jiumiLogs;
     }
 
@@ -391,7 +404,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         if (jiumiLog != null) {
             jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
-        }else {
+        } else {
             UserInfo userInfo = userInfoMapper.selectUserInfoById(userId);
             return new JiumiLog(setUserPicurl(userInfo.getPicurl()));
         }
