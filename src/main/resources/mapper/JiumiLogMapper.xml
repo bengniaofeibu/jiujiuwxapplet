@@ -39,12 +39,12 @@
 
   <!-- 前100名用户总赳米统计 -->
   <select id="selectTotalJiuMiNum"  resultMap="BaseResultMap">
-    SELECT nickname as nike_name,picurl, integral as jiu_sum FROM t_user_info ORDER BY integral desc LIMIT 100
+    SELECT id AS user_id ,nickname as nike_name,picurl, integral as jiu_sum FROM t_user_info ORDER BY integral desc LIMIT 100
   </select>
 
   <!-- 该用户总赳米统计 -->
   <select id="selectTotalJiuMiNumByUserId"  resultMap="BaseResultMap">
-    SELECT nickname as nike_name,picurl, integral as jiu_sum FROM t_user_info WHERE id=#{id,jdbcType=VARCHAR}
+    SELECT id AS user_id,nickname as nike_name,picurl, integral as jiu_sum FROM t_user_info WHERE id=#{id,jdbcType=VARCHAR}
   </select>
 
   <insert id="insert" parameterType="com.applet.model.JiumiLog">

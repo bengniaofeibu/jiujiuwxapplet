@@ -33,7 +33,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoServiceImpl.class);
 
-
     @Autowired
     private UserInfoMapper userInfoMapper;
 
@@ -81,11 +80,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     public static final String USER_JIUMI_TOTAL = "user:jiumi:total";
 
+    public static final String USER_JIUMI_PERSONAL_TOTAL = "user:jiumi:personaltotal:";
+
     private static final String USER_PICURL_PREFIX = "https://jjdc-client.oss-cn-shanghai.aliyuncs.com/";
 
     private static final String CREDIT_NOT_DEFICIENCY = "您的信用分不足，无法骑行";
 
     private static final String JIUMI_NOT_DEFICIENCY = "您的赳米数量不足，无法骑行";
+
+    private static final Integer EXPIRE_TIME = 43200;
 
     @Value("${spring.data.elasticsearch.index}")
     private String esIndex;
@@ -377,12 +380,20 @@ public class UserInfoServiceImpl implements UserInfoService {
                 break;
             case 1:
                 jiumiLogs = (List<JiumiLog>) redisUtil.getValueObj(USER_JIUMI_TOTAL);
-                List<JiumiLog> jiumiLogList = new LinkedList<>();
-                for (int i = 0; i < jiumiLogs.size(); i++) {
-                    JiumiLog jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
-                    jiumiLogList.add(jiumiLog);
+
+                JiumiLog jiumiLog;
+                if (jiumiLogs !=null && jiumiLogs.size()>0){
+                    List<JiumiLog> jiumiLogList = new LinkedList<>();
+                    for (int i = 0; i < jiumiLogs.size(); i++) {
+                         jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
+                        jiumiLogList.add(jiumiLog);
+                    }
+                    jiumiLogs = jiumiLogList;
+                }else {
+                     jiumiLogs = jiumiLogMapper.selectTotalJiuMiNum();
+                     redisUtil.setObjAndExpire(UserInfoServiceImpl.USER_JIUMI_TOTAL,jiumiLogs,EXPIRE_TIME);
                 }
-                jiumiLogs = jiumiLogList;
+
                 break;
         }
 
