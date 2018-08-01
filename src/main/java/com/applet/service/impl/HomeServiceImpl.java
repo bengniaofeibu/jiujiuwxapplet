@@ -64,14 +64,13 @@ public class HomeServiceImpl implements HomeService {
                     res.setActionType(appDisplay.getActionType().intValue());
                 }
 
+                if (appDisplay.getDisplayPic()!=null){
+                    res.setPicUrl(appDisplay.getDisplayPic());
+                }
+
                 if (appDisplay.getActivityId()!=null&&appDisplay.getActivityId()!=""){
                     ActivitiesInfo activitiesInfo = activitiesInfoMapper.selectByPrimaryKey(appDisplay.getActivityId());
                     if (activitiesInfo!=null){
-                        if (StringUtil.isEmpty(activitiesInfo.getImgPath2())){
-                            res.setPicUrl("");
-                        }else {
-                            res.setPicUrl(activitiesInfo.getImgPath2().split(",")[0]);
-                        }
                         if (StringUtil.isEmpty(activitiesInfo.getActivityPath())){
                             res.setActionUrl("");
                         }else {
@@ -80,7 +79,6 @@ public class HomeServiceImpl implements HomeService {
                     }
                     list.add(res);
                 }else {
-                    res.setPicUrl(appDisplay.getDisplayPic());
                     res.setActionUrl(null);
                     list.add(res);
                 }
