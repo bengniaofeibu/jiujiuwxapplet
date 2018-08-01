@@ -307,12 +307,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         //设置用户头像
         jiumiLogs = setUserHead(jiumiLogs);
 
-        //根据本周总赳米数倒序
-        jiumiLogs.sort(Comparator.comparingInt(JiumiLog::getJiuSum).reversed());
-
-
         List<String> userIds = jiumiLogs.stream().map(jiumiLog -> jiumiLog.getUserId()).collect(Collectors.toList());
-
 
         UserJiuMiRankListRes userJiuMiRankListRes = new UserJiuMiRankListRes();
         userJiuMiRankListRes.setJiumiLogs(jiumiLogs);
