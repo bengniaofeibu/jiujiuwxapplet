@@ -119,13 +119,13 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
     }
 
     //判断是否扣除赳米
-    private void updateUserJiuMi(int jiuMiShowFlag, String userId) {
-        if (jiuMiShowFlag == 1) {
+    private void updateUserJiuMi(Integer jiuMiShowFlag, String userId) {
+        if (jiuMiShowFlag != null && jiuMiShowFlag == 1) {
             userInfoMapper.updateJiuMiByUserId(new UserInfo(userId, 10));
         }
     }
 
-    private int openLockBySms(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo,int jiuMiShowFlag) {
+    private int openLockBySms(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo,Integer jiuMiShowFlag) {
         int res = HttpLockApiUtils.OpenLockBySms(jsonBikeInfo.get("gprsNo").toString());
         if (res == 1) {
             //生成订单
@@ -157,8 +157,10 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setFenceStatus(0);
             transRecordSupply.setOrderFrom("xcx");
 
-            //记录骑行赳米记录
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
+            if (jiuMiShowFlag != null && jiuMiShowFlag == 1){
+                //记录骑行赳米记录
+                jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
+            }
 
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);
@@ -170,7 +172,7 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
         }
     }
 
-    private int openLockByGprs(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo,int jiuMiShowFlag) {
+    private int openLockByGprs(ScaveningUnlockRequest scaveningUnlockRequest, JSONObject jsonBikeInfo, UserInfo userInfo,Integer jiuMiShowFlag) {
         int res = HttpLockApiUtils.OpenLockByGprs(jsonBikeInfo.get("simNo").toString());
         if (res == 1) {
             //生成订单
@@ -202,8 +204,11 @@ public class ScavengingUnlockServiceImpl implements ScavengingUnlockService {
             transRecordSupply.setOrderFrom("xcx");
             transRecordSupply.setUpdateTime(new Date());
 
-            //记录骑行赳米记录
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
+            if (jiuMiShowFlag != null && jiuMiShowFlag == 1){
+
+                //记录骑行赳米记录
+                jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(),19,-10L,uuid,0,DESC));
+            }
 
             userInfo.setmBorrowBicycle(4);
             userInfoMapper.updateByPrimaryKeySelective(userInfo);

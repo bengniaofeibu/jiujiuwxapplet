@@ -38,8 +38,8 @@ public interface UserJiuMiService {
      * @param wxUserinfoReq
      * @return
      */
-    @RequestMapping(value = "/user/query/finebounced",method = RequestMethod.POST )
-    AppletResult getFineBounced(@RequestBody WxUserInfoReq wxUserinfoReq);
+    @RequestMapping(value = "/user/query/finecreditbounced",method = RequestMethod.POST )
+    AppletResult getCreditDeductionBounced(@RequestBody WxUserInfoReq wxUserinfoReq);
 
 
     /**
@@ -50,12 +50,13 @@ public interface UserJiuMiService {
     @RequestMapping(value = "/jm/do/acquireJiuMi",method = RequestMethod.POST )
     AppletResult doAcquireJiuMi(@RequestBody AcquireJiuMiReq acquireJiuMiReq);
 
+
     /**
-     * 获取赳米场景
-     * @param acquireJiuMiReq
+     * 被邀请人首次登录
+     * @param userId
      * @return
      */
-    @RequestMapping(value = "/loginApi/send/jiumi",method = RequestMethod.POST )
-    AppletResult loginApiSendJiumi(@RequestBody AcquireJiuMiReq acquireJiuMiReq);
+    @RequestMapping(value = "/loginApi/friend/jiumi",method = RequestMethod.POST)
+    AppletResult doRegisterByFriend(@RequestParam("userId") String userId);
 
 }

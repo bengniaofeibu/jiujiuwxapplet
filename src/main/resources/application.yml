@@ -1,8 +1,8 @@
 server:
   port: 3333
-#  ssl.key-store: classpath:214075900090332.pfx
-#  ssl.key-store-password: 214075900090332
-#  ssl.keyStoreType: PKCS12
+  ssl.key-store: classpath:214075900090332.pfx
+  ssl.key-store-password: 214075900090332
+  ssl.keyStoreType: PKCS12
 
 spring:
   freemarker:
@@ -39,5 +39,3 @@ wxApplet.sessionTime: 1800
 
 
 api.sign: 402880496058fbb7016058fc201e0009
-
-user.jiumNum: 50

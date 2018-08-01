@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.FineDetailMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.FineDetail">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="bicycle_no" jdbcType="VARCHAR" property="bicycleNo" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="fence" jdbcType="VARCHAR" property="fence" />
+    <result column="fine_money" jdbcType="BIGINT" property="fineMoney" />
+    <result column="fine_type" jdbcType="INTEGER" property="fineType" />
+    <result column="fine_credit" jdbcType="BIGINT" property="fineCredit" />
+    <result column="nopark_times" jdbcType="INTEGER" property="noparkTimes" />
+    <result column="recharge_id" jdbcType="VARCHAR" property="rechargeId" />
+    <result column="trans_id" jdbcType="VARCHAR" property="transId" />
+    <result column="del_flag" jdbcType="INTEGER" property="delFlag" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bicycle_no, user_id, real_name, phone, fence, fine_money, fine_type, fine_credit, 
+    nopark_times, recharge_id, trans_id, del_flag, create_by, create_date, update_by, 
+    update_date, remarks, status
+  </sql>
+  <select id="selectCountByUserIdAndStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM t_fine_detail WHERE user_id = #{userId,jdbcType=VARCHAR} AND status = 0 AND fine_type = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_fine_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.applet.model.FineDetail">
+    insert into t_fine_detail (id, bicycle_no, user_id, 
+      real_name, phone, fence, 
+      fine_money, fine_type, fine_credit, 
+      nopark_times, recharge_id, trans_id, 
+      del_flag, create_by, create_date, 
+      update_by, update_date, remarks, 
+      status)
+    values (#{id,jdbcType=VARCHAR}, #{bicycleNo,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{fence,jdbcType=VARCHAR}, 
+      #{fineMoney,jdbcType=BIGINT}, #{fineType,jdbcType=INTEGER}, #{fineCredit,jdbcType=BIGINT}, 
+      #{noparkTimes,jdbcType=INTEGER}, #{rechargeId,jdbcType=VARCHAR}, #{transId,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=INTEGER}, #{createBy,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{remarks,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.applet.model.FineDetail">
+    insert into t_fine_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bicycleNo != null">
+        bicycle_no,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="fence != null">
+        fence,
+      </if>
+      <if test="fineMoney != null">
+        fine_money,
+      </if>
+      <if test="fineType != null">
+        fine_type,
+      </if>
+      <if test="fineCredit != null">
+        fine_credit,
+      </if>
+      <if test="noparkTimes != null">
+        nopark_times,
+      </if>
+      <if test="rechargeId != null">
+        recharge_id,
+      </if>
+      <if test="transId != null">
+        trans_id,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="bicycleNo != null">
+        #{bicycleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fence != null">
+        #{fence,jdbcType=VARCHAR},
+      </if>
+      <if test="fineMoney != null">
+        #{fineMoney,jdbcType=BIGINT},
+      </if>
+      <if test="fineType != null">
+        #{fineType,jdbcType=INTEGER},
+      </if>
+      <if test="fineCredit != null">
+        #{fineCredit,jdbcType=BIGINT},
+      </if>
+      <if test="noparkTimes != null">
+        #{noparkTimes,jdbcType=INTEGER},
+      </if>
+      <if test="rechargeId != null">
+        #{rechargeId,jdbcType=VARCHAR},
+      </if>
+      <if test="transId != null">
+        #{transId,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.applet.model.FineDetail">
+    update t_fine_detail
+    <set>
+      <if test="bicycleNo != null">
+        bicycle_no = #{bicycleNo,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fence != null">
+        fence = #{fence,jdbcType=VARCHAR},
+      </if>
+      <if test="fineMoney != null">
+        fine_money = #{fineMoney,jdbcType=BIGINT},
+      </if>
+      <if test="fineType != null">
+        fine_type = #{fineType,jdbcType=INTEGER},
+      </if>
+      <if test="fineCredit != null">
+        fine_credit = #{fineCredit,jdbcType=BIGINT},
+      </if>
+      <if test="noparkTimes != null">
+        nopark_times = #{noparkTimes,jdbcType=INTEGER},
+      </if>
+      <if test="rechargeId != null">
+        recharge_id = #{rechargeId,jdbcType=VARCHAR},
+      </if>
+      <if test="transId != null">
+        trans_id = #{transId,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.applet.model.FineDetail">
+    update t_fine_detail
+    set bicycle_no = #{bicycleNo,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      fence = #{fence,jdbcType=VARCHAR},
+      fine_money = #{fineMoney,jdbcType=BIGINT},
+      fine_type = #{fineType,jdbcType=INTEGER},
+      fine_credit = #{fineCredit,jdbcType=BIGINT},
+      nopark_times = #{noparkTimes,jdbcType=INTEGER},
+      recharge_id = #{rechargeId,jdbcType=VARCHAR},
+      trans_id = #{transId,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=INTEGER},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

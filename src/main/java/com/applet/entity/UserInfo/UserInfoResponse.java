@@ -38,6 +38,11 @@ public class UserInfoResponse extends BaseResponseEntity {
     /** 是否可骑行 0 否 1 是 **/
     private Integer isCanCyclingFlag;
 
+    /** 是否有罚款 0 否 1 是 **/
+    private Integer isFine;
+
+    private String notCanCylingMsg;
+
     public String getAdminId() {
         return adminId;
     }
@@ -132,5 +137,21 @@ public class UserInfoResponse extends BaseResponseEntity {
 
     public void setIsCanCyclingFlag(Integer isCanCyclingFlag) {
         this.isCanCyclingFlag = isCanCyclingFlag;
+    }
+
+    public String getNotCanCylingMsg() {
+        return notCanCylingMsg;
+    }
+
+    public void setNotCanCylingMsg(String notCanCylingMsg) {
+        this.notCanCylingMsg = notCanCylingMsg;
+    }
+
+    public Integer getIsFine() {
+        return isFine;
+    }
+
+    public void setIsFine(Integer isFine) {
+        this.isFine = isFine;
     }
 }

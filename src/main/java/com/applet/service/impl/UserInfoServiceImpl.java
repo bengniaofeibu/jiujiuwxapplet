@@ -9,6 +9,7 @@ import com.applet.enums.ResultEnums;
 import com.applet.mapper.*;
 import com.applet.model.*;
 import com.applet.service.UserInfoService;
+import com.applet.service.UserJiuMiService;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.*;
@@ -31,7 +32,6 @@ import java.util.stream.Collectors;
 public class UserInfoServiceImpl implements UserInfoService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoServiceImpl.class);
-
 
     @Autowired
     private UserInfoMapper userInfoMapper;
@@ -61,6 +61,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     private JiumiMissionMapper jiumiMissionMapper;
 
     @Autowired
+    private FineDetailMapper fineDetailMapper;
+
+    @Autowired
+    private UserJiuMiService userJiuMiService;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @Autowired
@@ -74,7 +80,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     public static final String USER_JIUMI_TOTAL = "user:jiumi:total";
 
+    public static final String USER_JIUMI_PERSONAL_TOTAL = "user:jiumi:personaltotal:";
+
     private static final String USER_PICURL_PREFIX = "https://jjdc-client.oss-cn-shanghai.aliyuncs.com/";
+
+    private static final String CREDIT_NOT_DEFICIENCY = "您的信用分不足，无法骑行";
+
+    private static final String JIUMI_NOT_DEFICIENCY = "您的赳米数量不足，无法骑行";
+
+    private static final Integer EXPIRE_TIME = 43200;
 
     @Value("${spring.data.elasticsearch.index}")
     private String esIndex;
@@ -109,11 +123,20 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         if (wxUserInfo.getJiuMiShowFlag() == 0) {
 
-            //添加新用户注册赳米记录
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 50L, 0, "新用户注册"));
+            if (userInfo.getUserSource() != 0) {
 
-            //添加新用户注册额外赠送赳米记录
-            jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 30L, 0, "额外赠送"));
+                //添加新用户注册赳米记录
+                jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 50L, 0, "新用户注册"));
+
+                //添加新用户注册额外赠送赳米记录
+                jiumiLogMapper.insertJiuMiLog(new JiumiLog(userInfo.getId(), 13, 30L, 0, "额外赠送"));
+
+            } else {
+
+                //新用户登录
+                userJiuMiService.doRegisterByFriend(userInfo.getId());
+
+            }
 
         }
 
@@ -167,13 +190,24 @@ public class UserInfoServiceImpl implements UserInfoService {
         //判断信用分是否大于70分 小于70不能骑行
         if (info.getCreditScore() >= 70) {
             if (count == 0) {
-                userInfoResponse.setIsCanCyclingFlag(info.getIntegral() >= -100 ? 1 : 0);
-            }else {
+
+                if (info.getIntegral() >= -100) {
+                    userInfoResponse.setIsCanCyclingFlag(1);
+                } else {
+                    userInfoResponse.setNotCanCylingMsg(JIUMI_NOT_DEFICIENCY);
+                    userInfoResponse.setIsCanCyclingFlag(0);
+                }
+
+            } else {
                 userInfoResponse.setIsCanCyclingFlag(1);
             }
         } else {
+            userInfoResponse.setNotCanCylingMsg(CREDIT_NOT_DEFICIENCY);
             userInfoResponse.setIsCanCyclingFlag(0);
         }
+
+        int fineCont = fineDetailMapper.selectCountByUserIdAndStatus(id);
+        userInfoResponse.setIsFine(fineCont == 0 ? 0 : 1);
 
 //        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
 //        LOGGER.debug("用户登录状态 -->{}",loginStatus);
@@ -346,14 +380,25 @@ public class UserInfoServiceImpl implements UserInfoService {
                 break;
             case 1:
                 jiumiLogs = (List<JiumiLog>) redisUtil.getValueObj(USER_JIUMI_TOTAL);
-                List<JiumiLog> jiumiLogList = new LinkedList<>();
-                for (int i = 0; i < jiumiLogs.size(); i++) {
-                    JiumiLog jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
-                    jiumiLogList.add(jiumiLog);
+
+                JiumiLog jiumiLog;
+                if (jiumiLogs !=null && jiumiLogs.size()>0){
+                    List<JiumiLog> jiumiLogList = new LinkedList<>();
+                    for (int i = 0; i < jiumiLogs.size(); i++) {
+                         jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
+                        jiumiLogList.add(jiumiLog);
+                    }
+                    jiumiLogs = jiumiLogList;
+                }else {
+                     jiumiLogs = jiumiLogMapper.selectTotalJiuMiNum();
+                     redisUtil.setObjAndExpire(UserInfoServiceImpl.USER_JIUMI_TOTAL,jiumiLogs,EXPIRE_TIME);
                 }
-                jiumiLogs = jiumiLogList;
+
                 break;
         }
+
+        //过滤出赳米总数小于0的
+        jiumiLogs = jiumiLogs.stream().filter(x -> x.getJiuSum() >= 0).collect(Collectors.toList());
         return jiumiLogs;
     }
 
@@ -370,6 +415,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         if (jiumiLog != null) {
             jiumiLog.setPicurl(setUserPicurl(jiumiLog.getPicurl()));
+        } else {
+            UserInfo userInfo = userInfoMapper.selectUserInfoById(userId);
+            return new JiumiLog(setUserPicurl(userInfo.getPicurl()));
         }
 
         return jiumiLog;
