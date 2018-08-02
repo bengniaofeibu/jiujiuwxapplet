@@ -58,7 +58,7 @@
     <include refid="Base_Column_List" />
     from t_app_display
     where (city_name LIKE concat('%',#{cityName},'%') OR city_name = 'default')
-    AND NOW() BETWEEN display_time AND del_time AND os in (0,3) AND del_flag=0 AND `type`=5 AND is_ad != 1
+    AND NOW() BETWEEN display_time AND del_time AND os = 3 AND del_flag=0 AND `type`=5 AND is_ad != 1
     ORDER BY sort DESC
   </select>
 
