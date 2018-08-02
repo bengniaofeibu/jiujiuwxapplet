@@ -27,7 +27,7 @@
   <!-- 前100名用户赳米本周统计 -->
   <select id="selectWeekRankingList" parameterType="java.lang.String" resultMap="BaseResultMap">
   SELECT user_id,(SELECT userinfo.nickname  FROM t_user_info userinfo  WHERE userinfo.id = jiumlog.user_id) as nike_name , (SELECT  userinfo.picurl  FROM t_user_info userinfo  WHERE userinfo.id = jiumlog.user_id) as picurl,
-  SUM(jiumlog.inc_value) AS jiu_sum FROM t_jiumi_log jiumlog   WHERE jiumlog.create_date BETWEEN #{startDate} and NOW()  GROUP BY jiumlog.user_id LIMIT 100
+  SUM(jiumlog.inc_value) AS jiu_sum FROM t_jiumi_log jiumlog   WHERE jiumlog.create_date BETWEEN #{startDate} and NOW()  GROUP BY jiumlog.user_id ORDER BY jiu_sum desc LIMIT 100
 </select>
 
   <!-- 该用户本周领取赳米统计 -->
