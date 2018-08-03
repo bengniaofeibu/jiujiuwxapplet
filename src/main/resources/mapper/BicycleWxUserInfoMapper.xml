@@ -16,11 +16,19 @@
     id, union_id, open_id, user_id, user_name, user_mobile, userid_hash, add_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from t_bicycle_wx_user_info
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectUserIdByUnionId" parameterType="java.lang.String" resultType="java.lang.String">
+    select
+    user_id
+    from t_bicycle_wx_user_info
+    where union_id =  #{unionId,jdbcType=VARCHAR} limit 1
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_bicycle_wx_user_info
     where id = #{id,jdbcType=BIGINT}

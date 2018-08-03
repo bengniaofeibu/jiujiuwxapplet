@@ -5,6 +5,8 @@ import com.applet.model.UserInfo;
 import com.applet.model.WxUserInfo;
 import com.applet.utils.AppletResult;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface UserInfoService {
 
     /**
@@ -43,5 +45,16 @@ public interface UserInfoService {
      * @return
      */
     AppletResult getUserJiuMiWeekRankingList(String userId,Integer rankingType);
+
+
+    /**
+     * 记录用户unionId
+     * @param wxUserInfo
+     * @return
+     */
+    AppletResult recordUserUnionId(WxUserInfo wxUserInfo);
+
+
+    String getWeiXinPublicFollowOrCancel(HttpServletRequest request)  throws Exception;
 
 }

@@ -23,6 +23,18 @@ public class AcquireJiuMiReq{
 
     private String plat="wx";
 
+
+    public AcquireJiuMiReq(){
+
+    }
+
+
+    public AcquireJiuMiReq(Integer type, Integer jmType, String userId) {
+        this.type = type;
+        this.jmType = jmType;
+        this.userId = userId;
+    }
+
     public Integer getMinute() {
         return minute;
     }

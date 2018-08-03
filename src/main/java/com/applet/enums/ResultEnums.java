@@ -56,7 +56,11 @@ public enum ResultEnums {
 
     NOT_YOUR_PHONE(1008,"原手机号错误"),
 
-    NO_POP(1009,"没有弹窗信息");
+    NO_POP(1009,"没有弹窗信息"),
+
+    UNIONID_RECORD_FAIL(1010,"unionId记录失败"),
+
+    OPEN_ID_EXIST(1011,"该微信已经被其他手机号绑定");
 
     private Integer code;
 

@@ -3,6 +3,7 @@
 <mapper namespace="com.applet.mapper.WxUserInfoMapper">
   <resultMap id="BaseResultMap" type="com.applet.model.WxUserInfo">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="union_id" jdbcType="VARCHAR" property="unionId" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
@@ -22,6 +23,21 @@
     from t_wx_user_info
     where user_mobile = #{userMobile,jdbcType=VARCHAR} limit 1
   </select>
+
+  <select id="selectCountByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    COUNT(1)
+    from t_wx_user_info
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectUserIdByUnionId" parameterType="java.lang.String" resultType="java.lang.String">
+    select
+    user_id
+    from t_wx_user_info
+    where union_id = #{unionId,jdbcType=VARCHAR} limit 1
+  </select>
+
   <select id="selectNumByMobile" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
     COUNT(1)
@@ -41,9 +57,12 @@
     delete from t_wx_user_info
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insertSelective" parameterType="com.applet.model.WxUserInfo">
+  <insert id="insertSelective" parameterType="com.applet.model.WxUserInfo" keyProperty="id" useGeneratedKeys="true">
     insert into t_wx_user_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="unionId != null">
+        union_id,
+      </if>
       <if test="openId != null">
         open_id,
       </if>
@@ -75,9 +94,9 @@
         update_time,
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
+       <if test="unionId != null">
+         #{unionId,jdbcType=VARCHAR},
+       </if>
       <if test="openId != null">
         #{openId,jdbcType=VARCHAR},
       </if>
@@ -112,6 +131,9 @@
   <update id="updateUserStatusById" parameterType="com.applet.model.WxUserInfo">
     update t_wx_user_info
     <set>
+      <if test="unionId != null">
+        union_id = #{unionId,jdbcType=VARCHAR},
+      </if>
       <if test="depositFlag != null">
         deposit_flag = #{depositFlag,jdbcType=INTEGER},
       </if>

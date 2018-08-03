@@ -52,6 +52,15 @@ public interface UserJiuMiService {
 
 
     /**
+     * 判断用户是否进行过微信绑定
+     * @param myJiuMiReq
+     * @return
+     */
+    @RequestMapping(value = "/jm/get/isTrueWx",method = RequestMethod.POST )
+    AppletResult getIsTrueWxBangDing(@RequestBody MyJiuMiReq myJiuMiReq);
+
+
+    /**
      * 被邀请人首次登录
      * @param userId
      * @return

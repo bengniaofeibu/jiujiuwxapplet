@@ -50,6 +50,7 @@ public class AuthorizedController {
             sb.append("&grant_type=authorization_code");
             String s = HttpsUtil.httpMethodGet(sb.toString());
             JSONObject jo = JSON.parseObject(s);
+            LOGGER.debug("初始化 JSONObject {}",jo);
 
             String openId = jo.getString("openid");
             String sessionKey = jo.getString("session_key");
