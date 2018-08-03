@@ -22,8 +22,8 @@ public class TimingTask {
     @Autowired
     private JiumiLogMapper jiumiLogMapper;
 
-    //每周星期天凌晨1点执行一次
-    @Scheduled(cron = "0 0 1 ? * SUN")
+    //每周星期天12点执行一次
+    @Scheduled(cron = "0 0 12 ? * SUN")
     public void recordUserWeekRankingList(){
         List<String> userIds = userInfoService.getJiumiLogs(0).stream().map(x->x.getUserId()).limit(3).collect(Collectors.toList());
 
