@@ -337,24 +337,31 @@ public class UserInfoServiceImpl implements UserInfoService {
 
             int index = userIds.indexOf(userId);
 
-            //获取上一名的赳米数
-            Integer jiuSum = jiumiLogs.get(index - 1).getJiuSum();
-            userJiuMiRankListRes.setRankListFlag(1);
+            if (index == 0){
 
-            if (rankingType == 1) {
+                userJiuMiRankListRes.setJiuSumDiff(0);
 
-                Integer meJiuSum = jiumiLogs.get(index).getJiuSum();
-                userJiuMiRankListRes.setJiuSumDiff(jiuSum - meJiuSum);
+            }else {
 
-                if (jiumiInfo != null) {
-                    jiumiInfo.setJiuSum(meJiuSum);
+                //获取上一名的赳米数
+                Integer jiuSum = jiumiLogs.get(index - 1).getJiuSum();
+
+                if (rankingType == 1) {
+
+                    Integer meJiuSum = jiumiLogs.get(index).getJiuSum();
+                    userJiuMiRankListRes.setJiuSumDiff(jiuSum - meJiuSum);
+
+                    if (jiumiInfo != null) {
+                        jiumiInfo.setJiuSum(meJiuSum);
+                    }
+
+                } else {
+
+                    userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
                 }
-
-            } else {
-
-                userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
             }
 
+            userJiuMiRankListRes.setRankListFlag(1);
             userJiuMiRankListRes.setMyJiuMiRanking(index + 1);
         }
 

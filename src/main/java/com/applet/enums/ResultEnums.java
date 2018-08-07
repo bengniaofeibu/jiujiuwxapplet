@@ -4,6 +4,10 @@ public enum ResultEnums {
 
     SERVER_ERROR(500,"系统内部错误"),
 
+    RETURN_PARAM_LOST(201,"参数缺失"),
+
+    RETURN_PARAM_SIGN(202,"签名验证失败"),
+
     NOT_FOUND_SESSION(404, "错误SESSION"),
 
     PARAM_IS_NULL(1001,"参数为空"),
@@ -60,7 +64,9 @@ public enum ResultEnums {
 
     UNIONID_RECORD_FAIL(1010,"unionId记录失败"),
 
-    OPEN_ID_EXIST(1011,"该微信已经被其他手机号绑定");
+    OPEN_ID_EXIST(1011,"该微信已经被其他手机号绑定"),
+
+    JIU_MI_INSUFFICIENT(1012,"赳米数量不足，无法骑行");
 
     private Integer code;
 

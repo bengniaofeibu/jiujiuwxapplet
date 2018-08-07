@@ -587,4 +587,14 @@
     </set>
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <update id="updateAddJiuMiByUserId" parameterType="com.applet.model.UserInfo">
+    update t_user_info
+    <set>
+      <if test="integral != null">
+        integral = integral+#{integral,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
 </mapper>

@@ -2,7 +2,9 @@ package com.applet.aspect;
 
 import com.applet.annotation.SystemControllerLog;
 import com.applet.annotation.SystemServerLog;
+import com.applet.utils.ApiManager;
 import com.applet.utils.common.JSONUtil;
+import jiujiu.Head.ApiHead;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -41,7 +43,13 @@ public class SystemLogAspect {
     private void controllerAspect(){}
 
     @Before("controllerAspect()")
-    public void before(JoinPoint joinPoint){
+    public void before(JoinPoint joinPoint)throws Exception{
+
+//        //签名认证
+//        ApiHead head = ApiManager.getApiHead(request);
+//
+//        ApiManager.valideHeadApi(head);
+
         Date date=new Date();
         threadLocal.set(date);
         if (LOGGER.isDebugEnabled()){

@@ -8,4 +8,6 @@ public interface ScavengingUnlockService {
 
     AppletResult scaveningUnlock(ScaveningUnlockRequest scaveningUnlockRequest);
 
+    void updateUserJiuMi(Integer jiuMiShowFlag, String userId,String transRecordOrderId);
+
 }
