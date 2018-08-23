@@ -13,6 +13,7 @@ import com.applet.model.UserInfo;
 import com.applet.service.RidingService;
 import com.applet.service.ScavengingUnlockService;
 import com.applet.service.UserInfoService;
+import com.applet.service.impl.UserInfoServiceImpl;
 import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.EncrypUtil;
@@ -50,6 +51,7 @@ public class BaseController {
     protected NyCollectionInfoMapper nyCollectionInfoMapper;
 
 
+
     /**
      * 获取授权信息
      *
@@ -79,6 +81,16 @@ public class BaseController {
             return new JSONObject(userInfo);
         }
         return null;
+    }
+
+
+    /**
+     * 记录用户登录标识
+     * @param userPhone 用户手机号
+     * @param openId 用户微信标识
+     */
+    protected void recordUserLoginFlag(String userPhone,String openId){
+          redisUtil.setStr(UserInfoServiceImpl.USER_LOGIN_KEY+userPhone,openId);
     }
 
 

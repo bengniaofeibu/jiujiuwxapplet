@@ -73,14 +73,14 @@ public class UserController extends BaseController {
 
 //            WxDetailedUserInfo detailedUserInfo = JSONUtil.parseObject(request.getRawData(), WxDetailedUserInfo.class);
 
+
             JSONObject jsonObject = encryptedDataToObject(request.getGeneralEncryptedData(), authInfo.getSessionKey(), request.getIv());
             LOGGER.debug("EncryptedData {} ", jsonObject);
 
             String phoneNumber = jsonObject.get("phoneNumber").toString();
 
-
             //记录或更新用户登录状态
-//            userInfoService.updateUserLoginStatus(phoneNumber,authInfo.getOpenId());
+            recordUserLoginFlag(phoneNumber,authInfo.getOpenId());
 
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phoneNumber);
@@ -122,9 +122,8 @@ public class UserController extends BaseController {
 
             String phone = request.getPhone();
 
-
             //记录或更新用户登录状态
-//            userInfoService.updateUserLoginStatus(phone,authInfo.getOpenId());
+            recordUserLoginFlag(phone,authInfo.getOpenId());
 
             //验证用户是否小程序上已经注册
             AppletResult userRegistered = isUserRegistered(phone);
@@ -252,7 +251,6 @@ public class UserController extends BaseController {
         return userJiuMiService.getIsTrueWxBangDing(myJiuMiReq);
     }
 
-    @SystemControllerLog(funcionExplain = "获取用户关注公众号或取消公众号信息")
     @RequestMapping(value = "/get/weixinpublicfolloworcancel")
     public String getWeiXinPublicFollowOrCancel(String token, String signature, String timestamp, String nonce,
                                                 String echostr,HttpServletRequest request) throws Exception {

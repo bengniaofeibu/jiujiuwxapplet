@@ -26,13 +26,6 @@ public interface UserInfoService {
 
 
     /**
-     * 更新用户登录状态
-     * @param phone
-     * @return
-     */
-    void updateUserLoginStatus(String phone,String openId);
-
-    /**
      * 记录用户打开小程序
      * @param userInfo
      */

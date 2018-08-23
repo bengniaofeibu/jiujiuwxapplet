@@ -7,9 +7,11 @@ import lombok.Setter;
 @Setter
 public class WxPublicText {
 
+    public static final int JIUMI_NUM = 260;
+
     private static final String MSG_TYPE = "text";
 
-    private static final String TEXT_CONTENT = "完成公众号任务，加50赳米";
+    private static final String TEXT_CONTENT = "完成公众号任务，加"+JIUMI_NUM+"赳米";
 
     private static final TextContent CONTENT = new TextContent();
 

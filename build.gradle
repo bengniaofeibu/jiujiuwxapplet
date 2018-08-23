@@ -28,6 +28,7 @@ repositories {
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 }
 
+
 configurations {
     providedRuntime
     mybatisGenerator
@@ -47,7 +48,6 @@ dependencies {
     mybatisGenerator 'mysql:mysql-connector-java:5.1.40'
     mybatisGenerator 'tk.mybatis:mapper:3.3.9'
     compile "org.springframework.boot:spring-boot-configuration-processor"
-
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
     compile('com.github.pagehelper:pagehelper-spring-boot-starter:1.1.1')
@@ -88,6 +88,8 @@ dependencies {
     //es
     compile group: 'org.elasticsearch.client', name: 'transport', version: '5.5.2'
     compile group: 'org.elasticsearch', name: 'elasticsearch', version: '5.5.2'
+    compile group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '4.11'
+
 }
 
 dependencyManagement {

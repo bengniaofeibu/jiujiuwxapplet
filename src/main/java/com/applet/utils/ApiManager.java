@@ -5,6 +5,8 @@ import com.applet.enums.ResultEnums;
 import com.applet.exception.SiteException;
 import jiujiu.Head.ApiHead;
 import jiujiu.Verification.ApiVerification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ApiManager {
     private static final ThreadLocal<ApiHead> threadLocalHead=new ThreadLocal<>();
 
-    private final static String APP_KEY="402880496058fbb7016058fc201e0009";
+    private final static String APP_KEY="012110785149daa6016058fc201e1118";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApiManager.class);
 
     public static ApiHead getApiHead(HttpServletRequest request){
 
@@ -29,10 +33,10 @@ public class ApiManager {
         requestHead.setTimestamp(request.getHeader("timestamp"));
         requestHead.setUserId(request.getHeader("userId"));
         requestHead.setPlat(request.getHeader("plat"));
-        requestHead.setLongitude(request.getHeader("longitude "));
-        requestHead.setLatitude(request.getHeader("latitude "));
+//        requestHead.setLongitude(request.getHeader("longitude "));
+//        requestHead.setLatitude(request.getHeader("latitude "));
         requestHead.setIsTest(request.getIntHeader("isTest"));
-        requestHead.setAppVersion(request.getHeader("appVersion"));
+//        requestHead.setAppVersion(request.getHeader("appVersion"));
         return requestHead;
     }
 
@@ -45,6 +49,8 @@ public class ApiManager {
         String valideMsg= ApiVerification.VerificationHandle(head,APP_KEY);
         JSONObject jsonObject=JSONObject.parseObject(valideMsg);
         //参数格式校验失败
+
+        LOGGER.debug("签名验证code {}",jsonObject.getInteger("code"));
 
         if(jsonObject.getInteger("code")==201){
             SiteException siteException=new
