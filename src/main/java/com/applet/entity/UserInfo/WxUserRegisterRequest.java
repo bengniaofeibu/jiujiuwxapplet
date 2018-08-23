@@ -4,6 +4,8 @@ import com.applet.entity.BaseEntity.BaseRequestEntity;
 
 public class WxUserRegisterRequest extends BaseRequestEntity{
 
+    private String userId;
+
     private String rawData;
 
     private String signature;
@@ -15,6 +17,14 @@ public class WxUserRegisterRequest extends BaseRequestEntity{
     private String iv;
 
     private String cityName;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getRawData() {
         return rawData;

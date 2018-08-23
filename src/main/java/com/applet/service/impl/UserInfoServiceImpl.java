@@ -1,9 +1,13 @@
 package com.applet.service.impl;
 
 import com.applet.annotation.SystemServerLog;
+import com.applet.entity.AcquireJiuMiReq;
 import com.applet.entity.UserInfo.EsUserInfo;
 import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.entity.UserInfo.UserJiuMiRankListRes;
+import com.applet.entity.Wx.WxPublicMsg;
+import com.applet.entity.Wx.WxPublicTemplate;
+import com.applet.entity.Wx.WxPublicUserInfo;
 import com.applet.entity.geo.GeoInfo;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.*;
@@ -22,6 +26,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,6 +77,15 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private EsUtil esUtil;
 
+    @Autowired
+    private WxPublicInfoMapper wxPublicInfoMapper;
+
+    @Autowired
+    private WxPublicUtil wxPublicUtil;
+
+    @Autowired
+    private BicycleWxUserInfoMapper bicycleWxUserInfoMapper;
+
     private static final int FREE_DEPOSIT_STATUS_NO = 0;
 
     private static final int FREE_DEPOSIT_STATUS_YES = 1;
@@ -80,13 +94,19 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     public static final String USER_JIUMI_TOTAL = "user:jiumi:total";
 
-    public static final String USER_JIUMI_PERSONAL_TOTAL = "user:jiumi:personaltotal:";
-
     private static final String USER_PICURL_PREFIX = "https://jjdc-client.oss-cn-shanghai.aliyuncs.com/";
 
     private static final String CREDIT_NOT_DEFICIENCY = "您的信用分不足，无法骑行";
 
     private static final String JIUMI_NOT_DEFICIENCY = "您的赳米数量不足，无法骑行";
+
+    private static final String WX_PUBLIC_DES = "完成公众号任务";
+
+    private static final String SUBSCRIBE = "subscribe";
+
+    private static final String UNSUBSCRIBE = "unsubscribe";
+
+    private static final Integer WX_PUBLIC_COMPLETE_JIUMI_NUM = 50;
 
     private static final Integer EXPIRE_TIME = 43200;
 
@@ -311,21 +331,164 @@ public class UserInfoServiceImpl implements UserInfoService {
 
         UserJiuMiRankListRes userJiuMiRankListRes = new UserJiuMiRankListRes();
         userJiuMiRankListRes.setJiumiLogs(jiumiLogs);
-        userJiuMiRankListRes.setJiumiLog(jiumiInfo == null ? new JiumiLog() : jiumiInfo);
 
         //如果在排名内
         if (userIds.contains(userId)) {
+
             int index = userIds.indexOf(userId);
 
-            //获取上一名的赳米数
-            Integer jiuSum = jiumiLogs.get(index - 1).getJiuSum();
-            userJiuMiRankListRes.setJiumiLog(jiumiInfo);
+            if (index == 0){
+
+                userJiuMiRankListRes.setJiuSumDiff(0);
+
+            }else {
+
+                //获取上一名的赳米数
+                Integer jiuSum = jiumiLogs.get(index - 1).getJiuSum();
+
+                if (rankingType == 1) {
+
+                    Integer meJiuSum = jiumiLogs.get(index).getJiuSum();
+                    userJiuMiRankListRes.setJiuSumDiff(jiuSum - meJiuSum);
+
+                    if (jiumiInfo != null) {
+                        jiumiInfo.setJiuSum(meJiuSum);
+                    }
+
+                } else {
+
+                    userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
+                }
+            }
+
             userJiuMiRankListRes.setRankListFlag(1);
-            userJiuMiRankListRes.setJiuSumDiff(jiuSum - jiumiInfo.getJiuSum());
             userJiuMiRankListRes.setMyJiuMiRanking(index + 1);
         }
 
+        userJiuMiRankListRes.setJiumiLog(jiumiInfo == null ? new JiumiLog() : jiumiInfo);
         return ResultUtil.success(userJiuMiRankListRes);
+    }
+
+    /**
+     * 记录用户unionId
+     *
+     * @param wxUserInfo
+     * @return
+     */
+    @SystemServerLog(funcionExplain = "记录用户unionId")
+    @Override
+    public AppletResult recordUserUnionId(WxUserInfo wxUserInfo) {
+
+        //更新用户unionId
+        wxUserInfoMapper.updateUserStatusById(wxUserInfo);
+
+        WxUserInfo userInfo = new WxUserInfo(WX_PUBLIC_DES, WX_PUBLIC_COMPLETE_JIUMI_NUM);
+
+        if (wxPublicInfoMapper.selectCountByUnionId(wxUserInfo.getUnionId()) > 0) {
+
+            //送赳米
+            userJiuMiService.doAcquireJiuMi(new AcquireJiuMiReq(3,1,wxUserInfo.getUserId()));
+
+            userInfo.setIsCompleteFocus(1);
+            return ResultUtil.success(userInfo);
+        }
+
+
+        return ResultUtil.success(userInfo);
+    }
+
+
+    /**
+     * 获取用户关注公众号或取消公众号信息
+     *
+     * @param request
+     * @return
+     */
+    @SystemServerLog(funcionExplain = "获取用户关注公众号或取消公众号信息")
+    @Override
+    public String getWeiXinPublicFollowOrCancel(HttpServletRequest request) throws Exception {
+
+
+        Map<String, String> map = XmlOrMapUtils.xmlToMap(StreamUtil.inputStream2String(request.getInputStream(), "UTF-8"));
+        LOGGER.debug("微信公众号返回数据 {}", map);
+
+        if (map != null && map.size() > 0) {
+
+            String event = map.get("Event");
+
+            String openId = map.get("FromUserName");
+
+            WxPublicInfo wxPublicInfo = new WxPublicInfo();
+
+            switch (event) {
+
+                case SUBSCRIBE:
+                    WxPublicUserInfo publicUserInfo = wxPublicUtil.getWeiXinPublicUserInfo(openId);
+
+                    if (publicUserInfo.getSubscribe() == 1) {
+
+                        wxPublicInfo.setUnionId(publicUserInfo.getUnionid());
+                        wxPublicInfo.setOpenId(publicUserInfo.getOpenid());
+                        wxPublicInfo.setCity(publicUserInfo.getCity());
+                        wxPublicInfo.setNickName(publicUserInfo.getNickname());
+                        wxPublicInfo.setCountry(publicUserInfo.getCountry());
+                        wxPublicInfo.setHeadImageUrl(publicUserInfo.getHeadimgurl());
+                        wxPublicInfo.setLanguage(publicUserInfo.getLanguage());
+                        wxPublicInfo.setProvince(publicUserInfo.getProvince());
+                        wxPublicInfo.setSubscribe(publicUserInfo.getSubscribe().shortValue());
+                        wxPublicInfo.setSex(publicUserInfo.getSex().shortValue());
+                        wxPublicInfo.setSubscribeTime(new Date(publicUserInfo.getSubscribe_time()));
+
+                    }
+                    break;
+
+                case UNSUBSCRIBE:
+                    wxPublicInfo.setOpenId(openId);
+                    wxPublicInfo.setSubscribe((short) 0);
+                    break;
+
+                default:
+                    return "";
+            }
+
+
+            int count = wxPublicInfoMapper.selectCountByOpenId(openId);
+
+            if (count > 0) {
+
+                if (SUBSCRIBE.equals(event)) {
+                    wxPublicInfo.setSubscribe((short) 1);
+                }
+                //更新关注微信公众号用户信息
+                wxPublicInfoMapper.updateWxPublicUserInfoByOpenid(wxPublicInfo);
+
+            } else {
+
+               String wxUserId = wxUserInfoMapper.selectUserIdByUnionId(wxPublicInfo.getUnionId());
+
+               String bicycleWxUserId = bicycleWxUserInfoMapper.selectUserIdByUnionId(wxPublicInfo.getUnionId());
+
+                int jiuMiFlag = jiumiMissionMapper.selectCountByOnOff();
+
+                //判断赳米是否开启 0 说明没有查询到关闭赳米的标识
+                if (jiuMiFlag == 0){
+
+                    if (!StringUtils.isBlank(wxUserId) || !StringUtils.isBlank(bicycleWxUserId)) {
+
+                        //发送送赳米消息
+                        wxPublicUtil.sendWxTest(wxPublicInfo);
+
+                        //送赳米
+                        userJiuMiService.doAcquireJiuMi(new AcquireJiuMiReq(3, 1, StringUtils.isBlank(wxUserId) ? bicycleWxUserId : wxUserId));
+                    }
+
+                }
+
+                //记录关注微信公众号用户信息
+                wxPublicInfoMapper.insertWxPublicUserInfo(wxPublicInfo);
+            }
+        }
+        return "";
     }
 
     //设置用户免押状态
@@ -367,7 +530,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return userPicurl;
     }
 
-    private List<JiumiLog> getJiumiLogs(int type) {
+    public List<JiumiLog> getJiumiLogs(int type) {
         List<JiumiLog> jiumiLogs = null;
         switch (type) {
             case 0:
@@ -377,16 +540,16 @@ public class UserInfoServiceImpl implements UserInfoService {
                 jiumiLogs = (List<JiumiLog>) redisUtil.getValueObj(USER_JIUMI_TOTAL);
 
                 JiumiLog jiumiLog;
-                if (jiumiLogs !=null && jiumiLogs.size()>0){
+                if (jiumiLogs != null && jiumiLogs.size() > 0) {
                     List<JiumiLog> jiumiLogList = new LinkedList<>();
                     for (int i = 0; i < jiumiLogs.size(); i++) {
-                         jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
+                        jiumiLog = JSONUtil.parseObject(JSONUtil.toJSONString(jiumiLogs.get(i)), JiumiLog.class);
                         jiumiLogList.add(jiumiLog);
                     }
                     jiumiLogs = jiumiLogList;
-                }else {
-                     jiumiLogs = jiumiLogMapper.selectTotalJiuMiNum();
-                     redisUtil.setObjAndExpire(UserInfoServiceImpl.USER_JIUMI_TOTAL,jiumiLogs,EXPIRE_TIME);
+                } else {
+                    jiumiLogs = jiumiLogMapper.selectTotalJiuMiNum();
+                    redisUtil.setObjAndExpire(UserInfoServiceImpl.USER_JIUMI_TOTAL, jiumiLogs, EXPIRE_TIME);
                 }
 
                 break;

@@ -2,6 +2,7 @@ package com.applet.mapper;
 
 import com.applet.model.BicycleWxUserInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,4 +21,6 @@ public interface BicycleWxUserInfoMapper {
     int updateByPrimaryKey(BicycleWxUserInfo record);
 
     int updateWxUser(BicycleWxUserInfo record);
+
+    String selectUserIdByUnionId(@Param("unionId") String unionId);
 }

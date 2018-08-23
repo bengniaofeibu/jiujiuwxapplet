@@ -26,6 +26,7 @@ public interface WxUserInfoMapper {
 
     Integer selectLoginStatusByMobile(String userMobile);
 
+    String selectUserIdByUnionId(@Param("unionId") String unionId);
 
-
+    Integer selectCountByOpenId(@Param("openId") String openId);
 }

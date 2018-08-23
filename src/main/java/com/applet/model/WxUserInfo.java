@@ -2,8 +2,11 @@ package com.applet.model;
 
 import java.util.Date;
 
-public class WxUserInfo {
+
+public class WxUserInfo extends BaseModel {
     private Long id;
+
+    private String unionId;
 
     private String openId;
 
@@ -32,12 +35,43 @@ public class WxUserInfo {
     /** 赳米是否显示标识 0 否 1 是 **/
     private Integer jiuMiShowFlag;
 
+    /** 完成关注公众号描述 **/
+    private String wxPublicDes;
+
+    /** 完成关注公众号赠送的赳米 **/
+    private Integer completeJiumi;
+
+    /** 是否完成公众号任务 0 否 1 是 **/
+    private Integer isCompleteFocus = 0;
+
+    public WxUserInfo() {
+    }
+
+    public WxUserInfo(String userId,String unionId,String openId) {
+        this.userId = userId;
+        this.unionId = unionId;
+        this.openId = openId;
+    }
+
+    public WxUserInfo(String wxPublicDes, Integer completeJiumi) {
+        this.wxPublicDes = wxPublicDes;
+        this.completeJiumi = completeJiumi;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 
     public String getOpenId() {
@@ -142,5 +176,29 @@ public class WxUserInfo {
 
     public void setJiuMiShowFlag(Integer jiuMiShowFlag) {
         this.jiuMiShowFlag = jiuMiShowFlag;
+    }
+
+    public String getWxPublicDes() {
+        return wxPublicDes;
+    }
+
+    public void setWxPublicDes(String wxPublicDes) {
+        this.wxPublicDes = wxPublicDes;
+    }
+
+    public Integer getCompleteJiumi() {
+        return completeJiumi;
+    }
+
+    public void setCompleteJiumi(Integer completeJiumi) {
+        this.completeJiumi = completeJiumi;
+    }
+
+    public Integer getIsCompleteFocus() {
+        return isCompleteFocus;
+    }
+
+    public void setIsCompleteFocus(Integer isCompleteFocus) {
+        this.isCompleteFocus = isCompleteFocus;
     }
 }

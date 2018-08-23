@@ -7,6 +7,7 @@ import com.applet.entity.AcquireJiuMiReq;
 import com.applet.entity.Cat;
 import com.applet.entity.MyJiuMiReq;
 import com.applet.entity.UserInfo.*;
+import com.applet.entity.WxPay.WxAppletPayRequest;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.JiumiLogMapper;
 import com.applet.mapper.JiumiMissionMapper;
@@ -27,6 +28,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.util.Date;
 
 @RestController
@@ -46,9 +50,6 @@ public class UserController extends BaseController {
 
     @Autowired
     private JiumiMissionMapper jiumiMissionMapper;
-
-    @Autowired
-    private JiumiLogMapper jiumiLogMapper;
 
 
     @SystemControllerLog(funcionExplain = "进入微信注册登录控制层")
@@ -73,9 +74,9 @@ public class UserController extends BaseController {
 //            WxDetailedUserInfo detailedUserInfo = JSONUtil.parseObject(request.getRawData(), WxDetailedUserInfo.class);
 
             JSONObject jsonObject = encryptedDataToObject(request.getGeneralEncryptedData(), authInfo.getSessionKey(), request.getIv());
+            LOGGER.debug("EncryptedData {} ", jsonObject);
 
             String phoneNumber = jsonObject.get("phoneNumber").toString();
-            LOGGER.debug("微信授权登录手机号 {}", phoneNumber);
 
 
             //记录或更新用户登录状态
@@ -91,8 +92,12 @@ public class UserController extends BaseController {
             UserInfo userInfo = userInfoMapper.selectByUserPhone(phoneNumber);
             if (userInfo != null) {
                 UserInfoResponse userInfoResponse = setBicycleUserInfo(userInfo);
-                baseAddRegisterUser(0, userInfo.getId(), authInfo.getOpenId(), phoneNumber, "", null, "");
+                baseAddRegisterUser(0, userInfo.getId(),authInfo.getOpenId(), phoneNumber, "", null, "");
                 return ResultUtil.success(userInfoResponse);
+            }
+
+            if (!getCountByOpenId(authInfo.getOpenId())){
+                return ResultUtil.error(ResultEnums.OPEN_ID_EXIST);
             }
 
             UserInfoResponse info = baseAddRegisterUser(2, UuidUtil.getUuid(), authInfo.getOpenId(), phoneNumber, "", null, "");
@@ -131,12 +136,15 @@ public class UserController extends BaseController {
             UserInfo userInfo = userInfoMapper.selectByUserPhone(phone);
             if (userInfo != null) {
                 UserInfoResponse userInfoResponse = setBicycleUserInfo(userInfo);
-                baseAddRegisterUser(0, userInfo.getId(), authInfo.getOpenId(), phone, null, null, null);
+                baseAddRegisterUser(0, userInfo.getId(),authInfo.getOpenId(), phone, null, null, null);
                 return ResultUtil.success(userInfoResponse);
             }
 
+            if (!getCountByOpenId(authInfo.getOpenId())){
+                return ResultUtil.error(ResultEnums.OPEN_ID_EXIST);
+            }
 
-            info = baseAddRegisterUser(2, UuidUtil.getUuid(), authInfo.getOpenId(), phone, null, null, null);
+            info = baseAddRegisterUser(2, UuidUtil.getUuid(),authInfo.getOpenId(), phone, null, null, null);
             return ResultUtil.success(info);
         } catch (Exception e) {
             LOGGER.error(" ERROR {}", e.getMessage());
@@ -187,10 +195,34 @@ public class UserController extends BaseController {
         return userJiuMiService.getMyJiuMi(myJiuMiReq);
     }
 
+
     @SystemControllerLog(funcionExplain = "查看赳米任务")
     @GetMapping(value = "/wx_xcx_getmyjiumission")
     public AppletResult getMyJiuMission(MyJiuMiReq myJiuMiReq) {
         return userJiuMiService.getMyJiuMission(myJiuMiReq);
+    }
+
+
+    @SystemControllerLog(funcionExplain = "记录用户unionId")
+    @GetMapping(value = "/wx_xcx_recorduserunionid")
+    public AppletResult recordUserUnionId(WxUserRegisterRequest request, @RequestHeader("session") String session) {
+
+        Cat authInfo = getAuthInfo(session);
+        LOGGER.debug(" authInfo {}", JSONUtil.toJSONString(authInfo));
+
+        try {
+
+            JSONObject jsonObject = encryptedDataToObject(request.getGeneralEncryptedData(), authInfo.getSessionKey(), request.getIv());
+            LOGGER.debug("encryptedData {} ",jsonObject);
+
+            String unionId = jsonObject.get("unionId").toString();
+
+            return userInfoService.recordUserUnionId(new WxUserInfo(request.getUserId(),unionId, authInfo.getOpenId()));
+
+        } catch (Exception e) {
+            LOGGER.error(" 记录用户unionId {} ",e);
+        }
+        return ResultUtil.error(ResultEnums.UNIONID_RECORD_FAIL);
     }
 
 
@@ -214,6 +246,23 @@ public class UserController extends BaseController {
     }
 
 
+    @SystemControllerLog(funcionExplain = "判断用户是否进行过微信绑定")
+    @GetMapping(value = "/wx_xcx_getistruewx")
+    public AppletResult getIsTrueWxBangDing(MyJiuMiReq myJiuMiReq) {
+        return userJiuMiService.getIsTrueWxBangDing(myJiuMiReq);
+    }
+
+    @SystemControllerLog(funcionExplain = "获取用户关注公众号或取消公众号信息")
+    @RequestMapping(value = "/get/weixinpublicfolloworcancel")
+    public String getWeiXinPublicFollowOrCancel(String token, String signature, String timestamp, String nonce,
+                                                String echostr,HttpServletRequest request) throws Exception {
+
+        if (request.getMethod().equalsIgnoreCase("get")){
+             return echostr;
+        }
+        return userInfoService.getWeiXinPublicFollowOrCancel(request);
+    }
+
     /**
      * 添加新用户的公共方法
      *
@@ -222,7 +271,7 @@ public class UserController extends BaseController {
      * @param country
      * @return
      */
-    private UserInfoResponse baseAddRegisterUser(Integer userSource, String id, String openId, String phone, String country, Integer gender, String picurl) {
+    private UserInfoResponse baseAddRegisterUser(Integer userSource, String id,String openId, String phone, String country, Integer gender, String picurl) {
 
         int jiuMiNum = jiumiSettingMapper.selectIncValueByMissionId();
         LOGGER.debug("用户注册送的赳米数 {} ", jiuMiNum);
@@ -248,6 +297,7 @@ public class UserController extends BaseController {
         wxUserInfo.setUserMobile(phone);
         wxUserInfo.setRegistFlag(4);
         wxUserInfo.setJiuMiShowFlag(count);
+
         UserInfoResponse info = userInfoService.addRegisterUser(userInfo, wxUserInfo);
         info.setIsNewUserFlag(1);
         info.setJiumNum(jiuMiNum);

@@ -1,7 +1,16 @@
 package com.applet.utils.HttpClient;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.JsonObject;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -236,6 +245,31 @@ public class HttpRequestProxy {
 		}
 		return decodeUnicode(responseContent);
 	}
+
+
+	public static String doPost(String reqUrl, String jsonObject){
+		HttpPost httpPost = new HttpPost(reqUrl);
+		CloseableHttpClient client = HttpClients.createDefault();
+		String respContent = null;
+
+		StringEntity entity = new StringEntity(jsonObject,"utf-8");//解决中文乱码问题
+		entity.setContentEncoding("UTF-8");
+		entity.setContentType("application/json");
+		httpPost.setEntity(entity);
+		System.out.println();
+		try{
+			HttpResponse resp = client.execute(httpPost);
+			if(resp.getStatusLine().getStatusCode() == 200) {
+				HttpEntity he = resp.getEntity();
+				respContent = EntityUtils.toString(he,"UTF-8");
+			}
+		}catch (Exception e){
+			e.getStackTrace();
+		}
+		return respContent;
+	}
+
+
 	/**
 	 * @return ���ӳ�ʱ(����)
 	 */

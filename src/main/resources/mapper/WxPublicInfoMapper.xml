@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.applet.mapper.WxPublicInfoMapper">
+  <resultMap id="BaseResultMap" type="com.applet.model.WxPublicInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="union_id" jdbcType="VARCHAR" property="unionId" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="sex" jdbcType="SMALLINT" property="sex" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="language" jdbcType="VARCHAR" property="language" />
+    <result column="head_image_url" jdbcType="VARCHAR" property="headImageUrl" />
+    <result column="subscribe_time" jdbcType="TIMESTAMP" property="subscribeTime" />
+    <result column="subscribe" jdbcType="SMALLINT" property="subscribe" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, union_id, open_id, nick_name, sex, city, country, province, language, head_image_url, 
+    subscribe_time, subscribe
+  </sql>
+  <select id="selectCountByUnionId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 
+    COUNT(1)
+    from t_wx_public_info
+    where union_id = #{unionId,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectCountByOpenId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    COUNT(1)
+    from t_wx_public_info
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_wx_public_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertWxPublicUserInfo" parameterType="com.applet.model.WxPublicInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into t_wx_public_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="unionId != null">
+        union_id,
+      </if>
+      <if test="openId != null">
+        open_id,
+      </if>
+      <if test="nickName != null">
+        nick_name,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="country != null">
+        country,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="language != null">
+        language,
+      </if>
+      <if test="headImageUrl != null">
+        head_image_url,
+      </if>
+      <if test="subscribeTime != null">
+        subscribe_time,
+      </if>
+      <if test="subscribe != null">
+        subscribe,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="unionId != null">
+        #{unionId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null">
+        #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="headImageUrl != null">
+        #{headImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeTime != null">
+        #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subscribe != null">
+        #{subscribe,jdbcType=SMALLINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateWxPublicUserInfoByOpenid" parameterType="com.applet.model.WxPublicInfo">
+    update t_wx_public_info
+    <set>
+      <if test="unionId != null">
+        union_id = #{unionId,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null">
+        open_id = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null">
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=SMALLINT},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="country != null">
+        country = #{country,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="language != null">
+        language = #{language,jdbcType=VARCHAR},
+      </if>
+      <if test="headImageUrl != null">
+        head_image_url = #{headImageUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="subscribeTime != null">
+        subscribe_time = #{subscribeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="subscribe != null">
+        subscribe = #{subscribe,jdbcType=SMALLINT},
+      </if>
+    </set>
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </update>
+</mapper>

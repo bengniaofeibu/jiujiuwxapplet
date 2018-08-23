@@ -28,7 +28,6 @@ import java.security.InvalidAlgorithmParameterException;
 public class BaseController {
 
 
-
     @Autowired
     protected RedisUtil redisUtil;
 
@@ -53,17 +52,19 @@ public class BaseController {
 
     /**
      * 获取授权信息
+     *
      * @param session
      * @return
      */
-    protected Cat getAuthInfo(String session){
-     Object obj = redisUtil.getValueObj(session);
-      return JSONUtil.parseObject(JSONUtil.toJSONString(obj),Cat.class);
+    protected Cat getAuthInfo(String session) {
+        Object obj = redisUtil.getValueObj(session);
+        return JSONUtil.parseObject(JSONUtil.toJSONString(obj), Cat.class);
     }
 
 
     /**
      * 解密小程序返回的数据并封装成实体
+     *
      * @param encryptedData
      * @param sessionKey
      * @param iv
@@ -77,18 +78,19 @@ public class BaseController {
             String userInfo = new String(resultByte, "UTF-8");
             return new JSONObject(userInfo);
         }
-           return null;
+        return null;
     }
 
 
     /**
      * 判断用户是否存在
+     *
      * @param userMobile
      * @return
      */
-    protected AppletResult isUserRegistered(String userMobile){
+    protected AppletResult isUserRegistered(String userMobile) {
         String userId = wxUserInfoMapper.selectUserIdByMobile(userMobile);
-        if (userId != null ){
+        if (userId != null) {
             return ResultUtil.success(userId);
         }
         return null;
@@ -96,21 +98,31 @@ public class BaseController {
 
 
     /**
+     * 判断该微信是否已经绑定过手机号
+     * @param openId
+     * @return
+     */
+    protected boolean getCountByOpenId(String openId) {
+        return wxUserInfoMapper.selectCountByOpenId(openId) == 0;
+    }
+
+    /**
      * 获取用户信息通过openId
      *
      * @return
      */
-    protected UserInfoResponse getUserInfoByopenId(String openId,String userId,String cityName) {
-        UserInfoResponse userInfo = userInfoService.getUserInfo(openId,userId,cityName);
+    protected UserInfoResponse getUserInfoByopenId(String openId, String userId, String cityName) {
+        UserInfoResponse userInfo = userInfoService.getUserInfo(openId, userId, cityName);
         userInfo.setAdminId(userId);
         return userInfo;
     }
 
     /**
      * 通过用户id获取用户信息
+     *
      * @return
      */
-    protected UserInfo getUserInfoByUserId(String userId){
-       return  userInfoMapper.selectUserInfoById(userId);
+    protected UserInfo getUserInfoByUserId(String userId) {
+        return userInfoMapper.selectUserInfoById(userId);
     }
 }
