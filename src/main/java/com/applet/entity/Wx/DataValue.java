@@ -9,7 +9,7 @@ public class DataValue {
 
     public static final String FIRST_DATA = "赳赳单车";
 
-    public static final String JIU_MI_REMARK_DES = "恭喜你获得50个赳米";
+    public static final String JIU_MI_REMARK_DES = "恭喜你获得260个赳米";
 
     private static final String DATA_COLOR = "#173177";
 

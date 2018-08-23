@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Component
-public abstract class DateUtil {
+public class DateUtil {
 
 
     /**

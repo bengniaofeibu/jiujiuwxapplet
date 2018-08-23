@@ -2,13 +2,10 @@ package com.applet.service.impl;
 
 import com.applet.annotation.SystemServerLog;
 import com.applet.entity.AcquireJiuMiReq;
-import com.applet.entity.UserInfo.EsUserInfo;
 import com.applet.entity.UserInfo.UserInfoResponse;
 import com.applet.entity.UserInfo.UserJiuMiRankListRes;
-import com.applet.entity.Wx.WxPublicMsg;
-import com.applet.entity.Wx.WxPublicTemplate;
+import com.applet.entity.Wx.WxPublicText;
 import com.applet.entity.Wx.WxPublicUserInfo;
-import com.applet.entity.geo.GeoInfo;
 import com.applet.enums.ResultEnums;
 import com.applet.mapper.*;
 import com.applet.model.*;
@@ -18,7 +15,6 @@ import com.applet.utils.AppletResult;
 import com.applet.utils.ResultUtil;
 import com.applet.utils.common.*;
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -90,7 +83,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private static final int FREE_DEPOSIT_STATUS_YES = 1;
 
-    private static final String USER_LOGIN_STATUS_KEY = "user:login:status:";
+    public static final String USER_LOGIN_KEY = "user:login:flag";
 
     public static final String USER_JIUMI_TOTAL = "user:jiumi:total";
 
@@ -105,8 +98,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     private static final String SUBSCRIBE = "subscribe";
 
     private static final String UNSUBSCRIBE = "unsubscribe";
-
-    private static final Integer WX_PUBLIC_COMPLETE_JIUMI_NUM = 50;
 
     private static final Integer EXPIRE_TIME = 43200;
 
@@ -229,52 +220,15 @@ public class UserInfoServiceImpl implements UserInfoService {
         int fineCont = fineDetailMapper.selectCountByUserIdAndStatus(id);
         userInfoResponse.setIsFine(fineCont == 0 ? 0 : 1);
 
-//        Integer loginStatus = wxUserInfoMapper.selectLoginStatusByMobile(info.getPhone());
-//        LOGGER.debug("用户登录状态 -->{}",loginStatus);
-//
-//        userInfoResponse.setLoginStatus(loginStatus);
+        userInfoResponse.setUserWxOpendId(openId);
+
+        String userLoginOpenId = redisUtil.getValuesStr(USER_LOGIN_KEY+info.getPhone());
+
+        userInfoResponse.setUserLoginOpenId(StringUtils.isBlank(userLoginOpenId)?openId:userLoginOpenId);
 
         return userInfoResponse;
     }
 
-    /**
-     * 更新用户登录状态
-     *
-     * @param phone
-     * @return
-     */
-    @Override
-    public void updateUserLoginStatus(String phone, String openId) {
-
-        //更新用户状态为未登录状态
-        int updateNum = wxUserInfoMapper.updateNoLoginStatusByOpenId(openId);
-        if (updateNum > 0) {
-            return;
-        }
-
-        String userLoginStatusKey = new StringBuilder(USER_LOGIN_STATUS_KEY).append(phone).toString();
-        LOGGER.debug("userLoginStatusKey {}", userLoginStatusKey);
-
-        //判断key是否存在
-        boolean isExist = redisUtil.ifExist(userLoginStatusKey);
-        if (isExist) {
-
-            //获取之前openId登录的手机号
-            String openIdBefore = redisUtil.getValuesStr(userLoginStatusKey);
-
-            if (openIdBefore != null) {
-
-                if (!openId.equals(openIdBefore)) {
-
-                    //修改之前openId为已登录状态
-                    wxUserInfoMapper.updateAlreadyLoginStatusByOpenId(openIdBefore);
-                }
-            }
-            return;
-        }
-        //记录用户登录状态到缓存
-        redisUtil.setObj(userLoginStatusKey, openId);
-    }
 
     /**
      * 记录用户打开小程序
@@ -379,10 +333,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public AppletResult recordUserUnionId(WxUserInfo wxUserInfo) {
 
+
+
         //更新用户unionId
         wxUserInfoMapper.updateUserStatusById(wxUserInfo);
 
-        WxUserInfo userInfo = new WxUserInfo(WX_PUBLIC_DES, WX_PUBLIC_COMPLETE_JIUMI_NUM);
+        WxUserInfo userInfo = new WxUserInfo(WX_PUBLIC_DES, WxPublicText.JIUMI_NUM);
 
         if (wxPublicInfoMapper.selectCountByUnionId(wxUserInfo.getUnionId()) > 0) {
 

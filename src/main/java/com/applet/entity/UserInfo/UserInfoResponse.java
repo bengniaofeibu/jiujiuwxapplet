@@ -43,6 +43,10 @@ public class UserInfoResponse extends BaseResponseEntity {
 
     private String notCanCylingMsg;
 
+    private String userWxOpendId;
+
+    private String userLoginOpenId;
+
     public String getAdminId() {
         return adminId;
     }
@@ -153,5 +157,21 @@ public class UserInfoResponse extends BaseResponseEntity {
 
     public void setIsFine(Integer isFine) {
         this.isFine = isFine;
+    }
+
+    public String getUserWxOpendId() {
+        return userWxOpendId;
+    }
+
+    public void setUserWxOpendId(String userWxOpendId) {
+        this.userWxOpendId = userWxOpendId;
+    }
+
+    public String getUserLoginOpenId() {
+        return userLoginOpenId;
+    }
+
+    public void setUserLoginOpenId(String userLoginOpenId) {
+        this.userLoginOpenId = userLoginOpenId;
     }
 }

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -26,14 +27,19 @@ import java.util.Map;
 public class SystemLogAspect {
 
 
-    private static final SimpleDateFormat DATE_FORMAT=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
     private static final Logger LOGGER= LoggerFactory.getLogger(SystemLogAspect.class);
 
     @Autowired
     private HttpServletRequest request;
 
     private ThreadLocal<Date> threadLocal=new NamedThreadLocal<>("threadLocal time");
+
+    private static final SimpleDateFormat DATE_FORMAT=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+    private static final String POST_METHOD ="POST";
+
+    private static final String GET_METHOD ="GET";
 
 
     @Pointcut("@annotation(com.applet.annotation.SystemServerLog)")
@@ -45,18 +51,16 @@ public class SystemLogAspect {
     @Before("controllerAspect()")
     public void before(JoinPoint joinPoint)throws Exception{
 
-//        //签名认证
-//        ApiHead head = ApiManager.getApiHead(request);
-//
-//        ApiManager.valideHeadApi(head);
+        //签名认证
+        ApiHead head = ApiManager.getApiHead(request);
+
+        ApiManager.valideHeadApi(head);
 
         Date date=new Date();
         threadLocal.set(date);
-        if (LOGGER.isDebugEnabled()){
+        if (LOGGER.isInfoEnabled()){
             try {
-                LOGGER.debug("{}--开始时间 {}  请求参数 {}",getControllerMthodDescription(joinPoint),DATE_FORMAT.format(date),getRequestParam(request.getParameterMap()));
-                LOGGER.debug(" 请求方式 {}",request.getMethod());
-                LOGGER.debug(" 请求IP {}",request.getRemoteAddr());
+                LOGGER.info("{},{},{},{},{} ",DATE_FORMAT.format(date),getControllerMthodDescription(joinPoint),request.getRemoteAddr(),request.getMethod(),getRequestParam(joinPoint.getArgs(),request.getMethod(),request.getParameterMap()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -122,7 +126,7 @@ public class SystemLogAspect {
         MethodSignature methodSignature= (MethodSignature)joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         SystemControllerLog annotation = method.getAnnotation(SystemControllerLog.class);
-        return annotation.funcionExplain();
+        return method.getName();
     }
 
     /**
@@ -130,11 +134,32 @@ public class SystemLogAspect {
      * @param params
      */
     public String getRequestParam(Map<String,String[]> params ){
-         StringBuilder builder=new StringBuilder();
+
+        StringBuilder builder=new StringBuilder();
+
         for (Map.Entry<String,String[]> entry:params.entrySet()){
-              builder.append(entry.getValue()[0]).append(" ");
+            builder.append(JSONUtil.toJSONString(entry.getValue())).append(" ");
         }
         return builder.toString();
+    }
+
+    /**
+     * 获取请求参数
+     * @param objects
+     * @param method
+     */
+    public String getRequestParam(Object[] objects,String method,Map<String,String[]> params ){
+
+        String res = null;
+         switch (method){
+             case POST_METHOD:
+              res = JSONUtil.toJSONString(objects[0]);
+             break;
+             case GET_METHOD:
+              res = getRequestParam(params);
+             break;
+         }
+         return res;
     }
 }
 
