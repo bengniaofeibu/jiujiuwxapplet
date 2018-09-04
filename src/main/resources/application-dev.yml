@@ -45,6 +45,7 @@ logging:
     level:
        com.example: DEBUG
     config: classpath:logback/logback-dev.xml
+#    config: classpath:logback/logback-logstash.xml
 mybatis:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
