@@ -31,8 +31,8 @@ public class StoreController {
         ReturnDataUtil dataUtil = JSONUtil.parseObject(JSONUtil.toJSONString(result.getData()),ReturnDataUtil.class);
         String url=dataUtil.getReturnData().toString();
         //http://www.duiba.com.cn/autoLogin/autologin?uid=15554313215&credits=null&sign=4fbd01848f12b7e974893f11a288b87f&appKey=bHqyPxCrAChd1iDfUdLe1J4gdtJ&timestamp=1531469842586&
-        url = url.substring(24);
-        url = "https://home.m.duiba.com.cn/"+url;
+        /*url = url.substring(24);
+        url = "https://home.m.duiba.com.cn/"+url;*/
         ReturnDataUtil returnDataUtil = new ReturnDataUtil();
         returnDataUtil.setReturnData(url);
         result.setData(returnDataUtil);
